@@ -154,29 +154,33 @@ public extension FSPath {
         }
         return Array(lhs[(lhs.count - rhs.count) ..< lhs.count]) == rhs
     }
+
+    func appendingPathComponent(_ component: FSPath) -> FSPath {
+        FSPath(url.appendingPathComponent(component.path))
+    }
+
+    func appendingPathComponent(_ component: String) -> FSPath {
+        FSPath(url.appendingPathComponent(component))
+    }
 }
 
 // MARK: Operators
 
 public extension FSPath {
     static func + (lhs: FSPath, rhs: FSPath) -> FSPath {
-        let url = (lhs.path as NSString).appendingPathComponent(rhs.path)
-        return FSPath(url)
+        return lhs.appendingPathComponent(rhs)
     }
 
     static func / (lhs: FSPath, rhs: FSPath) -> FSPath {
-        let url = (lhs.path as NSString).appendingPathComponent(rhs.path)
-        return FSPath(url)
+        return lhs.appendingPathComponent(rhs)
     }
 
     static func + (lhs: FSPath, rhs: String) -> FSPath {
-        let url = (lhs.path as NSString).appendingPathComponent(rhs)
-        return FSPath(url)
+        return lhs.appendingPathComponent(rhs)
     }
 
     static func / (lhs: FSPath, rhs: String) -> FSPath {
-        let url = (lhs.path as NSString).appendingPathComponent(rhs)
-        return FSPath(url)
+        return lhs.appendingPathComponent(rhs)
     }
 }
 
