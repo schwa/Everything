@@ -6,9 +6,9 @@ import PackageDescription
 let package = Package(
     name: "Everything",
     platforms: [
-        .iOS("16.0"),
-        .macOS("13.0"),
-        .macCatalyst("16.0"),
+        .iOS("15.0"),
+        .macOS("12.0"),
+        .macCatalyst("15.0"),
     ],
     products: [
         .library(name: "Everything", targets: ["Everything"]),

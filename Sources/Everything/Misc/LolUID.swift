@@ -1,5 +1,6 @@
 import os.log
 
+@available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 public struct LolUID: Hashable {
     static let lock = OSAllocatedUnfairLock(uncheckedState: 0)
 
