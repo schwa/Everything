@@ -20,10 +20,18 @@ let package = Package(
         .target(
             name: "Everything",
             dependencies: ["EverythingHelpers"],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-warn-concurrency", "-Xfrontend", "-enable-actor-data-race-checks"])
-            ]),
+            swiftSettings:
+                unsafeFlags()
+            ),
         .target(name: "EverythingHelpers"),
         .testTarget(name: "EverythingTests", dependencies: ["Everything"]),
     ]
 )
+
+func unsafeFlags() -> [PackageDescription.SwiftSetting] {
+    return [
+    ]
+//    return [
+//        .unsafeFlags(["-Xfrontend", "-warn-concurrency", "-Xfrontend", "-enable-actor-data-race-checks"])
+//    ]
+}
