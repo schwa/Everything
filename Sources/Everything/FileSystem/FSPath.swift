@@ -321,6 +321,7 @@ public extension FSPath {
         return children
     }
 
+    // TODO: Need a version we can skip directories and early exit on. Also rethrowing
     func walk(_ closure: (FSPath) -> Void) throws {
         let errorHandler = { (_: URL, _: Swift.Error) -> Bool in
             true
@@ -455,6 +456,72 @@ public extension FSPath {
     }
 }
 
+// MARK: -
+
+
+// MARK: -
+
+extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeClusterLiteral {
+    public init(stringLiteral value: String) {
+        self.init(value)
+    }
+}
+
+#if os(macOS)
+    public extension FSPath {
+        var icon: NSImage {
+            NSWorkspace.shared.icon(forFile: path)
+        }
+    }
+#endif
+
+
+// MARK: -
+
+public extension FSPath {
+    init(fileDescriptor fd: Int32) throws {
+        var buffer = [Int8](repeating: 0, count: Int(PATH_MAX))
+        buffer.withUnsafeMutableBufferPointer { buffer in
+            if fcntl_FGETPATH(fd, buffer.baseAddress!) == -1 {
+                fatalError("fcntl_FGETPATH failed")
+            }
+        }
+        let path = String(cString: buffer)
+        self = FSPath(path)
+    }
+}
+
+extension FSPath {
+
+    init <C>(components: C) where C: Collection, C.Element: StringProtocol {
+        if components.first == "/" {
+            let s = components.dropFirst().joined(separator: "/")
+            self = FSPath(path: "/" + s)
+        }
+        else {
+            let s = components.joined(separator: "/")
+            self = FSPath(path: s)
+        }
+    }
+}
+
+// MARK: Deprecated but hanging around!
+
+@available(*, deprecated, message: "Rewrite this as FSPath.open() or FSPath.content.data or use the async .lines, .bytes")
+public extension FSPath {
+    var data: Data {
+        get throws {
+            try Data(contentsOf: url)
+        }
+    }
+
+    var sha256: SHA256Digest {
+        get throws {
+            SHA256.hash(data: try data)
+        }
+    }
+}
+
 public extension FSPath {
     @available(*, deprecated, message: "Rewrite this with better otions")
     func createFile() throws {
@@ -473,8 +540,6 @@ public extension FSPath {
         try string.write(toFile: path, atomically: true, encoding: encoding)
     }
 }
-
-// MARK: -
 
 @available(*, deprecated, message: "Better if we exposed a 'directoryContents'")
 extension FSPath: Sequence {
@@ -495,58 +560,5 @@ extension FSPath: Sequence {
 
     public func makeIterator() -> Iterator {
         Iterator(path: self)
-    }
-}
-
-// MARK: -
-
-extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeClusterLiteral {
-    public init(stringLiteral value: String) {
-        self.init(value)
-    }
-
-//    public init(extendedGraphemeClusterLiteral value: String) {
-//        self.init(value)
-//    }
-//
-//    public init(unicodeScalarLiteral value: String) {
-//        self.init(value)
-//    }
-}
-
-#if os(macOS)
-
-    public extension FSPath {
-        var icon: NSImage {
-            NSWorkspace.shared.icon(forFile: path)
-        }
-    }
-
-#endif
-
-public extension FSPath {
-    var data: Result<Data, Error> {
-        Result { try Data(contentsOf: url) }
-    }
-
-    var sha256: Result<SHA256Digest, Error> {
-        data.flatMap {
-            Result.success(SHA256.hash(data: $0))
-        }
-    }
-}
-
-// MARK: -
-
-public extension FSPath {
-    init(fileDescriptor fd: Int32) throws {
-        var buffer = [Int8](repeating: 0, count: Int(PATH_MAX))
-        buffer.withUnsafeMutableBufferPointer { buffer in
-            if fcntl_FGETPATH(fd, buffer.baseAddress!) == -1 {
-                fatalError("fcntl_FGETPATH failed")
-            }
-        }
-        let path = String(cString: buffer)
-        self = FSPath(path)
     }
 }
