@@ -2,19 +2,16 @@ import Combine
 import SwiftUI
 
 #if os(macOS)
-    import AppKit
+import AppKit
 
-    public typealias QuartzViewRepresentable = NSViewRepresentable
-    public typealias QuartzPlatformView = NSView
+public typealias QuartzPlatformView = NSView
 #elseif os(iOS)
-    import UIKit
+import UIKit
 
-    public typealias QuartzViewRepresentable = UIViewRepresentable
-    public typealias QuartzPlatformView = UIView
+public typealias QuartzPlatformView = UIView
 #endif
 
-@available(*, deprecated, message: "Use Canvas or similar. Too many Swift Concurrency issues here.")
-public struct QuartzView: QuartzViewRepresentable {
+public struct QuartzView: View {
     public struct Options: OptionSet {
         public let rawValue: Int
         public static let clear = Options(rawValue: 2 << 0)
@@ -34,73 +31,40 @@ public struct QuartzView: QuartzViewRepresentable {
         public let dirtyRect: CGRect
     }
 
-    public class Coordinator {
+    public class Coordinator: ObservableObject {
         var view: _View?
         let displayLink = DisplayLinkPublisher()
-        var cancellables: Set<AnyCancellable> = []
     }
 
-    let didMakeCoordinator: (Coordinator) -> Void
-    let didMakeView: (_View) -> Void
+    @StateObject
+    var coordinator = Coordinator()
+
+    let options: Options
+    let draw: (Parameter) -> Void
 
     public init(options: Options = .default, draw: @escaping (Parameter) -> Void) {
-        didMakeCoordinator = { coordinator in
-            if options.contains(.redrawEveryFrame) {
-                coordinator.displayLink
-                .receive(on: DispatchQueue.main)
-                .sink { _ in
-                    guard let view = coordinator.view else {
-                        return
-                    }
-                    #if os(macOS)
-                        view.needsDisplay = true
-                    #else
-                        view.setNeedsDisplay()
-                    #endif
-                }
-                .store(in: &coordinator.cancellables)
-            }
-        }
-        didMakeView = { view in
-            view.options = options
-            view.draw = draw
-        }
+        self.options = options
+        self.draw = draw
     }
 
-    public func makeCoordinator() -> Coordinator {
-        let coordinator = Coordinator()
-        didMakeCoordinator(coordinator)
-        return coordinator
-    }
-
-    #if os(macOS)
-        public func makeNSView(context: Context) -> _View {
+    public var body: some View {
+        ViewAdaptor {
             let view = _View()
-            didMakeView(view)
-            context.coordinator.view = view
+            view.draw = draw
+            view.needsDisplay = true
+            coordinator.view = view
             return view
-        }
-
-        public func updateNSView(_ view: _View, context: Context) {
+        } update: { view in
             view.needsDisplay = true
         }
-
-    #else
-        public func makeUIView(context: Context) -> _View {
-            let view = _View()
-            didMakeView(view)
-            context.coordinator.view = view
-            return view
+        .onReceive(coordinator.displayLink.receive(on: DispatchQueue.main)) { _ in
+#if os(macOS)
+            coordinator.view?.needsDisplay = true
+#else
+            coordinator.view?.setNeedsDisplay()
+#endif
         }
-
-        public func updateUIView(_ view: _View, context: Context) {
-            #if os(macOS)
-                view.needsDisplay = true
-            #else
-                view.setNeedsDisplay()
-            #endif
-        }
-    #endif
+    }
 
     // swiftlint:disable:next type_name
     public class _View: QuartzPlatformView {
@@ -109,15 +73,15 @@ public struct QuartzView: QuartzViewRepresentable {
         var options: Options = .default
 
         override public func draw(_ dirtyRect: CGRect) {
-            #if os(macOS)
-                guard let context = NSGraphicsContext.current?.cgContext, let draw = draw else {
-                    return
-                }
-            #else
-                guard let context = UIGraphicsGetCurrentContext(), let draw = draw else {
-                    return
-                }
-            #endif
+#if os(macOS)
+            guard let context = NSGraphicsContext.current?.cgContext, let draw = draw else {
+                return
+            }
+#else
+            guard let context = UIGraphicsGetCurrentContext(), let draw = draw else {
+                return
+            }
+#endif
             if options.contains(.clear) {
                 context.saveGState()
                 context.setFillColor(CGColor.white)
