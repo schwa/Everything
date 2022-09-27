@@ -15,7 +15,7 @@ import SwiftUI
 
 @available(*, deprecated, message: "Use Canvas or similar. Too many Swift Concurrency issues here.")
 public struct QuartzView: QuartzViewRepresentable {
-    public struct Options: OptionSet, Sendable {
+    public struct Options: OptionSet {
         public let rawValue: Int
         public static let clear = Options(rawValue: 2 << 0)
         public static let center = Options(rawValue: 3 << 0)
@@ -28,7 +28,7 @@ public struct QuartzView: QuartzViewRepresentable {
         }
     }
 
-    public struct Parameter: @unchecked Sendable {
+    public struct Parameter {
         public let bounds: CGRect
         public let context: CGContext
         public let dirtyRect: CGRect
@@ -52,26 +52,18 @@ public struct QuartzView: QuartzViewRepresentable {
                     guard let view = coordinator.view else {
                         return
                     }
-                    Task {
-                        await MainActor.run {
-                            #if os(macOS)
-                                view.needsDisplay = true
-                            #else
-                                view.setNeedsDisplay()
-                            #endif
-                        }
-                    }
+                    #if os(macOS)
+                        view.needsDisplay = true
+                    #else
+                        view.setNeedsDisplay()
+                    #endif
                 }
                 .store(in: &coordinator.cancellables)
             }
         }
         didMakeView = { view in
-            Task {
-                await MainActor.run {
-                    view.options = options
-                    view.draw = draw
-                }
-            }
+            view.options = options
+            view.draw = draw
         }
     }
 
