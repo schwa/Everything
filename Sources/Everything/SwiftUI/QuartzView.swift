@@ -51,19 +51,22 @@ public struct QuartzView: View {
         ViewAdaptor {
             let view = _View()
             view.draw = draw
-            view.needsDisplay = true
             coordinator.view = view
             return view
         } update: { view in
-            view.needsDisplay = true
+            setNeedsDisplay()
         }
         .onReceive(coordinator.displayLink.receive(on: DispatchQueue.main)) { _ in
-#if os(macOS)
-            coordinator.view?.needsDisplay = true
-#else
-            coordinator.view?.setNeedsDisplay()
-#endif
+            setNeedsDisplay()
         }
+    }
+
+    func setNeedsDisplay() {
+#if os(macOS)
+        coordinator.view?.needsDisplay = true
+#else
+        coordinator.view?.setNeedsDisplay()
+#endif
     }
 
     // swiftlint:disable:next type_name
