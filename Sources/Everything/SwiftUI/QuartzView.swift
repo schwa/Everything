@@ -51,6 +51,7 @@ public struct QuartzView: View {
         ViewAdaptor {
             let view = _View()
             view.draw = draw
+            view.options = options
             coordinator.view = view
             return view
         } update: { view in
