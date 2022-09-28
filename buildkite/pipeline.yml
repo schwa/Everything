@@ -1,6 +1,6 @@
 steps:
   - commands:
-      - "swift clean"
+      - "swift package clean"
       - "swift build"
       - "swift test --enable-code-coverage"
       - "xcodebuild -scheme 'Everything' -allowProvisioningUpdates -destination 'generic/platform=macOS'"
