@@ -54,7 +54,7 @@ public struct QuartzView: View {
             view.options = options
             coordinator.view = view
             return view
-        } update: { view in
+        } update: { _ in
             setNeedsDisplay()
         }
         .onReceive(coordinator.displayLink.receive(on: DispatchQueue.main)) { _ in

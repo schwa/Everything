@@ -5,3 +5,4 @@ steps:
       - "swift test --enable-code-coverage"
       - "xcodebuild -scheme 'Everything' -allowProvisioningUpdates -destination 'generic/platform=macOS'"
       - "xcodebuild -scheme 'Everything' -allowProvisioningUpdates -destination 'generic/platform=iOS'"
+      - "swiftlint lint"

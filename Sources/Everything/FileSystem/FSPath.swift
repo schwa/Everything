@@ -168,19 +168,19 @@ public extension FSPath {
 
 public extension FSPath {
     static func + (lhs: FSPath, rhs: FSPath) -> FSPath {
-        return lhs.appendingPathComponent(rhs)
+        lhs.appendingPathComponent(rhs)
     }
 
     static func / (lhs: FSPath, rhs: FSPath) -> FSPath {
-        return lhs.appendingPathComponent(rhs)
+        lhs.appendingPathComponent(rhs)
     }
 
     static func + (lhs: FSPath, rhs: String) -> FSPath {
-        return lhs.appendingPathComponent(rhs)
+        lhs.appendingPathComponent(rhs)
     }
 
     static func / (lhs: FSPath, rhs: String) -> FSPath {
-        return lhs.appendingPathComponent(rhs)
+        lhs.appendingPathComponent(rhs)
     }
 }
 
@@ -458,7 +458,6 @@ public extension FSPath {
 
 // MARK: -
 
-
 // MARK: -
 
 extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral, ExpressibleByExtendedGraphemeClusterLiteral {
@@ -474,7 +473,6 @@ extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral,
         }
     }
 #endif
-
 
 // MARK: -
 
@@ -492,7 +490,6 @@ public extension FSPath {
 }
 
 extension FSPath {
-
     init <C>(components: C) where C: Collection, C.Element: StringProtocol {
         if components.first == "/" {
             let s = components.dropFirst().joined(separator: "/")
