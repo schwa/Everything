@@ -42,7 +42,7 @@ public struct ImageSource {
 public extension ImageSource {
     init(named name: String, bundle: Bundle = Bundle.main) throws {
         guard let url = bundle.url(forResource: name, withExtension: "png") else { // TODO
-            fatalError()
+            fatalError("Could not find image named \(name) in bundle \(bundle)")
         }
         self = try ImageSource(url: url)
     }

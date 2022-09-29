@@ -63,11 +63,11 @@ public struct QuartzView: View {
     }
 
     func setNeedsDisplay() {
-#if os(macOS)
+    #if os(macOS)
         coordinator.view?.needsDisplay = true
-#else
+    #else
         coordinator.view?.setNeedsDisplay()
-#endif
+    #endif
     }
 
     // swiftlint:disable:next type_name
@@ -77,15 +77,15 @@ public struct QuartzView: View {
         var options: Options = .default
 
         override public func draw(_ dirtyRect: CGRect) {
-#if os(macOS)
+            #if os(macOS)
             guard let context = NSGraphicsContext.current?.cgContext, let draw = draw else {
                 return
             }
-#else
+            #else
             guard let context = UIGraphicsGetCurrentContext(), let draw = draw else {
                 return
             }
-#endif
+            #endif
             if options.contains(.clear) {
                 context.saveGState()
                 context.setFillColor(CGColor.white)

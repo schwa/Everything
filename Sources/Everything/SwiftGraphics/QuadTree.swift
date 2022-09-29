@@ -72,15 +72,11 @@ public class QuadTreeNode<T> {
 
     func itemsInRect(_ rect: CGRect) -> [Item] {
         var foundItems: [Item] = []
-        for item in items {
-            if rect.contains(item.point) {
-                foundItems.append(item)
-            }
+        for item in items where rect.contains(item.point) {}
+            foundItems.append(item)
         }
-        for subnode in subnodes {
-            if subnode.frame.intersects(rect) {
-                foundItems += subnode.itemsInRect(rect)
-            }
+        for subnode in subnodes where subnode.frame.intersects(rect) {
+            foundItems += subnode.itemsInRect(rect)
         }
         return foundItems
     }

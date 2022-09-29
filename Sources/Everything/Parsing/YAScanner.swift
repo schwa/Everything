@@ -56,13 +56,11 @@ open class YAScanner: IteratorProtocol {
         guard let skippedCharacters = skippedCharacters else {
             return
         }
-        for C in self {
-            if skippedCharacters.contains(C) == false {
-                forceTry {
-                    try back()
-                }
-                break
+        for C in self where skippedCharacters.contains(C) == false {
+            forceTry {
+                try back()
             }
+            break
         }
     }
 }
@@ -157,13 +155,11 @@ public extension YAScanner {
         with {
             skip()
             let start = location
-            for C in self {
-                if characterSet.contains(C) == false {
-                    forceTry {
-                        try back()
-                    }
-                    break
+            for C in self where characterSet.contains(C) == false {
+                forceTry {
+                    try back()
                 }
+                break
             }
 
             guard characters.distance(from: start, to: location) > 0 else {

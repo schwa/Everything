@@ -177,11 +177,11 @@ public extension CGContext {
 public extension CGImage {
     func subimage(at frame: CGRect) -> CGImage {
         guard let context = CGContext.bitmapContext(bounds: CGRect(origin: .zero, size: frame.size)) else {
-            fatalError()
+            fatalError("Could not make context.")
         }
         context.draw(self, in: CGRect(origin: -frame.origin, size: size))
         guard let image = context.makeImage() else {
-            fatalError()
+            fatalError("Could not make image.")
         }
         return image
     }

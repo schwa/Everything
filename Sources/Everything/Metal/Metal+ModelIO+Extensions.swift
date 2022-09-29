@@ -10,8 +10,10 @@ public extension MDLVertexDescriptor {
 }
 
 public extension MTLVertexFormat {
+    // swiftlint:disable cyclomatic_complexity
     init(_ format: MDLVertexFormat) {
         switch format {
+        // swiftlint:disable switch_case_on_newline
         case .invalid: self = .invalid
             //        case .packedBit: self = .packedBit
             //        case .uCharBits: self = .uCharBits

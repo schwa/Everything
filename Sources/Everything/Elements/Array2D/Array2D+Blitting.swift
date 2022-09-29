@@ -122,10 +122,8 @@ public extension Array2D {
 
 public extension Array2D {
     mutating func fillCircle(center: CGPoint, radius: CGFloat, value: Element) {
-        for index in indices {
-            if center.distance(to: [Double(index.x), Double(index.y)]) < radius {
-                self[index] = value
-            }
+        for index in indices where center.distance(to: [Double(index.x), Double(index.y)]) < radius {
+            self[index] = value
         }
     }
 }
