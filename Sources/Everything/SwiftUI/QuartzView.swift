@@ -72,7 +72,6 @@ public struct QuartzView: View {
             coordinator.redrawEveryFrame = options.contains(.redrawEveryFrame)
             return view
         } update: { _ in
-            coordinator.redrawEveryFrame = options.contains(.redrawEveryFrame)
             setNeedsDisplay()
         }
         .onReceive(coordinator.redraw.receive(on: DispatchQueue.main)) { _ in
