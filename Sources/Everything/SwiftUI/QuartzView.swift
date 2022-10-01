@@ -14,10 +14,10 @@ public typealias QuartzPlatformView = UIView
 public struct QuartzView: View {
     public struct Options: OptionSet {
         public let rawValue: Int
-        public static let clear = Options(rawValue: 2 << 0)
-        public static let center = Options(rawValue: 3 << 0)
-        public static let drawAxes = Options(rawValue: 4 << 0)
-        public static let redrawEveryFrame = Options(rawValue: 4 << 0)
+        public static let clear = Options(rawValue: 1 << 0)
+        public static let center = Options(rawValue: 1 << 1)
+        public static let drawAxes = Options(rawValue: 1 << 2)
+        public static let redrawEveryFrame = Options(rawValue: 1 << 3)
         public static let `default`: Options = [.clear]
 
         public init(rawValue: Int) {
