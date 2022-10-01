@@ -33,22 +33,15 @@ public struct QuartzView: View {
 
     public class Coordinator: ObservableObject {
         weak var view: _View?
-        var redrawEveryFrame = false {
-            didSet {
-                if redrawEveryFrame {
-                    redraw = DisplayLinkPublisher().map { _ in return () }.eraseToAnyPublisher()
-                }
-                else {
-                    redraw = Just(()).eraseToAnyPublisher()
-                }
-            }
-        }
+        var redrawEveryFrame = false
 
-        @Published
-        var redraw: AnyPublisher<(), Never>
+        var redraw: AnyPublisher<(), Never>!
 
         init() {
-            redraw = Just(()).eraseToAnyPublisher()
+            // Squelch display link updates. Probably best to just turn on/off displaylink.
+            redraw = DisplayLinkPublisher().filter { [weak self] _ in
+                self?.redrawEveryFrame ?? false
+            }.map { _ in return () }.eraseToAnyPublisher()
         }
     }
 
