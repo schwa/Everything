@@ -55,7 +55,7 @@ public struct DisplayLinkTiming <Time>: Sendable where Time: Sendable {
             passthrough.receive(subscriber: subscriber)
         }
 
-        private func tick(currentTime: CVTimeStamp, displayTime: CVTimeStamp) {
+        internal func tick(currentTime: CVTimeStamp, displayTime: CVTimeStamp) {
             let currentTime = CMTimeMake(value: currentTime.videoTime, timescale: currentTime.videoTimeScale)
             let displayTime = CMTimeMake(value: displayTime.videoTime, timescale: displayTime.videoTimeScale)
 
