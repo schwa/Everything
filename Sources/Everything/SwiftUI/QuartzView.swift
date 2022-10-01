@@ -32,8 +32,24 @@ public struct QuartzView: View {
     }
 
     public class Coordinator: ObservableObject {
-        var view: _View?
-        let displayLink = DisplayLinkPublisher()
+        weak var view: _View?
+        var redrawEveryFrame = false {
+            didSet {
+                if redrawEveryFrame {
+                    redraw = DisplayLinkPublisher().map { _ in return () }.eraseToAnyPublisher()
+                }
+                else {
+                    redraw = Just(()).eraseToAnyPublisher()
+                }
+            }
+        }
+
+        @Published
+        var redraw: AnyPublisher<(), Never>
+
+        init() {
+            redraw = Just(()).eraseToAnyPublisher()
+        }
     }
 
     @StateObject
@@ -53,11 +69,13 @@ public struct QuartzView: View {
             view.draw = draw
             view.options = options
             coordinator.view = view
+            coordinator.redrawEveryFrame = options.contains(.redrawEveryFrame)
             return view
         } update: { _ in
+            coordinator.redrawEveryFrame = options.contains(.redrawEveryFrame)
             setNeedsDisplay()
         }
-        .onReceive(coordinator.displayLink.receive(on: DispatchQueue.main)) { _ in
+        .onReceive(coordinator.redraw.receive(on: DispatchQueue.main)) { _ in
             setNeedsDisplay()
         }
     }
