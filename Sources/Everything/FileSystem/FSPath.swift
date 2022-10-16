@@ -559,3 +559,9 @@ extension FSPath: Sequence {
         Iterator(path: self)
     }
 }
+
+public extension FSPath {
+    var displayName: String {
+        FileManager().displayName(atPath: path)
+    }
+}

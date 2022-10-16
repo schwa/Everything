@@ -113,6 +113,19 @@ public extension Path {
     }
 }
 
+public extension Path {
+    init(lines: [(CGPoint, CGPoint)]) {
+        self = Path()
+        lines.forEach {
+            move(to: $0.0)
+            addLine(to: $0.1)
+        }
+    }
+
+}
+
+
+
 public extension View {
     func eraseToAnyView() -> AnyView {
         AnyView(self)
@@ -426,3 +439,31 @@ public extension Gesture {
         AnyGesture(self)
     }
 }
+
+public extension View {
+    func gesture <G>(_ gesture: () -> G) -> some View where G: Gesture {
+        self.gesture(gesture())
+    }
+}
+
+public extension View {
+    func offset(_ point: CGPoint) -> some View {
+        offset(x: point.x, y: point.y)
+    }
+}
+
+public struct PaneledModifier: ViewModifier {
+    public func body(content: Content) -> some View {
+        content
+            .padding()
+            .background(Color.white.cornerRadius(8))
+            .padding()
+    }
+}
+
+public extension View {
+    func paneled() -> some View {
+        modifier(PaneledModifier())
+    }
+}
+
