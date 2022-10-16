@@ -489,7 +489,7 @@ public extension FSPath {
     }
 }
 
-extension FSPath {
+public extension FSPath {
     init <C>(components: C) where C: Collection, C.Element: StringProtocol {
         if components.first == "/" {
             let s = components.dropFirst().joined(separator: "/")
