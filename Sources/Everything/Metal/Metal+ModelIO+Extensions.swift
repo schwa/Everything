@@ -1,6 +1,21 @@
 import Metal
 import ModelIO
 
+extension MTLVertexDescriptor {
+    convenience init(_ vertexDescriptor: MDLVertexDescriptor) {
+        self.init()
+        for (index, attribute) in vertexDescriptor.attributes.enumerated() {
+            // swiftlint:disable:next force_cast
+            let attribute = attribute as! MDLVertexAttribute
+            attributes[index].format = MTLVertexFormat(attribute.format)
+            attributes[index].offset = attribute.offset
+            attributes[index].bufferIndex = attribute.bufferIndex
+        }
+        // swiftlint:disable:next force_cast
+        layouts[0].stride = (vertexDescriptor.layouts[0] as! MDLVertexBufferLayout).stride
+    }
+}
+
 public extension MDLVertexDescriptor {
     convenience init(attributes: [MTLAttributeDescriptor]) {
         self.init()
