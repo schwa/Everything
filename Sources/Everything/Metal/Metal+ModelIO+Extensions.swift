@@ -1,7 +1,7 @@
 import Metal
 import ModelIO
 
-extension MTLVertexDescriptor {
+public extension MTLVertexDescriptor {
     convenience init(_ vertexDescriptor: MDLVertexDescriptor) {
         self.init()
         for (index, attribute) in vertexDescriptor.attributes.enumerated() {
