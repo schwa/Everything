@@ -1,6 +1,3 @@
-// TODO: Disabling due preconcurrency warnings
-
-/*
 import Combine
 import Foundation
 import MultipeerConnectivity
@@ -151,4 +148,3 @@ extension MCSessionState: CustomStringConvertible {
         }
     }
 }
-*/
