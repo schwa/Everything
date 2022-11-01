@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "coregraphicsgeometrysupport",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/schwa/CoreGraphicsGeometrySupport",
+      "state" : {
+        "branch" : "main",
+        "revision" : "008c1a4455a531bd24bdd99375c827cedd767323"
+      }
+    }
+  ],
+  "version" : 2
+}

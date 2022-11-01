@@ -1,4 +1,5 @@
 import CoreGraphics
+import CoreGraphicsGeometrySupport
 import Foundation
 
 public extension Array2D {

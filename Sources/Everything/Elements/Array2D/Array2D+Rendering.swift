@@ -1,4 +1,5 @@
 import CoreGraphics
+import CoreGraphicsGeometrySupport
 
 // protocol CGImageConvertable {
 //    init(cgImage: CGImage)

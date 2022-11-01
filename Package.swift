@@ -15,11 +15,12 @@ let package = Package(
         .library(name: "EverythingHelpers", targets: ["EverythingHelpers"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", branch: "main")
     ],
     targets: [
         .target(
             name: "Everything",
-            dependencies: ["EverythingHelpers"],
+            dependencies: ["EverythingHelpers", "CoreGraphicsGeometrySupport"],
             swiftSettings:
                 unsafeFlags()
             ),
