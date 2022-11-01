@@ -201,18 +201,21 @@ public extension Sequence {
 }
 
 public extension Collection {
+    @available(*, deprecated, message: "https://github.com/apple/swift-algorithms")
     func split(by count: Int, includeIncomplete: Bool = false, reversed: Bool = false) -> [SubSequence] {
         var result: [SubSequence] = []
         chunkedRanges(count, includeIncomplete: includeIncomplete, reversed: reversed) { result.append(self[$0]) }
         return result
     }
 
+    @available(*, deprecated, message: "https://github.com/apple/swift-algorithms")
     func ranges(of distance: Int, includeIncomplete: Bool = false, reversed: Bool = false) -> [Range<Index>] {
         var ranges: [Range<Index>] = []
         chunkedRanges(distance, includeIncomplete: includeIncomplete, reversed: reversed) { ranges.append($0) }
         return ranges
     }
 
+    @available(*, deprecated, message: "https://github.com/apple/swift-algorithms")
     func chunkedRanges(_ chunkCount: Int, includeIncomplete: Bool = false, reversed: Bool = false, _ closure: (Range<Index>) throws -> Void) rethrows {
         assert(chunkCount > 0)
         switch reversed {
