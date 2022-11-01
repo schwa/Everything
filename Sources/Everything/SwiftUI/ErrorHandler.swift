@@ -1,7 +1,7 @@
 import SwiftUI
 
-public struct ErrorHandler {
-    var callback: (Error) -> Void
+public struct ErrorHandler: Sendable {
+    let callback: @Sendable (Error) -> Void
 
     public func handle(error: Error) {
         callback(error)
