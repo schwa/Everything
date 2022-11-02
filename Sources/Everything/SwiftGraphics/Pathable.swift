@@ -93,6 +93,7 @@ extension Triangle: Pathable {
 }
 
 public extension CGContext {
+    @available(*, deprecated, message: "Use SwiftUI.Canvas")
     func add<Element: Pathable>(_ element: Element) {
         forceTry {
             let path = try element.toPath()
