@@ -89,8 +89,8 @@ public extension Array where Element: Equatable {
 
 public extension Collection where Element == UInt8 {
     func hexDump() {
-        let offsetFormatter = IntegerStringFormatter(radix: 16, prefix: .none, leadingZeros: true, groupCount: nil, groupSeparator: "_", uppercase: true)
-        let byteFormatter = IntegerStringFormatter(radix: 16, leadingZeros: true, uppercase: true)
+        let offsetFormatter = RadixedIntegerFormatStyle<Int>(radix: 16, prefix: .none, leadingZeros: true, groupCount: nil, groupSeparator: "_", uppercase: true)
+        let byteFormatter = RadixedIntegerFormatStyle<UInt8>(radix: 16, leadingZeros: true, uppercase: true)
         let bytesPerChunk = 16
         let s = chunks(of: bytesPerChunk).enumerated()
         .map { offset, chunk -> [String] in
@@ -474,3 +474,4 @@ public struct PairsIterator<Base>: IteratorProtocol where Base: Collection {
         return (first, second)
     }
 }
+

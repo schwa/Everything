@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use FormatStyle() and friends.")
 public extension DateFormatter {
     static let formatter: DateFormatter = {
         let s = DateFormatter()
