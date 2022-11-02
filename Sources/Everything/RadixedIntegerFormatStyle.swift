@@ -122,121 +122,121 @@ public extension RadixedIntegerFormatStyle {
 // MARK: -
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<Int> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<Int8> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<Int16> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<Int32> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<Int64> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<UInt> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<UInt8> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<UInt16> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<UInt32> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
 
 public extension FormatStyle where Self == RadixedIntegerFormatStyle<UInt64> {
-    static func hex() -> Self {
+    static var hex: Self {
         return Self(radix: 16, prefix: .standard, leadingZeros: false, groupCount: nil, uppercase: true)
     }
-    static func binary() -> Self {
+    static var binary: Self {
         return Self(radix: 2, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
-    static func octal() -> Self {
+    static var octal: Self {
         return Self(radix: 8, prefix: .standard, leadingZeros: false, groupCount: nil)
     }
 }
@@ -258,6 +258,33 @@ public extension BinaryInteger {
 
 // MARK: -
 
+public struct HexdumpFormatStyle <FormatInput>: FormatStyle where FormatInput: DataProtocol, FormatInput.Index == Int {
+
+    public typealias FormatInput = FormatInput
+    public typealias FormatOutput = String
+
+    public func format(_ value: FormatInput) -> String {
+        var s = ""
+        Everything.hexdump(value, stream: &s)
+        return s
+    }
+}
+
+public extension FormatStyle where Self == HexdumpFormatStyle<Data> {
+    static var hexdump: Self {
+        HexdumpFormatStyle()
+    }
+}
+
+public extension FormatStyle where Self == HexdumpFormatStyle<Array<UInt8>> {
+    static var hexdump: Self {
+        HexdumpFormatStyle()
+    }
+}
+
+// Now do this for all DataProtocol types
+
+
 // TODO: Remove Buffer.index == Int restriction
 // TODO: Can we use DataProtocol instead?
 // swiftlint:disable:next line_length
@@ -269,7 +296,7 @@ public func hexdump<Buffer, Target: TextOutputStream>(_ buffer: Buffer, width: I
             break
         }
         let hex = chunk.map {
-            $0.formatted(.hex().leadingZeros())
+            $0.formatted(.hex.leadingZeros())
         }
             .joined(separator: " ")
         let paddedHex = hex.padding(toLength: width * 3 - 1, withPad: " ", startingAt: 0)
