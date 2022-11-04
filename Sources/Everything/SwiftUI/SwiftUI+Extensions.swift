@@ -164,6 +164,18 @@ public extension Binding {
     }
 }
 
+/**
+ Tired of sprinkling those little one shot `isPresenting` style state properties through your code?
+
+ ValueView(value: false) { value in
+     Button("Mass Follow") {
+         value.wrappedValue = true
+     }
+     .fileImporter(isPresented: value, allowedContentTypes: [.commaSeparatedText]) { result in
+
+     }
+ }
+ */
 public struct ValueView<Value, Content>: View where Content: View {
     @State
     var value: Value
