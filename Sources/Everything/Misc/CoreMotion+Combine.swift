@@ -13,7 +13,7 @@
 
         public var gyro: AnyPublisher<CMGyroData, Error> {
             manager.startGyroUpdates(to: queue) { [weak self] data, error in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 if let data {

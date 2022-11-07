@@ -22,7 +22,7 @@ public enum AnyCodingKey: CodingKey, CustomStringConvertible {
     }
 
     public var intValue: Int? {
-        if case let .int(value) = self {
+        if case .int(let value) = self {
             return value
         }
         else {
@@ -30,7 +30,7 @@ public enum AnyCodingKey: CodingKey, CustomStringConvertible {
         }
     }
 
-    public init<K>(key: K) where K: CodingKey {
+    public init(key: some CodingKey) {
         if let value = key.intValue {
             self = .int(value)
         }

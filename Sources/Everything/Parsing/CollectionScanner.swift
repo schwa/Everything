@@ -189,7 +189,7 @@ extension CollectionScanner: CustomDebugStringConvertible {
     public var debugDescription: String {
         let startIndex = elements.distance(from: elements.startIndex, to: elements.startIndex)
         let endIndex = elements.distance(from: elements.startIndex, to: elements.endIndex)
-        let current = elements.distance(from: elements.startIndex, to: self.current)
+        let current = elements.distance(from: elements.startIndex, to: current)
         return "\(startIndex) / \(endIndex) / \(current)"
     }
 }

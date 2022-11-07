@@ -7,7 +7,7 @@ public struct SmartField<Root>: View {
     let root: Root
     let keyPath: AnyKeyPath
 
-    public init<Value>(title: String, root: Root, keyPath: ReferenceWritableKeyPath<Root, Value>) {
+    public init(title: String, root: Root, keyPath: ReferenceWritableKeyPath<Root, some Any>) {
         self.title = title
         self.root = root
         self.keyPath = keyPath
@@ -58,7 +58,7 @@ public class SmartFieldEditorLibrary {
 public struct AnyBinding {
     var base: Any
 
-    public init<Value>(_ base: Binding<Value>) {
+    public init(_ base: Binding<some Any>) {
         self.base = base
     }
 
@@ -130,7 +130,7 @@ public extension Binding {
             return forceTry {
                 try converter.forwards(other)
             }
-        }, set: { (value: Value) -> Void in
+        }, set: { (value: Value) in
             forceTry {
                 other.wrappedValue = try converter.backwards!(value)
             }

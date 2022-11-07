@@ -78,6 +78,7 @@ public extension SVGTransform {
     static func + (lhs: SVGTransform, rhs: SVGTransform) -> CompoundTransform {
         CompoundTransform(transforms: [lhs, rhs])
     }
+
     static func + (lhs: SVGTransform, rhs: CompoundTransform) -> CompoundTransform {
         CompoundTransform(transforms: [lhs] + rhs.transforms)
     }

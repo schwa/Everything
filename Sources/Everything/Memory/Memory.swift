@@ -7,7 +7,7 @@ public extension MemoryLayout {
     }
 }
 
-public func unsafeCast<T, U>(_ x: T, to _: U.Type) -> U {
+public func unsafeCast<U>(_ x: some Any, to _: U.Type) -> U {
     // swiftlint:disable:next force_cast
     x as! U
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Visitor <Node, Children>: Sequence where Children: Sequence, Children.Element == Node {
+public struct Visitor<Node, Children>: Sequence where Children: Sequence, Children.Element == Node {
     public enum Order {
         case preorder // (self, children)
         case postorder // (children, self)
@@ -8,7 +8,7 @@ public struct Visitor <Node, Children>: Sequence where Children: Sequence, Child
 
     let _makeIterator: () -> AnyIterator<Node>
 
-    public init(root: Node, children: KeyPath <Node, Children>, order: Order = .preorder) {
+    public init(root: Node, children: KeyPath<Node, Children>, order: Order = .preorder) {
         switch order {
         case .preorder:
             _makeIterator = {
@@ -47,6 +47,7 @@ public struct Visitor <Node, Children>: Sequence where Children: Sequence, Child
             }
         }
     }
+
     public func makeIterator() -> AnyIterator<Node> {
         _makeIterator()
     }

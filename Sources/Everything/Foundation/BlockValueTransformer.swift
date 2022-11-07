@@ -6,11 +6,11 @@ public class BlockValueTransformer: ValueTransformer {
     public let block: TransformerBlock
 
     /*
-    Generally used:
+     Generally used:
 
-    BlockValueTransformer.register(name: "Foo") { return Foo($0) }
-    }
-    */
+     BlockValueTransformer.register(name: "Foo") { return Foo($0) }
+     }
+     */
     public static func register(_ name: String, block: @escaping TransformerBlock) -> BlockValueTransformer {
         let transformer = BlockValueTransformer(block: block)
         setValueTransformer(transformer, forName: NSValueTransformerName(rawValue: name))

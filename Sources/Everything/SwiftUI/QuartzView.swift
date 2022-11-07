@@ -2,13 +2,13 @@ import Combine
 import SwiftUI
 
 #if os(macOS)
-import AppKit
+    import AppKit
 
-public typealias QuartzPlatformView = NSView
+    public typealias QuartzPlatformView = NSView
 #elseif os(iOS)
-import UIKit
+    import UIKit
 
-public typealias QuartzPlatformView = UIView
+    public typealias QuartzPlatformView = UIView
 #endif
 
 public struct QuartzView: View {
@@ -35,13 +35,13 @@ public struct QuartzView: View {
         weak var view: _View?
         var redrawEveryFrame = false
 
-        var redraw: AnyPublisher<(), Never>!
+        var redraw: AnyPublisher<Void, Never>!
 
         init() {
             // Squelch display link updates. Probably best to just turn on/off displaylink.
             redraw = DisplayLinkPublisher().filter { [weak self] _ in
                 self?.redrawEveryFrame ?? false
-            }.map { _ in return () }.eraseToAnyPublisher()
+            }.map { _ in () }.eraseToAnyPublisher()
         }
     }
 
@@ -73,11 +73,11 @@ public struct QuartzView: View {
     }
 
     func setNeedsDisplay() {
-    #if os(macOS)
-        coordinator.view?.needsDisplay = true
-    #else
-        coordinator.view?.setNeedsDisplay()
-    #endif
+        #if os(macOS)
+            coordinator.view?.needsDisplay = true
+        #else
+            coordinator.view?.setNeedsDisplay()
+        #endif
     }
 
     // swiftlint:disable:next type_name
@@ -88,13 +88,13 @@ public struct QuartzView: View {
 
         override public func draw(_ dirtyRect: CGRect) {
             #if os(macOS)
-            guard let context = NSGraphicsContext.current?.cgContext, let draw = draw else {
-                return
-            }
+                guard let context = NSGraphicsContext.current?.cgContext, let draw else {
+                    return
+                }
             #else
-            guard let context = UIGraphicsGetCurrentContext(), let draw = draw else {
-                return
-            }
+                guard let context = UIGraphicsGetCurrentContext(), let draw else {
+                    return
+                }
             #endif
             if options.contains(.clear) {
                 context.saveGState()
@@ -110,9 +110,9 @@ public struct QuartzView: View {
             if options.contains(.drawAxes) {
                 context.saveGState()
                 context.setLineWidth(0.5)
-                context.addLines(between: [CGPoint(-1_000, 0), CGPoint(1_000, 0)])
+                context.addLines(between: [CGPoint(-1000, 0), CGPoint(1000, 0)])
                 context.strokePath()
-                context.addLines(between: [CGPoint(0, -1_000), CGPoint(0, 1_000)])
+                context.addLines(between: [CGPoint(0, -1000), CGPoint(0, 1000)])
                 context.strokePath()
                 context.restoreGState()
             }

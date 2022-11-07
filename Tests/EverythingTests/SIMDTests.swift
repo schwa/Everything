@@ -5,12 +5,12 @@
 ////  Created by Jonathan Wight on 12/9/19.
 ////
 //
-//@testable import Everything
-//import Foundation
-//import simd
-//import XCTest
+// @testable import Everything
+// import Foundation
+// import simd
+// import XCTest
 //
-//class SIMDTests: XCTestCase {
+// class SIMDTests: XCTestCase {
 //    func testVectors() {
 //        XCTAssertEqual(SIMD2<Float>.zero, [0, 0])
 //        XCTAssertEqual(SIMD2<Float>.unit, [1, 1])
@@ -52,17 +52,17 @@
 //        XCTAssertEqual(simd_quatf.identity, simd_quatf(angle: 0, axis: [0, 1, 0]))
 //        XCTAssertEqual(simd_quatf.identity, simd_quatf(angle: 0, axis: [0, 0, 1]))
 //    }
-//}
+// }
 //
-//public extension String {
+// public extension String {
 //    init<F>(_ input: F.FormatInput, format: F) where F : FormatStyle, F.FormatInput : Equatable, F.FormatOutput == String {
 //        self = format.format(input)
 //    }
-//}
+// }
 //
 //
 //
-//class TempTest: XCTestCase {
+// class TempTest: XCTestCase {
 //
 //    func testX() {
 //        print(simd_float4x4(translate: [10, 20, 30]).foo)
@@ -73,9 +73,9 @@
 //        XCTAssertEqual(simd_float4x4(scalars: scalars).scalars, scalars)
 //    }
 //
-//}
+// }
 //
-//extension simd_float4x4 {
+// extension simd_float4x4 {
 //
 //    init(scalars: [Float]) {
 //        assert(scalars.count == 16)
@@ -106,4 +106,4 @@
 //        .joined(separator: "\n")
 //        return s
 //    }
-//}
+// }

@@ -54,7 +54,7 @@ public class BinaryOutputStream<Buffer>: OutputStream where Buffer: RangeReplace
         current = buffer.startIndex
     }
 
-    public func write<T>(bytes: T) throws where T: Collection, T.Element == UInt8 {
+    public func write(bytes: some Collection<UInt8>) throws {
         let end = buffer.index(current, offsetBy: bytes.count)
         buffer.replaceSubrange(current ..< end, with: bytes)
         current = end
@@ -87,7 +87,7 @@ public class BinaryOutputStream<Buffer>: OutputStream where Buffer: RangeReplace
         }
     }
 
-    public func write<T>(_ value: T) throws {
+    public func write(_ value: some Any) throws {
         try withUnsafeBytes(of: value) { bytes in
             try write(bytes: bytes)
         }

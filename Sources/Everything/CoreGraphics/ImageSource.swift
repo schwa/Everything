@@ -41,7 +41,7 @@ public struct ImageSource {
 
 public extension ImageSource {
     init(named name: String, bundle: Bundle = Bundle.main) throws {
-        guard let url = bundle.url(forResource: name, withExtension: "png") else { // TODO
+        guard let url = bundle.url(forResource: name, withExtension: "png") else { // TODO:
             fatalError("Could not find image named \(name) in bundle \(bundle)")
         }
         self = try ImageSource(url: url)
@@ -49,22 +49,23 @@ public extension ImageSource {
 }
 
 #if os(macOS)
-import AppKit
+    import AppKit
 
-public extension CGImage {
-    static func image(contentsOf url: URL) throws -> CGImage {
-        let nsImage = NSImage(contentsOf: url)! // TODO: Bang
-        let cgImage = nsImage.cgImage
-        return cgImage
+    public extension CGImage {
+        static func image(contentsOf url: URL) throws -> CGImage {
+            let nsImage = NSImage(contentsOf: url)! // TODO: Bang
+            let cgImage = nsImage.cgImage
+            return cgImage
+        }
     }
-}
+
 #elseif os(iOS)
-import UIKit
+    import UIKit
 
-public extension CGImage {
-    static func image(contentsOf url: URL) throws -> CGImage {
-        // TODO
-        unimplemented()
+    public extension CGImage {
+        static func image(contentsOf url: URL) throws -> CGImage {
+            // TODO:
+            unimplemented()
+        }
     }
-}
 #endif // os(macOS)

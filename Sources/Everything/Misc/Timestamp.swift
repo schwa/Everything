@@ -1,10 +1,10 @@
 import Foundation
 
 /**
-*  A wrapper around CFAbsoluteTime
-*
-*  CFAbsoluteTime is just typealias for a Double. By wrapping it in a struct we're able to extend it.
-*/
+ *  A wrapper around CFAbsoluteTime
+ *
+ *  CFAbsoluteTime is just typealias for a Double. By wrapping it in a struct we're able to extend it.
+ */
 public struct Timestamp {
     public let absoluteTime: CFAbsoluteTime
 

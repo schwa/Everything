@@ -27,7 +27,7 @@ public struct Atomic<Value> where Value: Sendable {
 @available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *)
 @propertyWrapper
 public struct UncheckedAtomic<Value> {
-    var lock: OSAllocatedUnfairLock<()>
+    var lock: OSAllocatedUnfairLock<Void>
     var _wrappedValue: Value
 
     public init(wrappedValue: Value) {

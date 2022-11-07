@@ -1,9 +1,9 @@
 import Foundation
 import SwiftUI
 #if os(macOS)
-import AppKit
+    import AppKit
 #elseif os(iOS)
-import UIKit
+    import UIKit
 #endif
 import Combine
 import CoreGraphics
@@ -23,11 +23,11 @@ public extension Collection where Element: Identifiable {
 public extension Image {
     init(cgImage: CGImage) {
         #if os(macOS)
-        let nsImage = NSImage(cgImage: cgImage)
-        self = Image(nsImage: nsImage)
+            let nsImage = NSImage(cgImage: cgImage)
+            self = Image(nsImage: nsImage)
         #else
-        let uiImage = UIImage(cgImage: cgImage)
-        self = Image(uiImage: uiImage)
+            let uiImage = UIImage(cgImage: cgImage)
+            self = Image(uiImage: uiImage)
         #endif
     }
 }

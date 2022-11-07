@@ -87,25 +87,25 @@ public extension Array where Element: Equatable {
     }
 }
 
-public extension Collection where Element == UInt8 {
+public extension Collection<UInt8> {
     func hexDump() {
         let offsetFormatter = RadixedIntegerFormatStyle<Int>(radix: 16, prefix: .none, leadingZeros: true, groupCount: nil, groupSeparator: "_", uppercase: true)
         let byteFormatter = RadixedIntegerFormatStyle<UInt8>(radix: 16, leadingZeros: true, uppercase: true)
         let bytesPerChunk = 16
         let s = chunks(of: bytesPerChunk).enumerated()
-        .map { offset, chunk -> [String] in
-            let offset = offsetFormatter.format(offset * bytesPerChunk)
-            let bytes = chunk.map { byteFormatter.format($0) }.extend(repeating: "  ", to: bytesPerChunk).joined(separator: " ")
-            let ascii = chunk.escapedAscii()
-            return [offset, bytes, ascii]
-        }
-        .map { $0.joined(separator: " | ") }
-        .joined(separator: "\n")
+            .map { offset, chunk -> [String] in
+                let offset = offsetFormatter.format(offset * bytesPerChunk)
+                let bytes = chunk.map { byteFormatter.format($0) }.extend(repeating: "  ", to: bytesPerChunk).joined(separator: " ")
+                let ascii = chunk.escapedAscii()
+                return [offset, bytes, ascii]
+            }
+            .map { $0.joined(separator: " | ") }
+            .joined(separator: "\n")
         print(s)
     }
 }
 
-public extension Collection where Element == UInt8 {
+public extension Collection<UInt8> {
     func escapedAscii() -> String {
         map {
             UnicodeScalar($0).escapedString
@@ -115,7 +115,7 @@ public extension Collection where Element == UInt8 {
 }
 
 public extension Collection {
-    func sorted<Value>(by keyPath: KeyPath<Element, Value>) -> [Element] where Value: Comparable {
+    func sorted(by keyPath: KeyPath<Element, some Comparable>) -> [Element] {
         sorted {
             $0[keyPath: keyPath] < $1[keyPath: keyPath]
         }
@@ -133,7 +133,7 @@ public extension Array {
     }
 }
 
-public extension Collection where Element == String {
+public extension Collection<String> {
     func indented() -> [String] {
         map { element in
             "\t" + element
@@ -225,7 +225,7 @@ public extension Collection {
             while current < endIndex {
                 while current < endIndex {
                     current = index(after: current)
-                    let distance = self.distance(from: start, to: current)
+                    let distance = distance(from: start, to: current)
                     if distance == chunkCount {
                         try closure(start ..< current)
                         start = current
@@ -241,7 +241,7 @@ public extension Collection {
             while current > startIndex {
                 while current > startIndex {
                     current = index(current, offsetBy: -1)
-                    let distance = self.distance(from: current, to: end)
+                    let distance = distance(from: current, to: end)
                     if distance == chunkCount {
                         try closure(current ..< end)
                         end = current
@@ -474,4 +474,3 @@ public struct PairsIterator<Base>: IteratorProtocol where Base: Collection {
         return (first, second)
     }
 }
-

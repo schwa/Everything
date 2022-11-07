@@ -34,7 +34,7 @@ public extension UnsafeMutablePointer where Pointee == os_unfair_lock {
         os_unfair_lock_unlock(self)
     }
 
-    func withLock <R>(_ transaction: () throws -> R) rethrows -> R {
+    func withLock<R>(_ transaction: () throws -> R) rethrows -> R {
         lock()
         defer {
             unlock()

@@ -21,9 +21,9 @@ public struct SimpleColor {
 
     public var cgColor: CGColor {
         #if os(macOS)
-        return NSColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
+            return NSColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
         #elseif os(iOS)
-        return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
+            return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
         #endif
     }
 }

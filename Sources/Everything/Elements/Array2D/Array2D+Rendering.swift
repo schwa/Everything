@@ -51,7 +51,7 @@ public extension Array2D where Element: BinaryInteger {
         let colorspace = CGColorSpaceCreateDeviceGray()
         let bitmapInfo = CGBitmapInfo(rawValue: 0)
         // CGBitmapInfo(alphaInfo: .none, useFloatComponents: false, byteOrderInfo: .orderDefault)
-        let size = self.size
+        let size = size
         return flatStorage.withUnsafeBytes { bytes in
             let bytes = UnsafeMutableRawBufferPointer(mutating: bytes)
             let bitsPerComponent = MemoryLayout<Element>.size * 8
@@ -103,7 +103,7 @@ public extension Array2D where Element == SIMD4<UInt8> {
     var cgImage: CGImage {
         let colorspace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(alphaInfo: .premultipliedLast, useFloatComponents: false, byteOrderInfo: CGImageByteOrderInfo.order32Big)
-        let size = self.size
+        let size = size
 
         return flatStorage.withUnsafeBytes { bytes in
             let bytes = UnsafeMutableRawPointer(mutating: bytes.baseAddress)

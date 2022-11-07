@@ -30,13 +30,13 @@ public struct CRC16 {
 
 public extension CRC16 {
     mutating func accumulate(_ bytes: [UInt8]) {
-        bytes.withUnsafeBufferPointer { (body: UnsafeBufferPointer<UInt8>) -> Void in
+        bytes.withUnsafeBufferPointer { (body: UnsafeBufferPointer<UInt8>) in
             accumulate(body)
         }
     }
 
     mutating func accumulate(_ string: String) {
-        string.withCString { (ptr: UnsafePointer<Int8>) -> Void in
+        string.withCString { (ptr: UnsafePointer<Int8>) in
             let count = Int(strlen(ptr))
             ptr.withMemoryRebound(to: UInt8.self, capacity: count) { ptr in
                 let buffer = UnsafeBufferPointer<UInt8>(start: ptr, count: count)

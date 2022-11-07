@@ -31,7 +31,7 @@ public struct IdentifiableSet<Element> where Element: Identifiable {
         storage = []
     }
 
-    public init<C>(_ elements: C) where C: Collection, C.Element == Element {
+    public init(_ elements: some Collection<Element>) {
         storage = Set(elements.map(Box.init))
     }
 }

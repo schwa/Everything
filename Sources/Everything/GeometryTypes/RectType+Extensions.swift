@@ -297,18 +297,18 @@ public extension RectType where Scalar == Point.Scalar, Scalar == Size.Scalar {
 
 public extension RectType where Scalar == Point.Scalar, Scalar == Size.Scalar {
     func union(_ point: Point) -> Self {
-        let minX = min(self.minX, point.x)
-        let minY = min(self.minY, point.y)
-        let maxX = max(self.maxX, point.x)
-        let maxY = max(self.maxY, point.y)
+        let minX = min(minX, point.x)
+        let minY = min(minY, point.y)
+        let maxX = max(maxX, point.x)
+        let maxY = max(maxY, point.y)
         return Self(minX: minX, minY: minY, maxX: maxX, maxY: maxY)
     }
 
     func union(_ rect: Self) -> Self {
-        let minX = min(self.minX, rect.minX)
-        let minY = min(self.minY, rect.minY)
-        let maxX = max(self.maxX, rect.maxX)
-        let maxY = max(self.maxY, rect.maxY)
+        let minX = min(minX, rect.minX)
+        let minY = min(minY, rect.minY)
+        let maxX = max(maxX, rect.maxX)
+        let maxY = max(maxY, rect.maxY)
         return Self(minX: minX, minY: minY, maxX: maxX, maxY: maxY)
     }
 
@@ -329,10 +329,10 @@ public extension RectType where Scalar == Point.Scalar, Scalar == Size.Scalar, S
             return Self(origin: point, size: Size.zero)
         }
         else {
-            let minX = min(self.minX, point.x)
-            let minY = min(self.minY, point.y)
-            let maxX = max(self.maxX, point.x)
-            let maxY = max(self.maxY, point.y)
+            let minX = min(minX, point.x)
+            let minY = min(minY, point.y)
+            let maxX = max(maxX, point.x)
+            let maxY = max(maxY, point.y)
             return Self(minX: minX, minY: minY, maxX: maxX, maxY: maxY)
         }
     }
@@ -342,10 +342,10 @@ public extension RectType where Scalar == Point.Scalar, Scalar == Size.Scalar, S
             return rect
         }
         else {
-            let minX = min(self.minX, rect.minX)
-            let minY = min(self.minY, rect.minY)
-            let maxX = max(self.maxX, rect.maxX)
-            let maxY = max(self.maxY, rect.maxY)
+            let minX = min(minX, rect.minX)
+            let minY = min(minY, rect.minY)
+            let maxX = max(maxX, rect.maxX)
+            let maxY = max(maxY, rect.maxY)
             return Self(minX: minX, minY: minY, maxX: maxX, maxY: maxY)
         }
     }
@@ -400,7 +400,7 @@ public extension CGRect {
 
     func partiallyIntersects(_ other: CGRect) -> Bool {
         if intersects(other) == true {
-            let union = self.union(other)
+            let union = union(other)
             if self != union {
                 return true
             }

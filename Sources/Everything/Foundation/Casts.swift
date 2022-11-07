@@ -10,11 +10,11 @@ public struct CastError: Error {
     }
 }
 
-public func cast <T, T2>(_ object: T, as: T2.Type, _ error: @autoclosure () -> Swift.Error = CastError()) throws -> T2 {
+public func cast<T2>(_ object: some Any, as: T2.Type, _ error: @autoclosure () -> Swift.Error = CastError()) throws -> T2 {
     try (object as? T2).safelyUnwrap(error())
 }
 
-public func forceCast <T, T2>(_ object: T, as: T2.Type) -> T2 {
+public func forceCast<T2>(_ object: some Any, as: T2.Type) -> T2 {
     guard let result = object as? T2 else {
         fatalError("Could not cast.")
     }

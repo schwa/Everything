@@ -2,12 +2,12 @@ import Foundation
 
 /*
 
-Use like:
+ Use like:
 
-public enum FooTag {}
-public typealias FooIdentifier = Tagged<FooTag, Value>
+ public enum FooTag {}
+ public typealias FooIdentifier = Tagged<FooTag, Value>
 
-*/
+ */
 
 public struct Tagged<Kind, Value>: RawRepresentable {
     public var rawValue: Value
@@ -44,7 +44,7 @@ extension Tagged: Comparable where Value: Comparable {
 extension Tagged: Numeric, AdditiveArithmetic where Value: Numeric {
     public typealias Magnitude = Value.Magnitude
 
-    public init?<T>(exactly source: T) where T: BinaryInteger {
+    public init?(exactly source: some BinaryInteger) {
         guard let rawValue = RawValue(exactly: source) else {
             return nil
         }

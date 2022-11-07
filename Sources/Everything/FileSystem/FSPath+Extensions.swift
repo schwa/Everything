@@ -5,7 +5,7 @@ public extension FSPath {
         guard exists else {
             return
         }
-        guard let parent = parent else {
+        guard let parent else {
             throw GeneralError.generic("No parent")
         }
         let destination: FSPath

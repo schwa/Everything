@@ -4,7 +4,7 @@ public struct BinaryEncoder {
     public init() {
     }
 
-    public func encode<T>(_ value: T, into writer: OutputStream) throws where T: Encodable {
+    public func encode(_ value: some Encodable, into writer: OutputStream) throws {
         let encoder = BinaryEncoder_(writer: writer)
         try value.encode(to: encoder)
     }
@@ -94,7 +94,7 @@ public struct BinaryEncoder {
                 try writer.write(value)
             }
 
-            mutating func encode<T>(_ value: T, forKey key: Key) throws where T: Encodable {
+            mutating func encode(_ value: some Encodable, forKey key: Key) throws {
                 try writer.write(value)
             }
 

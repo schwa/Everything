@@ -21,18 +21,18 @@ public struct Arc {
 extension Arc: Equatable {
     public static func == (lhs: Arc, rhs: Arc) -> Bool {
         lhs.center == rhs.center
-        && lhs.radius == rhs.radius
-        && lhs.theta == rhs.theta
-        && lhs.phi == rhs.phi
+            && lhs.radius == rhs.radius
+            && lhs.theta == rhs.theta
+            && lhs.phi == rhs.phi
     }
 }
 
 extension Arc: FuzzyEquatable {
     public static func ==% (lhs: Arc, rhs: Arc) -> Bool {
         lhs.center ==% rhs.center
-        && lhs.radius ==% rhs.radius
-        && lhs.theta ==% rhs.theta
-        && lhs.phi ==% rhs.phi
+            && lhs.radius ==% rhs.radius
+            && lhs.theta ==% rhs.theta
+            && lhs.phi ==% rhs.phi
     }
 }
 
@@ -54,7 +54,7 @@ public extension Arc {
         if abs(beta - alpha) > (limit + .ulpOfOne) {
             // TODO: This can cause infinite recursion!
             return arcToBezierCurves(center: center, radius: radius, alpha: alpha, beta: alpha + limit, maximumArcs: maximumArcs)
-            + arcToBezierCurves(center: center, radius: radius, alpha: alpha + limit, beta: beta, maximumArcs: maximumArcs)
+                + arcToBezierCurves(center: center, radius: radius, alpha: alpha + limit, beta: beta, maximumArcs: maximumArcs)
         }
 
         // {x1, y1} = {xc, yc} + r*{Cos[\[Alpha]], Sin[\[Alpha]]};

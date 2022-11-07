@@ -16,7 +16,7 @@ extension Arc: Pathable {
 
 extension BezierCurve: Pathable {
     public func toPath() -> Path {
-        guard let start = start else {
+        guard let start else {
             unimplemented()
         }
         var path = Path()
@@ -94,7 +94,7 @@ extension Triangle: Pathable {
 
 public extension CGContext {
     @available(*, deprecated, message: "Use SwiftUI.Canvas")
-    func add<Element: Pathable>(_ element: Element) {
+    func add(_ element: some Pathable) {
         forceTry {
             let path = try element.toPath()
             let cgPath = path.cgPath

@@ -53,7 +53,7 @@ open class YAScanner: IteratorProtocol {
     }
 
     open func skip() {
-        guard let skippedCharacters = skippedCharacters else {
+        guard let skippedCharacters else {
             return
         }
         for C in self where skippedCharacters.contains(C) == false {
@@ -171,9 +171,7 @@ public extension YAScanner {
     }
 
     // TODO: Replace with regex
-    internal static let floatingPointCharacterSet = {
-        YACharacterSet.decimalDigits + YACharacterSet(charactersIn: "Ee.-")
-    }()
+    internal static let floatingPointCharacterSet = YACharacterSet.decimalDigits + YACharacterSet(charactersIn: "Ee.-")
 
     func scan() -> Float? {
         with {
@@ -210,9 +208,7 @@ public extension YAScanner {
     }
 
     // TODO: Replace with regex (this can scan "12345-12345")
-    internal static let integerCharacterSet = {
-        YACharacterSet.decimalDigits + YACharacterSet(charactersIn: "-")
-    }()
+    internal static let integerCharacterSet = YACharacterSet.decimalDigits + YACharacterSet(charactersIn: "-")
 
     func scan<T: SignedInteger>() -> T? {
         with {

@@ -92,7 +92,7 @@ public struct FormEncoder: Encoder {
             unimplemented()
         }
 
-        mutating func encode<T>(_ value: T, forKey key: Key) throws where T: Encodable {
+        mutating func encode(_ value: some Encodable, forKey key: Key) throws {
             unimplemented()
         }
 

@@ -24,17 +24,17 @@ public struct ColorParsingOptions: OptionSet {
 }
 
 /*
-Three digit hex — #rgb
-Each hexadecimal digit, in the range 0 to F, represents one sRGB color component in the order red, green and blue. The digits A to F may be in either uppercase or lowercase. The value of the color component is obtained by replicating digits, so 0 become 00, 1 becomes 11, F becomes FF. This compact syntactical form can represent only 4096 colors. Examples: #000 (i.e. black) #fff (i.e. white) #6CF (i.e. #66CCFF, rgb(102, 204, 255)).
-Six digit hex — #rrggbb
-Each pair of hexadecimal digits, in the range 0 to F, represents one sRGB color component in the order red, green and blue. The digits A to F may be in either uppercase or lowercase.This syntactical form, originally introduced by HTML, can represent 16777216 colors. Examples: #9400D3 (i.e. a dark violet), #FFD700 (i.e. a golden color).
-Integer functional — rgb(rrr, ggg, bbb)
-Each integer represents one sRGB color component in the order red, green and blue, separated by a comma and optionally by white space. Each integer is in the range 0 to 255. This syntactical form can represent 16777216 colors. Examples: rgb(233, 150, 122) (i.e. a salmon pink), rgb(255, 165, 0) (i.e. an orange).
-Float functional — rgb(R%, G%, B%)
-Each percentage value represents one sRGB color component in the order red, green and blue, separated by a comma and optionally by white space. For colors inside the sRGB gamut, the range of each component is 0.0% to 100.0% and an arbitrary number of decimal places may be supplied. Scientific notation is not supported. This syntactical form can represent an arbitrary range of colors, completely covering the sRGB gamut. Color values where one or more components are below 0.0% or above 100.0% represent colors outside the sRGB gamut. Examples: rgb(12.375%, 34.286%, 28.97%).
-Color keyword
-Originally implemented in HTML browsers and eventually standardized in SVG 1.1, the full list of color keywords and their corresponding sRGB values are given in the SVG 1.1 specification. SVG Tiny 1.2 required only a subset of these, sixteen color keywords. SVG Color requires the full set to be supported.
-*/
+ Three digit hex — #rgb
+ Each hexadecimal digit, in the range 0 to F, represents one sRGB color component in the order red, green and blue. The digits A to F may be in either uppercase or lowercase. The value of the color component is obtained by replicating digits, so 0 become 00, 1 becomes 11, F becomes FF. This compact syntactical form can represent only 4096 colors. Examples: #000 (i.e. black) #fff (i.e. white) #6CF (i.e. #66CCFF, rgb(102, 204, 255)).
+ Six digit hex — #rrggbb
+ Each pair of hexadecimal digits, in the range 0 to F, represents one sRGB color component in the order red, green and blue. The digits A to F may be in either uppercase or lowercase.This syntactical form, originally introduced by HTML, can represent 16777216 colors. Examples: #9400D3 (i.e. a dark violet), #FFD700 (i.e. a golden color).
+ Integer functional — rgb(rrr, ggg, bbb)
+ Each integer represents one sRGB color component in the order red, green and blue, separated by a comma and optionally by white space. Each integer is in the range 0 to 255. This syntactical form can represent 16777216 colors. Examples: rgb(233, 150, 122) (i.e. a salmon pink), rgb(255, 165, 0) (i.e. an orange).
+ Float functional — rgb(R%, G%, B%)
+ Each percentage value represents one sRGB color component in the order red, green and blue, separated by a comma and optionally by white space. For colors inside the sRGB gamut, the range of each component is 0.0% to 100.0% and an arbitrary number of decimal places may be supplied. Scientific notation is not supported. This syntactical form can represent an arbitrary range of colors, completely covering the sRGB gamut. Color values where one or more components are below 0.0% or above 100.0% represent colors outside the sRGB gamut. Examples: rgb(12.375%, 34.286%, 28.97%).
+ Color keyword
+ Originally implemented in HTML browsers and eventually standardized in SVG 1.1, the full list of color keywords and their corresponding sRGB values are given in the SVG 1.1 specification. SVG Tiny 1.2 required only a subset of these, sixteen color keywords. SVG Color requires the full set to be supported.
+ */
 
 public struct ColorParser {
     public enum Error: Swift.Error {

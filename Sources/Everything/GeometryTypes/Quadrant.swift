@@ -52,7 +52,7 @@ public extension Quadrant {
 
 public extension CGRect {
     func quadrant(_ quadrant: Quadrant) -> CGRect {
-        let size = Size(width: self.size.width * 0.5, height: self.size.height * 0.5)
+        let size = Size(width: size.width * 0.5, height: size.height * 0.5)
         switch quadrant {
         case .minXMinY:
             return CGRect(origin: CGPoint(x: minX, y: minY), size: size)

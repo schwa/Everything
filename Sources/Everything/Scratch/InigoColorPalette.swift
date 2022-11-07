@@ -3,7 +3,7 @@ import SwiftUI
 
 public extension Color {
     func legibleComplement() -> Color? {
-        guard let cgColor = cgColor else {
+        guard let cgColor else {
             return nil
         }
         guard let converted = cgColor.converted(to: CGColorSpace(name: CGColorSpace.linearSRGB)!, intent: .defaultIntent, options: nil) else {
@@ -23,10 +23,10 @@ public extension Color {
     }
 }
 
-public extension Sequence where Element == UInt8 {
+public extension Sequence<UInt8> {
     // djb2 - http://www.cse.yorku.ca/~oz/hash.html
     func djb2Hash() -> UInt {
-        var hash: UInt = 5_381
+        var hash: UInt = 5381
         for c in self {
             let c = UInt(c)
             hash = ((hash << 5) &+ hash) &+ c

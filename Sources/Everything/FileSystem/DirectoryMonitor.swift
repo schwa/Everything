@@ -109,7 +109,7 @@
 
     // swiftlint:disable:next function_parameter_count line_length
     private func _callback(stream _: ConstFSEventStreamRef, callbackInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags _: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) {
-        guard let callbackInfo = callbackInfo else {
+        guard let callbackInfo else {
             return
         }
         let directoryMonitor = Unmanaged<DirectoryMonitor>.fromOpaque(callbackInfo).takeUnretainedValue()

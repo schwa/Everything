@@ -153,7 +153,7 @@ public extension Triangle {
     // converts trilinear coordinates to Cartesian coordinates relative
     // to the incenter; thus, the incenter has coordinates (0.0, 0.0)
     func toLocalCartesian(alpha: CGFloat, beta: CGFloat, gamma: CGFloat) -> CGPoint {
-        let area = self.area
+        let area = area
         let (a, b, c) = lengths
 
         let r = 2 * area / (a + b + c)

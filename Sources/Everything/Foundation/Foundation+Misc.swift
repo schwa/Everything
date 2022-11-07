@@ -57,7 +57,7 @@ public extension FileHandle {
     }
 }
 
-public extension Dictionary where Key == String, Value == Any {
+public extension [String: Any] {
     func asPlist() -> String {
         forceTry {
             let d = try PropertyListSerialization.data(fromPropertyList: self, format: .xml, options: 0)

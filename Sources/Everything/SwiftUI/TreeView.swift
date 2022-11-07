@@ -52,7 +52,7 @@ public class Outline<Element>: ObservableObject where Element: Hashable {
     public func expand(item: Item) {
         assert(item.expanded == false)
         let index = item.index
-        let children = self.children(self, item)
+        let children = children(self, item)
         items.insert(contentsOf: children, at: index + 1)
         reindex()
     }

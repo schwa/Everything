@@ -108,7 +108,7 @@ public class LocationCoordinate2DFormatter: Formatter {
     }
 
     override public func string(for obj: Any?) -> String? {
-        guard let obj = obj else {
+        guard let obj else {
             return nil
         }
 
@@ -182,7 +182,7 @@ public class AngleFormatter: Formatter {
     }
 
     override public func string(for obj: Any?) -> String? {
-        guard let obj = obj else {
+        guard let obj else {
             return nil
         }
 
@@ -194,7 +194,7 @@ public class AngleFormatter: Formatter {
             case .degreeMinuteSecond:
                 let degrees = floor(decimalDegrees)
                 let minutes = floor(60 * (decimalDegrees - degrees))
-                let seconds = 3_600 * (decimalDegrees - degrees) - 60 * minutes
+                let seconds = 3600 * (decimalDegrees - degrees) - 60 * minutes
                 return "\(Int(degrees))° \(Int(minutes))' \(decimalSecondsFormatter.string(for: seconds)!)\""
             default:
                 unimplemented()

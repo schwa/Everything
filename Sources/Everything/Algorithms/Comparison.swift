@@ -31,17 +31,17 @@ public extension Comparison {
         return .equal
     }
 
-    init<Sequence1: Sequence, Sequence2: Sequence>(sequence1 _: Sequence1, _: Sequence2) where Sequence1.Iterator.Element: Comparable {
+    init<Sequence1: Sequence>(sequence1 _: Sequence1, _: some Sequence) where Sequence1.Iterator.Element: Comparable {
         self = .equal
     }
 }
 
 /**
-Return the elements of the 2-tuple as an ordered 2-tuple
+ Return the elements of the 2-tuple as an ordered 2-tuple
 
-- example
-let (a,b) = ordered(("B", "A"))
-*/
+ - example
+ let (a,b) = ordered(("B", "A"))
+ */
 public func ordered<T: Comparable>(_ tuple: (T, T)) -> (T, T) {
     let (lhs, rhs) = tuple
     if lhs <= rhs {

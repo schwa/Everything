@@ -41,9 +41,7 @@ public extension Path {
             addLine(to: $0.1)
         }
     }
-
 }
-
 
 public extension Path {
     var elements: [Element] {
@@ -72,7 +70,7 @@ public extension Path {
     }
 }
 
-public extension Array where Element == Path.Element {
+public extension [Path.Element] {
     func path() -> Path {
         Path(elements: self)
     }
@@ -102,7 +100,7 @@ public extension Path {
 
         self = Path(elements: elements
             .enumerated()
-                    // swiftlint:disable:next closure_body_length
+            // swiftlint:disable:next closure_body_length
             .map { index, element in
                 let corner: Corners
                 switch (index, element) {

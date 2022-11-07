@@ -30,7 +30,7 @@
         }
 
         @discardableResult
-        public func addPersistentWindow<Content>(title: String, _ content: () -> Content) -> NSWindow where Content: View {
+        public func addPersistentWindow(title: String, _ content: () -> some View) -> NSWindow {
             let viewController = NSHostingController(rootView: content())
             let window = NSWindow(contentViewController: viewController)
             windows.append(window)
@@ -49,15 +49,15 @@
             nextWindowIndex += 1
 
             window.publisher(for: \.isVisible)
-            .sink { _ in
-                if window.isVisible {
-                    menuItem.title = "Hide \(window.title) Window"
+                .sink { _ in
+                    if window.isVisible {
+                        menuItem.title = "Hide \(window.title) Window"
+                    }
+                    else {
+                        menuItem.title = "Show \(window.title) Window"
+                    }
                 }
-                else {
-                    menuItem.title = "Show \(window.title) Window"
-                }
-            }
-            .store(in: &cancellables)
+                .store(in: &cancellables)
             return window
         }
 

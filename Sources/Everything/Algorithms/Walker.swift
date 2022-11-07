@@ -50,39 +50,39 @@ public struct Walker<T> {
 
 /*
 
-// MARK: Example
+ // MARK: Example
 
-// MARK: Types
-class Node <T> {
-var value: T
-var children: [Node <T>] = []
+ // MARK: Types
+ class Node <T> {
+ var value: T
+ var children: [Node <T>] = []
 
-init(_ value: T) {
-self.value = value
-}
-}
+ init(_ value: T) {
+ self.value = value
+ }
+ }
 
-typealias StringNode = Node <String>
+ typealias StringNode = Node <String>
 
-// MARK: Setup
-let root = StringNode("Hello world")
-root.children = [ StringNode("Child A"), StringNode("Child B") ]
+ // MARK: Setup
+ let root = StringNode("Hello world")
+ root.children = [ StringNode("Child A"), StringNode("Child B") ]
 
-// MARK: Walk
-let walker = Walker <StringNode> () {
-node in
-return node.children
-}
+ // MARK: Walk
+ let walker = Walker <StringNode> () {
+ node in
+ return node.children
+ }
 
-walker.walk(root) {
-(node: StringNode, depth: Int) in
-print("\(depth): \(node)")
-}
+ walker.walk(root) {
+ (node: StringNode, depth: Int) in
+ print("\(depth): \(node)")
+ }
 
-walker.walk(root) {
-(node: StringNode, state: _State <StringNode>) in
-let filler = state.filler("\t")
-print("\(filler)\(node)\(state.stack)")
-}
+ walker.walk(root) {
+ (node: StringNode, state: _State <StringNode>) in
+ let filler = state.filler("\t")
+ print("\(filler)\(node)\(state.stack)")
+ }
 
-*/
+ */

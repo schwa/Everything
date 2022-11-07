@@ -69,4 +69,3 @@ public extension String.Encoding {
         self = encoding
     }
 }
-

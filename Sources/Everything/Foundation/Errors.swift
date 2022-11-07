@@ -77,7 +77,7 @@ public func fatal(error: Error, file: StaticString = #file, line: UInt = #line) 
 
 // MARK: -
 
-public func makeOSStatusError<T: BinaryInteger>(_ status: T, description: String? = nil) -> Swift.Error {
+public func makeOSStatusError(_ status: some BinaryInteger, description: String? = nil) -> Swift.Error {
     var userInfo: [String: String]?
 
     if let description {
@@ -128,7 +128,7 @@ public func withNoOutput<R>(_ block: () throws -> R) throws -> R {
     return result
 }
 
-public func assertChange<Value, R>(value: @autoclosure () -> Value, transaction: () throws -> R) rethrows -> R where Value: Equatable {
+public func assertChange<R>(value: @autoclosure () -> some Equatable, transaction: () throws -> R) rethrows -> R {
     let before = value()
     defer {
         let after = value()

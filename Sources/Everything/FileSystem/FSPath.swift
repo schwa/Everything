@@ -129,7 +129,7 @@ public extension FSPath {
     }
 
     var normalizedComponents: [String] {
-        var components = self.components
+        var components = components
         if components.last == "/" {
             components = Array(components[0 ..< components.count - 1])
         }
@@ -490,7 +490,7 @@ public extension FSPath {
 }
 
 public extension FSPath {
-    init <C>(components: C) where C: Collection, C.Element: StringProtocol {
+    init<C>(components: C) where C: Collection, C.Element: StringProtocol {
         if components.first == "/" {
             let s = components.dropFirst().joined(separator: "/")
             self = FSPath(path: "/" + s)

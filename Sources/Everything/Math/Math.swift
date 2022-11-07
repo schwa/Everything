@@ -74,10 +74,10 @@ public extension FloatingPoint {
 // Basic functions
 
 /*
-```swift doctest
-radiansToDegrees(degreesToRadians(90)) // 90
-```
-*/
+ ```swift doctest
+ radiansToDegrees(degreesToRadians(90)) // 90
+ ```
+ */
 public func degreesToRadians<F>(_ value: F) -> F where F: FloatingPoint {
     value * .pi / 180
 }
@@ -89,10 +89,10 @@ public func radiansToDegrees<F>(_ value: F) -> F where F: FloatingPoint {
 // MARK: -
 
 /*
-```swift doctest
-divup(dividend: 10, divisor: 3) // 4
-```
-*/
+ ```swift doctest
+ divup(dividend: 10, divisor: 3) // 4
+ ```
+ */
 public func divup<T>(dividend: T, divisor: T) -> T where T: BinaryInteger {
     (dividend + (divisor - 1)) / divisor
 }

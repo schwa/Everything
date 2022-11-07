@@ -22,12 +22,9 @@ class FormatStyleTests: XCTestCase {
 
     func testHexdump() {
         var s = ""
-        hexdump([1,2,3,4], stream: &s)
+        hexdump([1, 2, 3, 4], stream: &s)
         XCTAssertEqual(s, "0000000000000000  0x01 0x02 0x03 0x04                              ????\n")
-
-        
 
         print("\(Data([0xDE, 0xED, 0xBE, 0xEF]), format: .hexdump)")
     }
 }
-

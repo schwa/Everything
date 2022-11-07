@@ -15,22 +15,22 @@ let package = Package(
         .library(name: "EverythingHelpers", targets: ["EverythingHelpers"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", branch: "main")
+        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", branch: "main"),
     ],
     targets: [
         .target(
             name: "Everything",
             dependencies: ["EverythingHelpers", "CoreGraphicsGeometrySupport"],
             swiftSettings:
-                unsafeFlags()
-            ),
+            unsafeFlags()
+        ),
         .target(name: "EverythingHelpers"),
         .testTarget(name: "EverythingTests", dependencies: ["Everything"]),
     ]
 )
 
 func unsafeFlags() -> [PackageDescription.SwiftSetting] {
-    return [
+    [
     ]
 //    return [
 //        .unsafeFlags(["-Xfrontend", "-warn-concurrency", "-Xfrontend", "-enable-actor-data-race-checks"])

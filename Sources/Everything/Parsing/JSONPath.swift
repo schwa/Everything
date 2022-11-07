@@ -46,7 +46,7 @@ open class JSONPath {
         if evaluators == nil {
             try compile()
         }
-        guard let evaluators = evaluators else {
+        guard let evaluators else {
             preconditionFailure()
         }
         var current: Any = parameter

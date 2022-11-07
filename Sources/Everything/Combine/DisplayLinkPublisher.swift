@@ -3,7 +3,7 @@ import CoreMedia
 import CoreVideo
 import QuartzCore
 
-public struct DisplayLinkEvent <Time>: Sendable where Time: Sendable {
+public struct DisplayLinkEvent<Time>: Sendable where Time: Sendable {
     public let currentTime: Time
     public let displayTime: Time
     public let duration: Time?
@@ -12,12 +12,12 @@ public struct DisplayLinkEvent <Time>: Sendable where Time: Sendable {
     public let lastDisplayTime: Time?
 }
 
-public struct DisplayLinkTiming <Time>: Sendable where Time: Sendable {
+public struct DisplayLinkTiming<Time>: Sendable where Time: Sendable {
     var frameCount: Int = 0
     var lastDisplayTime: Time?
     var firstDisplayTime: Time?
 
-    mutating func tick(currentTime: Time, displayTime: Time, duration: Time? = nil) -> DisplayLinkEvent <Time> {
+    mutating func tick(currentTime: Time, displayTime: Time, duration: Time? = nil) -> DisplayLinkEvent<Time> {
         frameCount += 1
         if firstDisplayTime == nil {
             firstDisplayTime = displayTime
@@ -35,7 +35,7 @@ public struct DisplayLinkTiming <Time>: Sendable where Time: Sendable {
         public typealias Failure = Never
         private var displayLink: CVDisplayLink!
 
-        private var timing = DisplayLinkTiming <CMTime>()
+        private var timing = DisplayLinkTiming<CMTime>()
         private var passthrough = PassthroughSubject<Output, Failure>()
 
         public init() {
@@ -44,7 +44,7 @@ public struct DisplayLinkTiming <Time>: Sendable where Time: Sendable {
         }
 
         deinit {
-            guard let displayLink = displayLink else {
+            guard let displayLink else {
                 return
             }
             CVDisplayLinkStop(displayLink)

@@ -18,7 +18,7 @@ public func shlex(_ string: String) -> [String] {
     return result
 }
 
-public func assertChanging<Base, Value, Result>(base: Base, _ keyPath: KeyPath<Base, Value>, _ block: () throws -> Result) rethrows -> Result where Value: Equatable {
+public func assertChanging<Base, Result>(base: Base, _ keyPath: KeyPath<Base, some Equatable>, _ block: () throws -> Result) rethrows -> Result {
     let before = base[keyPath: keyPath]
     let result = try block()
     let after = base[keyPath: keyPath]

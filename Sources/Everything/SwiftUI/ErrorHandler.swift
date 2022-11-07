@@ -17,7 +17,7 @@ import SwiftUI
          }
      }
  }
-*/
+ */
 public struct ErrorHandler: Sendable {
     let callback: @Sendable (Error) -> Void
 
@@ -25,7 +25,7 @@ public struct ErrorHandler: Sendable {
         callback(error)
     }
 
-    public func callAsFunction <R>(_ block: @Sendable () throws -> R?) -> R? where R: Sendable {
+    public func callAsFunction<R>(_ block: @Sendable () throws -> R?) -> R? where R: Sendable {
         do {
             return try block()
         }
@@ -35,7 +35,7 @@ public struct ErrorHandler: Sendable {
         }
     }
 
-    public func callAsFunction <R>(_ block: @Sendable () async throws -> R?) async -> R? where R: Sendable {
+    public func callAsFunction<R>(_ block: @Sendable () async throws -> R?) async -> R? where R: Sendable {
         do {
             return try await block()
         }
@@ -76,7 +76,7 @@ public struct ErrorHandlingModifier: ViewModifier {
             self.isPresented = true
         })
         .alert(isPresented: $isPresented) {
-            guard let error = error else {
+            guard let error else {
                 fatalError("Ironically our error handler had an error.")
             }
             return Alert(title: Text("Error"), message: Text("\(String(describing: error))"), dismissButton: .default(Text("That sucks")))

@@ -139,7 +139,7 @@
 
     // swiftlint:disable:next function_parameter_count line_length
     private func _callback(stream: ConstFSEventStreamRef, callbackInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) {
-        guard let callbackInfo = callbackInfo else {
+        guard let callbackInfo else {
             return
         }
         let publisher = Unmanaged<FSEventPublisher>.fromOpaque(callbackInfo).takeUnretainedValue()

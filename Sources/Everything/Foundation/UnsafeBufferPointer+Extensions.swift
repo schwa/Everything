@@ -11,7 +11,7 @@ public extension UnsafeBufferPointer {
     }
 
     func withMemoryRebound<T, Result>(to _: T.Type, capacity count: Int, _ body: (UnsafeBufferPointer<T>) throws -> Result) rethrows -> Result {
-        guard let baseAddress = baseAddress else {
+        guard let baseAddress else {
             // If base address is nil just return an empty buffer
             let buffer = UnsafeBufferPointer<T>()
             return try body(buffer)
@@ -26,7 +26,7 @@ public extension UnsafeBufferPointer {
     }
 
     func withMemoryRebound<T, Result>(_ body: (UnsafeBufferPointer<T>) throws -> Result) rethrows -> Result {
-        let count = (self.count * UnsafeBufferPointer<Element>.elementSize) / UnsafeBufferPointer<T>.elementSize
+        let count = (count * UnsafeBufferPointer<Element>.elementSize) / UnsafeBufferPointer<T>.elementSize
         return try withMemoryRebound(to: T.self, capacity: count, body)
     }
 }

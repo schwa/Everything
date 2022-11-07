@@ -47,7 +47,7 @@ extension Int: RandomInRange {
 }
 
 public extension Collection where Element: FloatingPoint & RandomInRange {
-    func weightedRandomIndex<R>(using generator: inout R) -> Index where R: RandomNumberGenerator {
+    func weightedRandomIndex(using generator: inout some RandomNumberGenerator) -> Index {
         let total = reduce(0, +)
         let cumulativeWeights = reduce(into: []) { accumulator, current in
             accumulator += [(accumulator.last ?? 0) + current]

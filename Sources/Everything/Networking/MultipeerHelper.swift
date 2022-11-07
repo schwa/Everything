@@ -36,9 +36,9 @@ public class MultipeerHelper: NSObject, ObservableObject, MCSessionDelegate, MCN
         self.serviceType = serviceType
 
         #if os(iOS)
-        peerID = MCPeerID(displayName: UIDevice.current.name)
+            peerID = MCPeerID(displayName: UIDevice.current.name)
         #else
-        peerID = MCPeerID(displayName: Host.current().localizedName!)
+            peerID = MCPeerID(displayName: Host.current().localizedName!)
         #endif
 
         session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)

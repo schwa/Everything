@@ -35,7 +35,7 @@ public func bitRange<T: UnsignedInteger>(value: T, range: ClosedRange<Int>, flip
 // MARK: UnsafeBufferPointer bitRanges
 
 @inlinable
-public func bitRange<Element>(buffer: UnsafeBufferPointer<Element>, start: Int, count: Int) -> UInt64 {
+public func bitRange(buffer: UnsafeBufferPointer<some Any>, start: Int, count: Int) -> UInt64 {
     let pointer = UnsafeRawPointer(buffer.baseAddress)!
 
     // TODO: Swift3 - clean this up in the same manner (or better) we did bitSet (below)
@@ -78,7 +78,7 @@ public func bitRange<Element>(buffer: UnsafeBufferPointer<Element>, start: Int, 
 }
 
 @inlinable
-public func bitRange<Element>(buffer: UnsafeBufferPointer<Element>, range: Range<Int>) -> UInt64 {
+public func bitRange(buffer: UnsafeBufferPointer<some Any>, range: Range<Int>) -> UInt64 {
     bitRange(buffer: buffer, start: range.lowerBound, count: range.upperBound - range.lowerBound)
 }
 
@@ -107,7 +107,7 @@ public func bitSet<T: UnsignedInteger>(value: T, range: ClosedRange<Int>, flippe
 // MARK: UnsafeMutableBufferPointer bitSets
 
 @inlinable
-public func bitSet<Element>(buffer: UnsafeMutableBufferPointer<Element>, start: Int, count: Int, newValue: UInt64) {
+public func bitSet(buffer: UnsafeMutableBufferPointer<some Any>, start: Int, count: Int, newValue: UInt64) {
     // TODO: Swift3 - why does return an optional?
     let pointer = UnsafeMutableRawPointer(buffer.baseAddress)!
 
@@ -152,7 +152,7 @@ public func bitSet<Element>(buffer: UnsafeMutableBufferPointer<Element>, start: 
 }
 
 @inlinable
-public func bitSet<Element>(buffer: UnsafeMutableBufferPointer<Element>, range: Range<Int>, newValue: UInt64) {
+public func bitSet(buffer: UnsafeMutableBufferPointer<some Any>, range: Range<Int>, newValue: UInt64) {
     bitSet(buffer: buffer, start: range.lowerBound, count: range.upperBound - range.lowerBound, newValue: newValue)
 }
 

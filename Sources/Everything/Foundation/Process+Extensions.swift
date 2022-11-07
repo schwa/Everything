@@ -78,7 +78,7 @@
             }
         }
 
-// struct LaunchParameters {
+        // struct LaunchParameters {
 //     let launchPath: String
 //     let arguments: [String]
 //     let options: Options
@@ -86,7 +86,7 @@
 //     let standardOutput: Output?
 //     let standardError: Output?
 //     let currentDirectoryURL: URL?
-// }
+        // }
 
         struct Result {
             public let terminationStatus: Int32

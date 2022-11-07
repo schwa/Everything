@@ -1,23 +1,23 @@
 import Foundation
 
 /**
-Type-safe helper for objc Associated Objects
+ Type-safe helper for objc Associated Objects
 
-```
-// Create a _global_ helper instance. Of the type you want to store in your objact
-private let helper = AssociatedObjectHelper <Float> ()
+ ```
+ // Create a _global_ helper instance. Of the type you want to store in your objact
+ private let helper = AssociatedObjectHelper <Float> ()
 
-// Create your object.
-let object = NSObject()
+ // Create your object.
+ let object = NSObject()
 
-// Use the associated helper to set and get values on your objects
-helper.setAssociatedValueForObject(object, 3.14)
-helper.getAssociatedValueForObject(object) // 3.14
+ // Use the associated helper to set and get values on your objects
+ helper.setAssociatedValueForObject(object, 3.14)
+ helper.getAssociatedValueForObject(object) // 3.14
 
-let object2 = NSObject()
-helper.getAssociatedValueForObject(object) // nil
-```
-*/
+ let object2 = NSObject()
+ helper.getAssociatedValueForObject(object) // nil
+ ```
+ */
 public class AssociatedObjectHelper<T> {
     public let policy: objc_AssociationPolicy
 

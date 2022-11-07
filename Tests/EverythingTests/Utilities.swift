@@ -24,8 +24,8 @@ func bits(_ bits: Int) -> Int {
 func buildBinary(_ count: Int, closure: (UnsafeMutableBufferPointer<UInt8>) -> Void) -> [UInt8] {
     var data = [UInt8](repeating: 0, count: Int(ceil(Double(count) / 8)))
     data.withUnsafeMutableBufferPointer {
-        (buffer: inout UnsafeMutableBufferPointer<UInt8>) -> Void in
-            closure(buffer)
+        (buffer: inout UnsafeMutableBufferPointer<UInt8>) in
+        closure(buffer)
     }
     return data
 }

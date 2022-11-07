@@ -7,37 +7,37 @@ public extension String {
 }
 
 public extension String {
-    init <Value, Style>(_ value: Value, format: Style) where Style: FormatStyle, Style.FormatOutput == String, Style.FormatInput == Value {
+    init<Value, Style>(_ value: Value, format: Style) where Style: FormatStyle, Style.FormatOutput == String, Style.FormatInput == Value {
         self = format.format(value)
     }
 }
 
 public extension String.StringInterpolation {
-    mutating func appendInterpolation <Value, Style>(_ value: Value, format: Style) where Style: FormatStyle, Style.FormatOutput == String, Style.FormatInput == Value {
+    mutating func appendInterpolation<Value, Style>(_ value: Value, format: Style) where Style: FormatStyle, Style.FormatOutput == String, Style.FormatInput == Value {
         appendInterpolation(format.format(value))
     }
 }
 
 // MARK: -
 
-public struct DescribedFormatStyle <FormatInput>: FormatStyle {
+public struct DescribedFormatStyle<FormatInput>: FormatStyle {
     public typealias FormatInput = FormatInput
     public typealias FormatOutput = String
 
     public func format(_ value: FormatInput) -> String {
-        return String(describing: value)
+        String(describing: value)
     }
 }
 
 public extension FormatStyle where Self == DescribedFormatStyle<Any> {
-    static var described: DescribedFormatStyle <FormatInput> {
-        return DescribedFormatStyle()
+    static var described: DescribedFormatStyle<FormatInput> {
+        DescribedFormatStyle()
     }
 }
 
 // MARK: -
 
-public struct DumpedFormatStyle <FormatInput>: FormatStyle {
+public struct DumpedFormatStyle<FormatInput>: FormatStyle {
     public typealias FormatInput = FormatInput
     public typealias FormatOutput = String
 
@@ -49,7 +49,7 @@ public struct DumpedFormatStyle <FormatInput>: FormatStyle {
 }
 
 public extension FormatStyle where Self == DescribedFormatStyle<Any> {
-    static var dumped: DumpedFormatStyle <FormatInput> {
-        return DumpedFormatStyle()
+    static var dumped: DumpedFormatStyle<FormatInput> {
+        DumpedFormatStyle()
     }
 }

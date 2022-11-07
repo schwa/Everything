@@ -40,13 +40,13 @@ public struct Directory: Codable, Hashable, Comparable {
     public var subdirectories: [Directory] {
         do {
             return try FileManager().contentsOfDirectory(at: path.url, includingPropertiesForKeys: [.isDirectoryKey], options: [])
-            .filter {
-                let resourceValues = try $0.resourceValues(forKeys: [.isDirectoryKey])
-                return resourceValues.isDirectory ?? false
-            }
-            .map { url -> Directory in
-                Directory(url: url)
-            }
+                .filter {
+                    let resourceValues = try $0.resourceValues(forKeys: [.isDirectoryKey])
+                    return resourceValues.isDirectory ?? false
+                }
+                .map { url -> Directory in
+                    Directory(url: url)
+                }
         }
         catch {
             fatalError("\(error)")

@@ -80,10 +80,6 @@ public struct PublishedContentView<Content, P>: View where Content: View, P: Pub
     }
 }
 
-
-
-
-
 public extension View {
     func eraseToAnyView() -> AnyView {
         AnyView(self)
@@ -191,7 +187,6 @@ public struct ValueView<Value, Content>: View where Content: View {
     }
 }
 
-
 public extension Button {
     init(title: String, systemImage: String, action: @escaping () -> Void) where Label == SwiftUI.Label<Text, Image> {
         self = Button(action: action) {
@@ -207,8 +202,6 @@ public extension Button {
         }
     }
 }
-
-
 
 public struct LazyView<Content: View>: View {
     let content: () -> Content
@@ -279,7 +272,7 @@ public extension Gesture {
 }
 
 public extension View {
-    func gesture <G>(_ gesture: () -> G) -> some View where G: Gesture {
+    func gesture(_ gesture: () -> some Gesture) -> some View {
         self.gesture(gesture())
     }
 }
@@ -304,4 +297,3 @@ public extension View {
         modifier(PaneledModifier())
     }
 }
-
