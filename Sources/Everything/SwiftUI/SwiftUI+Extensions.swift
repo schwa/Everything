@@ -181,7 +181,7 @@ public struct ValueView<Value, Content>: View where Content: View {
     var value: Value
     let content: (Binding<Value>) -> Content
 
-    public init(value: Value, content: @escaping (Binding<Value>) -> Content) {
+    public init(value: Value, @ViewBuilder content: @escaping (Binding<Value>) -> Content) {
         _value = State(wrappedValue: value)
         self.content = content
     }
