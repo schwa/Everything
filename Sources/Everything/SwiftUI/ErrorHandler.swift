@@ -1,5 +1,23 @@
 import SwiftUI
 
+/**
+ How to use:
+ Somewhere (closer to the root) in your app call .errorHost() - this view will be the place where error dialogs are presented.
+ Then deeper in your code do this to automatically catch and handle errors
+
+ struct MyView: View {
+     @Environment(\.errorHandler)
+     var errorHandler
+
+     var body: some View {
+         Button("Maybe Fail") {
+             errorHandler {
+                 throw MyError.oops
+             }
+         }
+     }
+ }
+*/
 public struct ErrorHandler: Sendable {
     let callback: @Sendable (Error) -> Void
 
@@ -7,18 +25,19 @@ public struct ErrorHandler: Sendable {
         callback(error)
     }
 
-    public func handle(_ block: () throws -> Void) {
+    public func callAsFunction <R>(_ block: @Sendable () throws -> R?) -> R? where R: Sendable {
         do {
-            try block()
+            return try block()
         }
         catch {
             handle(error: error)
+            return nil
         }
     }
 
-    public func handle<R>(_ block: () throws -> R) -> R? {
+    public func callAsFunction <R>(_ block: @Sendable () async throws -> R?) async -> R? where R: Sendable {
         do {
-            return try block()
+            return try await block()
         }
         catch {
             handle(error: error)
@@ -44,20 +63,15 @@ public extension EnvironmentValues {
     }
 }
 
-public struct ErrorHandlingView<Content>: View where Content: View {
-    let content: () -> Content
-
+// TODO: This should become a ViewModifier and the actual error handler needs to become customisable.
+public struct ErrorHandlingModifier: ViewModifier {
     @State
     var error: Error?
     @State
     var isPresented = false
 
-    public init(content: @escaping () -> Content) {
-        self.content = content
-    }
-
-    public var body: some View {
-        content().environment(\.errorHandler, ErrorHandler {
+    public func body(content: Content) -> some View {
+        content.environment(\.errorHandler, ErrorHandler {
             self.error = $0
             self.isPresented = true
         })
@@ -71,33 +85,7 @@ public struct ErrorHandlingView<Content>: View where Content: View {
 }
 
 public extension View {
-    func errorHostView() -> some View {
-        ErrorHandlingView {
-            self
-        }
+    func errorHost() -> some View {
+        modifier(ErrorHandlingModifier())
     }
 }
-
-extension ErrorHandler {
-    func callAsFunction <R>(_ block: @Sendable () throws -> R?) -> R? where R: Sendable {
-        do {
-            return try block()
-        }
-        catch {
-            handle(error: error)
-            return nil
-        }
-    }
-
-    func callAsFunction <R>(_ block: @Sendable () async throws -> R?) async -> R? where R: Sendable {
-        do {
-            return try await block()
-        }
-        catch {
-            handle(error: error)
-            return nil
-        }
-    }
-}
-
-
