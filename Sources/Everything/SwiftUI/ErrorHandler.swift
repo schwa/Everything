@@ -77,3 +77,27 @@ public extension View {
         }
     }
 }
+
+extension ErrorHandler {
+    func callAsFunction <R>(_ block: @Sendable () throws -> R?) -> R? where R: Sendable {
+        do {
+            return try block()
+        }
+        catch {
+            handle(error: error)
+            return nil
+        }
+    }
+
+    func callAsFunction <R>(_ block: @Sendable () async throws -> R?) async -> R? where R: Sendable {
+        do {
+            return try await block()
+        }
+        catch {
+            handle(error: error)
+            return nil
+        }
+    }
+}
+
+
