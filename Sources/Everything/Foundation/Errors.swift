@@ -65,6 +65,10 @@ public func unimplemented(_ message: @autoclosure () -> String = String(), file:
     fatalError(message(), file: file, line: line)
 }
 
+public func uncallable(_ message: @autoclosure () -> String = String(), file: StaticString = #file, line: UInt = #line) -> Never {
+    fatalError(message(), file: file, line: line)
+}
+
 // MARK: -
 
 public func generalError(_ error: GeneralError, file: StaticString = #file, line: UInt = #line) -> Never {
