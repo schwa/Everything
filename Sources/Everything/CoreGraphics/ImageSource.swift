@@ -27,6 +27,13 @@ public struct ImageSource {
         CGImageSourceGetCount(imageSource)
     }
 
+    public var contentType: UTType? {
+        guard let identifier = CGImageSourceGetType(imageSource) as String? else {
+            return nil
+        }
+        return UTType(identifier)
+    }
+
     public func image(at index: Int) throws -> CGImage {
         guard let image = CGImageSourceCreateImageAtIndex(imageSource, index, nil) else {
             throw ImageSourceError.unknown
