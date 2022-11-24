@@ -31,10 +31,3 @@ public extension Date {
         return calendar.date(byAdding: components, to: self)!
     }
 }
-
-public extension Date {
-    func formatted(with formatter: DateFormatter? = nil) -> String {
-        let formatter = formatter ?? DateFormatter.formatter
-        return formatter.string(from: self)
-    }
-}

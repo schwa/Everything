@@ -1,3 +1,4 @@
+import Algorithms
 import Foundation
 
 public struct RadixedIntegerFormatStyle<FormatInput>: FormatStyle, Hashable, Codable where FormatInput: BinaryInteger {
@@ -69,7 +70,7 @@ public struct RadixedIntegerFormatStyle<FormatInput>: FormatStyle, Hashable, Cod
         }
 
         if let groupCount {
-            digits = digits.split(by: groupCount, includeIncomplete: true, reversed: true).reversed().joined(separator: groupSeparator)
+            digits = digits.chunks(ofCount: groupCount).joined(separator: groupSeparator)
         }
 
         switch (prefix, radix) {
@@ -113,6 +114,12 @@ public extension RadixedIntegerFormatStyle {
         var copy = self
         copy.width = leadingZeros ? .byType : .minimum
         copy.padding = "0"
+        return copy
+    }
+
+    func prefix(_ prefix: Prefix) -> Self {
+        var copy = self
+        copy.prefix = prefix
         return copy
     }
 }
@@ -261,21 +268,6 @@ public extension FormatStyle where Self == RadixedIntegerFormatStyle<UInt64> {
 
 // MARK: -
 
-public extension BinaryInteger {
-    @available(*, deprecated, message: "Use .formatted()")
-    func formatted(radix: Int, prefix: RadixedIntegerFormatStyle<Self>.Prefix = .none, leadingZeros: Bool = false, groupCount: Int? = nil, groupSeparator: String = "_", uppercase: Bool = false) -> String {
-        let formatter = RadixedIntegerFormatStyle(radix: radix, prefix: prefix, leadingZeros: leadingZeros, groupCount: groupCount, groupSeparator: groupSeparator, uppercase: uppercase)
-        return formatter.format(self)
-    }
-
-    @available(*, deprecated, message: "Use .formatted(.hex)")
-    var hexString: String {
-        formatted(radix: 16, prefix: .standard, leadingZeros: true, groupCount: nil, groupSeparator: "_", uppercase: true)
-    }
-}
-
-// MARK: -
-
 public struct HexdumpFormatStyle<FormatInput>: FormatStyle where FormatInput: DataProtocol, FormatInput.Index == Int {
     public typealias FormatInput = FormatInput
     public typealias FormatOutput = String
@@ -306,7 +298,7 @@ public extension FormatStyle where Self == HexdumpFormatStyle<[UInt8]> {
 // swiftlint:disable:next line_length
 public func hexdump<Buffer>(_ buffer: Buffer, width: Int = 16, baseAddress: Int = 0, separator: String = "\n", terminator: String = "", stream: inout some TextOutputStream) where Buffer: RandomAccessCollection, Buffer.Element == UInt8, Buffer.Index == Int {
     for index in stride(from: 0, through: buffer.count, by: width) {
-        let address = UInt(baseAddress + index).formatted(radix: 16, leadingZeros: true)
+        let address = UInt(baseAddress + index).formatted(.hex.leadingZeros().prefix(.none))
         let chunk = buffer[index ..< (index + min(width, buffer.count - index))]
         if chunk.isEmpty {
             break

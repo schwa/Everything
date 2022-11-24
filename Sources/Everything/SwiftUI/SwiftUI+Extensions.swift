@@ -86,23 +86,6 @@ public extension View {
     }
 }
 
-#if os(macOS)
-    @available(*, deprecated, message: "Use .monospaced()")
-    public extension Font {
-        static func code(ofSize size: CGFloat = 12, weight: NSFont.Weight = .medium) -> Font {
-            Font(NSFont.monospacedSystemFont(ofSize: size, weight: weight) as CTFont)
-        }
-    }
-
-#elseif os(iOS)
-    @available(*, deprecated, message: "Use .monospaced()")
-    public extension Font {
-        static func code(ofSize hexSize: CGFloat = 12, weight: UIFont.Weight = .medium) -> Font {
-            Font(UIFont.monospacedSystemFont(ofSize: hexSize, weight: weight) as CTFont)
-        }
-    }
-#endif
-
 // public struct TitledView<Content>: View where Content: View {
 //    public let title: String
 //    public let content: () -> Content

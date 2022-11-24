@@ -2,7 +2,7 @@ import Foundation
 
 public extension Array2D {
     var rows: [[Element]] {
-        flatStorage.chunks(of: size.width).map { Array($0) }
+        flatStorage.chunks(ofCount: size.width).map { Array($0) }
     }
 }
 

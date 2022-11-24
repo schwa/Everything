@@ -13,6 +13,7 @@ class FormatStyleTests: XCTestCase {
         XCTAssertEqual("\(255, format: .hex)", "0xFF")
         XCTAssertEqual(Int(255).formatted(.hex), "0xFF")
         XCTAssertEqual(Int(65535).formatted(.hex.group(2)), "0xFF_FF")
+        XCTAssertEqual(Int(12345).formatted(.hex.group(2)), "0x30_39")
     }
 
     func testOthers() {

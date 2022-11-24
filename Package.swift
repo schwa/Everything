@@ -16,11 +16,16 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", branch: "main"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     ],
     targets: [
         .target(
             name: "Everything",
-            dependencies: ["EverythingHelpers", "CoreGraphicsGeometrySupport"],
+            dependencies: [
+                "EverythingHelpers",
+                "CoreGraphicsGeometrySupport",
+                .product(name: "Algorithms", package: "swift-algorithms")
+            ],
             swiftSettings:
             unsafeFlags()
         ),
