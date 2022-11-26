@@ -34,6 +34,13 @@ public struct ImageSource {
         return UTType(identifier)
     }
 
+    public func thumbial(at index: Int) throws -> CGImage {
+        guard let image = CGImageSourceCreateThumbnailAtIndex(imageSource, index, nil) else {
+            throw ImageSourceError.unknown
+        }
+        return image
+    }
+
     public func image(at index: Int) throws -> CGImage {
         guard let image = CGImageSourceCreateImageAtIndex(imageSource, index, nil) else {
             throw ImageSourceError.unknown
