@@ -37,7 +37,7 @@ public struct ImageSource {
         return UTType(identifier)
     }
 
-    public func thumbnail(at index: Int) throws -> CGImage? {
+    public func thumbnail(at index: Int) throws -> CGImage {
         let options = [kCGImageSourceCreateThumbnailFromImageIfAbsent: true]
         guard let image = CGImageSourceCreateThumbnailAtIndex(imageSource, index, options as CFDictionary) else {
             throw ImageSourceError.thumbnailCreationFailure
