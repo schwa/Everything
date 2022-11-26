@@ -4,21 +4,24 @@ import UniformTypeIdentifiers
 
 public struct ImageSource {
     public enum ImageSourceError: Error {
-        case unknown
+        case initializationFailure
+        case imageCreationFailure
+        case thumbnailCreationFailure
     }
 
-    let imageSource: CGImageSource
+    @_spi(SPI)
+    public let imageSource: CGImageSource
 
     public init(data: Data) throws {
         guard let imageSource = CGImageSourceCreateWithData(data as CFData, nil) else {
-            throw ImageSourceError.unknown
+            throw ImageSourceError.initializationFailure
         }
         self.imageSource = imageSource
     }
 
     public init(url: URL) throws {
         guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil) else {
-            throw ImageSourceError.unknown
+            throw ImageSourceError.initializationFailure
         }
         self.imageSource = imageSource
     }
@@ -34,16 +37,17 @@ public struct ImageSource {
         return UTType(identifier)
     }
 
-    public func thumbial(at index: Int) throws -> CGImage {
-        guard let image = CGImageSourceCreateThumbnailAtIndex(imageSource, index, nil) else {
-            throw ImageSourceError.unknown
+    public func thumbnail(at index: Int) throws -> CGImage? {
+        let options = [kCGImageSourceCreateThumbnailFromImageIfAbsent: true]
+        guard let image = CGImageSourceCreateThumbnailAtIndex(imageSource, index, options as CFDictionary) else {
+            throw ImageSourceError.thumbnailCreationFailure
         }
         return image
     }
 
     public func image(at index: Int) throws -> CGImage {
         guard let image = CGImageSourceCreateImageAtIndex(imageSource, index, nil) else {
-            throw ImageSourceError.unknown
+            throw ImageSourceError.imageCreationFailure
         }
         return image
     }
