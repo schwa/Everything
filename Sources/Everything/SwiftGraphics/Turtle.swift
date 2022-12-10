@@ -120,7 +120,7 @@ public enum Pen {
 
 // MARK: Turtle
 
-public protocol Canvas {
+public protocol TurtleCanvasProtocol {
     func drawLine(start: CGPoint, end: CGPoint)
 }
 
@@ -128,9 +128,9 @@ public class Turtle {
     public private(set) var position: CGPoint = .zero
     public private(set) var angle: Double = 0
     public private(set) var pen: Pen = .down
-    public let canvas: Canvas
+    public let canvas: TurtleCanvasProtocol
 
-    public init(canvas: Canvas) {
+    public init(canvas: TurtleCanvasProtocol) {
         self.canvas = canvas
     }
 
@@ -164,12 +164,12 @@ public class Turtle {
     }
 }
 
-public struct NilCanvas: Canvas {
+public struct NilCanvas: TurtleCanvasProtocol {
     public func drawLine(start: CGPoint, end: CGPoint) {
     }
 }
 
-public class PathCanvas: Canvas {
+public class PathCanvas: TurtleCanvasProtocol {
     public private(set) var path: CGMutablePath!
 
     public init() {

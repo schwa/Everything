@@ -175,9 +175,3 @@ private extension Scanner {
         return true
     }
 }
-
-private extension CharacterSet {
-    static func + (lhs: CharacterSet, rhs: CharacterSet) -> CharacterSet {
-        lhs.union(rhs)
-    }
-}
