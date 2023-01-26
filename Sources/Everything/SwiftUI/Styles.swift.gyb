@@ -1,0 +1,65 @@
+%{
+from collections import namedtuple
+Style = namedtuple('Style', ['name', 'availability'])
+styles = [
+    Style(name='ButtonStyle', availability='macOS 10.15, iOS 13.0'),
+    Style(name='ControlGroupStyle', availability='macOS 10.15, iOS 13.0'),
+    Style(name='DatePickerStyle', availability='macOS 13, iOS 16.0'),
+    Style(name='DisclosureGroupStyle', availability='macOS 13, iOS 16.0'),
+    Style(name='FormStyle', availability='macOS 13, iOS 16.0'),
+    Style(name='GaugeStyle', availability='macOS 13, iOS 16.0'),
+    Style(name='GroupBoxStyle', availability='macOS 10.15, iOS 13.0'),
+    Style(name='LabelStyle', availability='macOS 10.15, iOS 13.0'),
+    Style(name='LabeledContentStyle', availability='macOS 13, iOS 16.0'),
+    #Style(name='ListStyle', availability='?'),
+    #Style(name='MenuBarExtraStyle', availability='?'),
+    #Style(name='MenuButtonStyle', availability='?'),
+    Style(name='MenuStyle', availability='macOS 10.15, iOS 13.0'),
+    Style(name='NavigationSplitViewStyle', availability='macOS 13, iOS 16.0'),
+    #Style(name='PickerStyle', availability='?'),
+    #Style(name='PrimitiveButtonStyle', availability='?'),
+    Style(name='ProgressViewStyle', availability='macOS 10.15, iOS 13.0'),
+    #Style(name='ShapeStyle', availability='?'),
+    #Style(name='TabViewStyle', availability='?'),
+    Style(name='TableStyle', availability='macOS 12, iOS 16.0'),
+    #Style(name='TextFieldStyle', availability='?'),
+    Style(name='ToggleStyle', availability='macOS 10.15, iOS 13.0'),
+    #Style(name='WindowStyle', availability='?'),
+    #Style(name='WindowToolbarStyle', availability='?'),
+]
+
+def lower(name):
+    return name[0].lower() + name[1:]
+}%
+
+import SwiftUI
+
+% for style in styles:
+
+/// A type-erased `${style.name}`.
+///
+/// Allows creation of type-erased `${style.name}` using a closure to create the style's body.
+@available(${style.availability}, *)
+public struct Any${style.name} <Body>: ${style.name} where Body: View {
+    let body: (Configuration) -> Body
+
+    public init(_ body: @escaping (Configuration) -> Body) {
+        self.body = body
+    }
+
+    public func makeBody(configuration: Configuration) -> some View {
+        body(configuration)
+    }
+}
+
+@available(${style.availability}, *)
+public extension View {
+    /// Modify the `${lower(style.name)}` style via a closure.
+    func ${lower(style.name)}<B>(_ body: @escaping (Any${style.name}<B>.Configuration) -> B) -> some View where B: View {
+        ${lower(style.name)}(Any${style.name}(body))
+    }
+}
+
+// MARK: -
+
+% end
