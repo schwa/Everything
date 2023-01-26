@@ -53,3 +53,37 @@ public extension FormatStyle where Self == DescribedFormatStyle<Any> {
         DumpedFormatStyle()
     }
 }
+
+// MARK: -
+
+public protocol CompositeFormatStyle: FormatStyle {
+    associatedtype ComponentStyle: FormatStyle
+    var componentStyle: ComponentStyle { get set }
+}
+
+public extension CompositeFormatStyle {
+    func component(_ style: ComponentStyle) -> Self {
+        var copy = self
+        copy.componentStyle = style
+        return copy
+    }
+}
+
+public struct CGPointStyle: CompositeFormatStyle {
+    public var componentStyle: FloatingPointFormatStyle<Double>
+
+    public init() {
+        componentStyle = .number
+    }
+
+    public func format(_ value: CGPoint) -> String {
+        "\(componentStyle.format(value.x)), \(componentStyle.format(value.y))"
+    }
+}
+
+public extension FormatStyle where Self == CGPointStyle {
+    static var point: CGPointStyle {
+        CGPointStyle()
+    }
+}
+
