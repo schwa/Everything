@@ -82,6 +82,7 @@ public extension CLLocationCoordinate2D {
     }
 }
 
+@available(*, deprecated, message: "Use formatStyle")
 public class LocationCoordinate2DFormatter: Formatter {
     public struct Options: OptionSet {
         public let rawValue: Int
@@ -135,6 +136,7 @@ public class LocationCoordinate2DFormatter: Formatter {
     }
 }
 
+@available(*, deprecated, message: "Use format style")
 public class AngleFormatter: Formatter {
     //    sexagesimal degree: degrees, minutes, and seconds : 40° 26′ 46″ N 79° 58′ 56″ W
     //    degrees and decimal minutes: 40° 26.767′ N 79° 58.933′ W
