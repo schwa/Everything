@@ -13,3 +13,11 @@ public extension CGPath {
         return path
     }
 }
+
+public extension CGPath {
+    static func + (lhs: CGPath, rhs: CGPath) -> CGPath {
+        let path = lhs.mutableCopy()!
+        path.addPath(rhs)
+        return path
+    }
+}
