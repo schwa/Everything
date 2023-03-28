@@ -1,3 +1,5 @@
+import Foundation
+
 // public protocol BinaryOutputStream {
 //    mutating func append(_ value: UInt8)
 //    mutating func append(_ value: UnsafeBufferPointer<UInt8>)
