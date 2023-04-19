@@ -5,7 +5,7 @@ public extension Array {
     func extended(with element: Element, count: Int) -> Self {
         self + repeatElement(element, count: count - self.count)
     }
-
+    
     func extended(with element: Element?, count: Int) -> [Element?] {
         self + repeatElement(element, count: count - self.count)
     }
@@ -62,39 +62,39 @@ public extension Optional where Wrapped: Collection {
 
 public extension Image {
     init(data: Data) throws {
-        #if os(macOS)
-            guard let nsImage = NSImage(data: data) else {
-                throw GeneralError.generic("Could not load image")
-            }
-            self = Image(nsImage: nsImage)
-        #else
-            guard let uiImage = UIImage(data: data) else {
-                throw GeneralError.generic("Could not load image")
-            }
-            self = Image(uiImage: uiImage)
-        #endif
+#if os(macOS)
+        guard let nsImage = NSImage(data: data) else {
+            throw GeneralError.generic("Could not load image")
+        }
+        self = Image(nsImage: nsImage)
+#else
+        guard let uiImage = UIImage(data: data) else {
+            throw GeneralError.generic("Could not load image")
+        }
+        self = Image(uiImage: uiImage)
+#endif
     }
 }
 
 public extension Image {
     init(url: URL) throws {
-        #if os(macOS)
-            guard let nsImage = NSImage(contentsOf: url) else {
-                throw GeneralError.generic("Could not load image")
-            }
-            self = Image(nsImage: nsImage)
-        #else
-            guard let uiImage = UIImage(contentsOfFile: url.path) else {
-                throw GeneralError.generic("Could not load image")
-            }
-            self = Image(uiImage: uiImage)
-        #endif
+#if os(macOS)
+        guard let nsImage = NSImage(contentsOf: url) else {
+            throw GeneralError.generic("Could not load image")
+        }
+        self = Image(nsImage: nsImage)
+#else
+        guard let uiImage = UIImage(contentsOfFile: url.path) else {
+            throw GeneralError.generic("Could not load image")
+        }
+        self = Image(uiImage: uiImage)
+#endif
     }
 }
 
 public struct WeakBox<Content> where Content: AnyObject {
     public weak var content: Content?
-
+    
     public init(_ content: Content) {
         self.content = content
     }
@@ -102,7 +102,7 @@ public struct WeakBox<Content> where Content: AnyObject {
 
 public struct TypeID: Hashable {
     public let rawValue: String
-
+    
     public init(_ type: (some Any).Type) {
         rawValue = String(describing: type)
     }
@@ -115,7 +115,7 @@ extension TypeID: Codable {
 
 public struct CompositeHash<Element>: Hashable where Element: Hashable {
     let elements: [Element]
-
+    
     public init(_ elements: [Element]) {
         self.elements = elements
     }
@@ -129,7 +129,7 @@ extension CompositeHash: Codable where Element: Codable {
         let container = try decoder.singleValueContainer()
         elements = try container.decode([Element].self)
     }
-
+    
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(elements)
@@ -178,10 +178,10 @@ public extension Collection {
 
 @available(macOS 13.0, iOS 16.0, *)
 public struct RedlineModifier: ViewModifier {
-
+    
     init() {
     }
-
+    
     public func body(content: Content) -> some View {
         content
             .overlay {
@@ -192,12 +192,12 @@ public struct RedlineModifier: ViewModifier {
                             (r.minXMidY, r.maxXMidY),
                             (r.minXMidY + [0, -r.height * 0.25], r.minXMidY + [0, r.height * 0.25]),
                             (r.maxXMidY + [0, -r.height * 0.25], r.maxXMidY + [0, r.height * 0.25]),
-
+                            
                             (r.midXMinY, r.midXMaxY),
                             (r.midXMinY + [-r.width * 0.25, 0], r.midXMinY + [r.width * 0.25, 0]),
                             (r.midXMaxY + [-r.width * 0.25, 0], r.midXMaxY + [r.width * 0.25, 0]),
                         ]
-
+                        
                         context.stroke(Path(lines: lines), with: .color(.white.opacity(0.5)), lineWidth: 3)
                         context.stroke(Path(lines: lines), with: .color(.red), lineWidth: 1)
                         if let symbol = context.resolveSymbol(id: "width") {
@@ -208,15 +208,15 @@ public struct RedlineModifier: ViewModifier {
                         }
                     }
                 symbols: {
-                        Text(verbatim: "\(proxy.size.width, format: .number)")
-                            .padding(1)
-                            .background(.thickMaterial)
-                            .tag("width")
-                        Text(verbatim: "\(proxy.size.height, format: .number)")
-                            .padding(1)
-                            .background(.thickMaterial)
-                            .tag("height")
-                    }
+                    Text(verbatim: proxy.size.width.formatted())
+                        .padding(1)
+                        .background(.thickMaterial)
+                        .tag("width")
+                    Text(verbatim: proxy.size.height.formatted())
+                        .padding(1)
+                        .background(.thickMaterial)
+                        .tag("height")
+                }
                 }
             }
     }
@@ -245,7 +245,7 @@ public extension Button {
             SwiftUI.Label(title, systemImage: systemName)
         })
     }
-
+    
     init(_ title: String, action: @escaping @Sendable () async -> Void) where Label == Text {
         self = Button(title) {
             Task {
@@ -253,7 +253,7 @@ public extension Button {
             }
         }
     }
-
+    
     init(systemImage systemName: String, action: @escaping @Sendable () async -> Void) where Label == Image {
         self = Button(action: {
             Task {
@@ -263,7 +263,7 @@ public extension Button {
             Image(systemName: systemName)
         })
     }
-
+    
     init(action: @Sendable @escaping () async -> Void, @ViewBuilder label: () -> Label) {
         self = Button(action: {
             Task {
@@ -278,11 +278,11 @@ public extension Button {
 @available(macOS 13.0, iOS 16.0, *)
 public struct WorkInProgressView: View {
     let colors: (Color, Color)
-
+    
     public init(colors: (Color, Color) = (.black, .yellow)) {
         self.colors = colors
     }
-
+    
     public var body: some View {
         let tileSize = CGSize(16, 16)
         // swiftlint:disable:next accessibility_label_for_image
@@ -301,7 +301,7 @@ public struct WorkInProgressView: View {
 internal struct DebuggingInfoModifier: ViewModifier {
     @AppStorage("showDebuggingInfo")
     var showDebuggingInfo = false
-
+    
     public func body(content: Content) -> some View {
         if showDebuggingInfo {
             content
@@ -330,20 +330,20 @@ public extension Path {
 }
 
 public extension FSPath {
-    #if os(macOS)
-        func reveal() {
-            NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
-        }
-    #endif
+#if os(macOS)
+    func reveal() {
+        NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
+    }
+#endif
 }
 
 public struct DebugDescriptionView<Value>: View {
     let value: Value
-
+    
     public init(_ value: Value) {
         self.value = value
     }
-
+    
     public var body: some View {
         Group {
             if let value = value as? CustomDebugStringConvertible {
