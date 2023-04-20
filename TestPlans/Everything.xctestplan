@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "F700882D-87D3-4579-B59E-4CE58F01BD3C",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "EverythingTests",
+        "name" : "EverythingTests"
+      }
+    }
+  ],
+  "version" : 1
+}
