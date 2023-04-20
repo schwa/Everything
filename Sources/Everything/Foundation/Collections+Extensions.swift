@@ -88,24 +88,6 @@ public extension Array where Element: Equatable {
 }
 
 public extension Collection<UInt8> {
-    func hexDump() {
-        let offsetFormatter = RadixedIntegerFormatStyle<Int>(radix: 16, prefix: .none, leadingZeros: true, groupCount: nil, groupSeparator: "_", uppercase: true)
-        let byteFormatter = RadixedIntegerFormatStyle<UInt8>(radix: 16, leadingZeros: true, uppercase: true)
-        let bytesPerChunk = 16
-        let s = chunks(ofCount: bytesPerChunk).enumerated()
-            .map { offset, chunk -> [String] in
-                let offset = offsetFormatter.format(offset * bytesPerChunk)
-                let bytes = chunk.map { byteFormatter.format($0) }.extend(repeating: "  ", to: bytesPerChunk).joined(separator: " ")
-                let ascii = chunk.escapedAscii()
-                return [offset, bytes, ascii]
-            }
-            .map { $0.joined(separator: " | ") }
-            .joined(separator: "\n")
-        print(s)
-    }
-}
-
-public extension Collection<UInt8> {
     func escapedAscii() -> String {
         map {
             UnicodeScalar($0).escapedString

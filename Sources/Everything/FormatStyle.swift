@@ -1,3 +1,1 @@
-import Foundation
-
-// All removed. Used SwiftFormats.
+// All removed. Use http://github.com/schwa/SwiftFormats

@@ -32,9 +32,3 @@ public func drawCircle(radius: Int, setPixel: (Int, Int) -> Void) {
         setPixel(-y, -x)
     }
 }
-
-public func unhex(lines: [String]) -> [[UInt8]] {
-    lines.map {
-        $0.chunks(ofCount: 2).map { UInt8(String($0), radix: 16)! }
-    }
-}
