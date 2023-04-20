@@ -1,12 +1,12 @@
 import Foundation
 
-public func printColumnar(_ columns: Any..., leadingSeparator: String = "| ", fieldSeparator: String = " | ", trailingSeparator: String = " |") {
+public func printColumnar(_ columns: Any..., headerRow: Bool = false, leadingSeparator: String = "| ", fieldSeparator: String = " | ", trailingSeparator: String = " |") {
     var s = ""
-    printColumnar(columns, leadingSeparator: leadingSeparator, fieldSeparator: fieldSeparator, trailingSeparator: trailingSeparator, to: &s)
+    printColumnar(columns, headerRow: headerRow, leadingSeparator: leadingSeparator, fieldSeparator: fieldSeparator, trailingSeparator: trailingSeparator, to: &s)
     print(s, terminator: "")
 }
 
-public func printColumnar <Target>(_ columns: [Any], leadingSeparator: String = "| ", fieldSeparator: String = " | ", trailingSeparator: String = " |", to target: inout Target) where Target: TextOutputStream {
+public func printColumnar <Target>(_ columns: [Any], headerRow: Bool = false, leadingSeparator: String = "| ", fieldSeparator: String = " | ", trailingSeparator: String = " |", to target: inout Target) where Target: TextOutputStream {
     let columns = columns.map { column in
         var s = ""
         print(column, to: &s)
@@ -27,7 +27,6 @@ public func printColumnar <Target>(_ columns: [Any], leadingSeparator: String = 
     }
     func printRow(cells: [(any StringProtocol)?]) {
         print(leadingSeparator, terminator: "", to: &target)
-
         let z = Array(zip(cells, columnWidths))
         if let first = z.first {
             printCell(first.0, columnWidth: first.1)
@@ -47,6 +46,7 @@ public func printColumnar <Target>(_ columns: [Any], leadingSeparator: String = 
 
     printDivider()
     var iterators = columns.map { $0.makeIterator() }
+    var row = 0
     while true {
         let cells = (iterators.startIndex ..< iterators.endIndex).map { index in
             iterators[index].next()
@@ -55,6 +55,10 @@ public func printColumnar <Target>(_ columns: [Any], leadingSeparator: String = 
             break
         }
         printRow(cells: cells)
+        if headerRow && row == 0 {
+            printDivider()
+        }
+        row += 1
     }
     printDivider()
 }
