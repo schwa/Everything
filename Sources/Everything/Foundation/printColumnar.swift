@@ -22,7 +22,7 @@ public func printColumnar <Target>(_ columns: [Any], headerRow: Bool = false, le
             print(cell + String(repeating: " ", count: columnWidth - cell.count), terminator: "", to: &target)
         }
         else {
-            print(repeatElement(" ", count: columnWidth), terminator: "", to: &target)
+            print(String(repeating: " ", count: columnWidth), terminator: "", to: &target)
         }
     }
     func printRow(cells: [(any StringProtocol)?]) {
