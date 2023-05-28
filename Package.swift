@@ -15,7 +15,7 @@ let package = Package(
         .library(name: "EverythingHelpers", targets: ["EverythingHelpers"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", branch: "main"),
+        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", from: "0.0.2"),
         .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     ],
     targets: [
