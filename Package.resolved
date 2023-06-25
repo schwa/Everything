@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/schwa/CoreGraphicsGeometrySupport",
       "state" : {
-        "revision" : "8032fa40acffc8791aa85f0ae347ae4feb197dd2",
-        "version" : "0.0.2"
+        "revision" : "bdfd61e3dc130c0c73b1c9ba401f7bb0df161cd3",
+        "version" : "0.1.0"
       }
     },
     {

@@ -23,8 +23,10 @@ extension LineSegment: Equatable {
 
 extension LineSegment: Hashable {
     public func hash(into hasher: inout Hasher) {
-        first.hash(into: &hasher)
-        second.hash(into: &hasher)
+        first.x.hash(into: &hasher)
+        first.y.hash(into: &hasher)
+        second.x.hash(into: &hasher)
+        second.y.hash(into: &hasher)
     }
 }
 
