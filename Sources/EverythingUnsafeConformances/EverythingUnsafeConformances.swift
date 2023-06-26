@@ -22,7 +22,7 @@ extension CGImageAlphaInfo: CustomStringConvertible {
         case .alphaOnly:
             return "alphaOnly"
         @unknown default:
-            unimplemented()
+            fatalError("Unknown case")
         }
     }
 }
@@ -43,7 +43,7 @@ extension CGImageByteOrderInfo: CustomStringConvertible {
         case .orderDefault:
             return "orderDefault"
         @unknown default:
-            unimplemented()
+            fatalError("Unknown case")
         }
     }
 }
@@ -58,7 +58,7 @@ extension MCSessionState: CustomStringConvertible {
         case .notConnected:
             return "notConnected"
         @unknown default:
-            unimplemented()
+            fatalError("Unknown case")
         }
     }
 }
@@ -68,7 +68,7 @@ extension Character: Codable {
         let container = try decoder.singleValueContainer()
         let string = try container.decode(String.self)
         guard string.count == 1, let first = string.first else {
-            throw GeneralError.illegalValue
+            fatalError("Unknown case")
         }
         self = first
     }
