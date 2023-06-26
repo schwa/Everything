@@ -21,7 +21,7 @@ import CoreGraphics
 #endif
 
 public extension CGBitmapInfo {
-    init(alphaInfo: CGImageAlphaInfo, byteOrderInfo: CGImageByteOrderInfo, formatInfo: CGImagePixelFormatInfo = .mask, useFloatComponents: Bool = false) {
+    init(alphaInfo: CGImageAlphaInfo, byteOrderInfo: CGImageByteOrderInfo, formatInfo: CGImagePixelFormatInfo = .packed, useFloatComponents: Bool = false) {
         self.init(rawValue: alphaInfo.rawValue | byteOrderInfo.rawValue | (useFloatComponents ? CGBitmapInfo.floatComponents.rawValue : 0) | formatInfo.rawValue)
     }
     
@@ -51,7 +51,7 @@ public struct PixelFormat {
     public var useFloatComponents: Bool
     public var colorSpace: CGColorSpace?
 
-    public init(bitsPerComponent: Int, numberOfComponents: Int, alphaInfo: CGImageAlphaInfo, byteOrder: CGImageByteOrderInfo, formatInfo: CGImagePixelFormatInfo = .mask, useFloatComponents: Bool = false, colorSpace: CGColorSpace?) {
+    public init(bitsPerComponent: Int, numberOfComponents: Int, alphaInfo: CGImageAlphaInfo, byteOrder: CGImageByteOrderInfo, formatInfo: CGImagePixelFormatInfo = .packed, useFloatComponents: Bool = false, colorSpace: CGColorSpace?) {
         self.bitsPerComponent = bitsPerComponent
         self.numberOfComponents = numberOfComponents
         self.alphaInfo = alphaInfo
