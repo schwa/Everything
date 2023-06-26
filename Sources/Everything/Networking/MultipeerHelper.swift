@@ -134,17 +134,3 @@ public class MultipeerHelper: NSObject, ObservableObject, MCSessionDelegate, MCN
 
 // MARK: -
 
-extension MCSessionState: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .connected:
-            return "connected"
-        case .connecting:
-            return "connecting"
-        case .notConnected:
-            return "notConnected"
-        @unknown default:
-            unimplemented()
-        }
-    }
-}

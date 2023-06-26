@@ -13,6 +13,7 @@ let package = Package(
     products: [
         .library(name: "Everything", targets: ["Everything"]),
         .library(name: "EverythingHelpers", targets: ["EverythingHelpers"]),
+        .library(name: "EverythingUnsafeConformances", targets: ["EverythingUnsafeConformances"]),
     ],
     dependencies: [
         .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", from: "0.1.0"),
@@ -30,6 +31,7 @@ let package = Package(
             unsafeFlags()
         ),
         .target(name: "EverythingHelpers"),
+        .target(name: "EverythingUnsafeConformances"),
         .testTarget(name: "EverythingTests", dependencies: ["Everything"]),
     ]
 )

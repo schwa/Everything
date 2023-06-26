@@ -88,7 +88,7 @@ public extension Array2D where Element == SIMD4<UInt8> {
         let size: IntSize = [cgImage.width, cgImage.height]
 
         let colorspace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(alphaInfo: .premultipliedLast, useFloatComponents: false, byteOrderInfo: CGImageByteOrderInfo.order32Big)
+        let bitmapInfo = CGBitmapInfo(alphaInfo: .premultipliedLast, byteOrderInfo: CGImageByteOrderInfo.order32Big, useFloatComponents: false)
         guard let context = CGContext(data: nil, width: size.width, height: size.height, bitsPerComponent: 8, bytesPerRow: MemoryLayout<Element>.size * size.width, space: colorspace, bitmapInfo: bitmapInfo.rawValue) else {
             unimplemented()
         }
@@ -103,7 +103,7 @@ public extension Array2D where Element == SIMD4<UInt8> {
 
     var cgImage: CGImage {
         let colorspace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(alphaInfo: .premultipliedLast, useFloatComponents: false, byteOrderInfo: CGImageByteOrderInfo.order32Big)
+        let bitmapInfo = CGBitmapInfo(alphaInfo: .premultipliedLast, byteOrderInfo: CGImageByteOrderInfo.order32Big)
         let size = size
 
         return flatStorage.withUnsafeBytes { bytes in

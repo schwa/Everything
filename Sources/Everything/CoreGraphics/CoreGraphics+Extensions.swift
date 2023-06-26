@@ -21,92 +21,52 @@ import CoreGraphics
 #endif
 
 public extension CGBitmapInfo {
-    init(alphaInfo: CGImageAlphaInfo, useFloatComponents: Bool, byteOrderInfo: CGImageByteOrderInfo) {
-        self.init(rawValue: alphaInfo.rawValue | (useFloatComponents ? CGBitmapInfo.floatComponents.rawValue : 0) | byteOrderInfo.rawValue)
+    init(alphaInfo: CGImageAlphaInfo, byteOrderInfo: CGImageByteOrderInfo, formatInfo: CGImagePixelFormatInfo = .mask, useFloatComponents: Bool = false) {
+        self.init(rawValue: alphaInfo.rawValue | byteOrderInfo.rawValue | (useFloatComponents ? CGBitmapInfo.floatComponents.rawValue : 0) | formatInfo.rawValue)
     }
-
+    
     var alphaInfo: CGImageAlphaInfo {
         CGImageAlphaInfo(rawValue: rawValue & CGBitmapInfo.alphaInfoMask.rawValue)!
+    }
+    
+    var byteOrderInfo: CGImageByteOrderInfo {
+        CGImageByteOrderInfo(rawValue: rawValue & CGBitmapInfo.byteOrderMask.rawValue)!
+    }
+
+    var formatInfo: CGImagePixelFormatInfo {
+        CGImagePixelFormatInfo(rawValue: rawValue & CGImagePixelFormatInfo.mask.rawValue)!
     }
 
     var useFloatComponents: Bool {
         CGImageAlphaInfo(rawValue: rawValue & CGBitmapInfo.floatInfoMask.rawValue)!.rawValue != 0
     }
-
-    var byteOrderInfo: CGImageByteOrderInfo {
-        CGImageByteOrderInfo(rawValue: rawValue & CGBitmapInfo.byteOrderMask.rawValue)!
-    }
-}
-
-extension CGImageAlphaInfo: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .none:
-            return "none"
-        case .premultipliedLast:
-            return "premultipliedLast"
-        case .premultipliedFirst:
-            return "premultipliedFirst"
-        case .last:
-            return "last"
-        case .first:
-            return "first"
-        case .noneSkipLast:
-            return "noneSkipLast"
-        case .noneSkipFirst:
-            return "noneSkipFirst"
-        case .alphaOnly:
-            return "alphaOnly"
-        @unknown default:
-            unimplemented()
-        }
-    }
-}
-
-extension CGImageByteOrderInfo: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .orderMask:
-            return "orderMask"
-        case .order16Little:
-            return "order16Little"
-        case .order32Little:
-            return "order32Little"
-        case .order16Big:
-            return "order16Big"
-        case .order32Big:
-            return "order32Big"
-        case .orderDefault:
-            return "orderDefault"
-        @unknown default:
-            unimplemented()
-        }
-    }
 }
 
 public struct PixelFormat {
-    public let bitsPerComponent: Int
-    public let numberOfComponents: Int
-    public let alphaInfo: CGImageAlphaInfo
-    public let byteOrder: CGImageByteOrderInfo
-    public let useFloatComponents: Bool
-    public let colorSpace: CGColorSpace?
+    public var bitsPerComponent: Int
+    public var numberOfComponents: Int
+    public var alphaInfo: CGImageAlphaInfo
+    public var byteOrder: CGImageByteOrderInfo
+    public var formatInfo: CGImagePixelFormatInfo
+    public var useFloatComponents: Bool
+    public var colorSpace: CGColorSpace?
 
-    public init(bitsPerComponent: Int, numberOfComponents: Int, alphaInfo: CGImageAlphaInfo, byteOrder: CGImageByteOrderInfo, useFloatComponents: Bool, colorSpace: CGColorSpace?) {
+    public init(bitsPerComponent: Int, numberOfComponents: Int, alphaInfo: CGImageAlphaInfo, byteOrder: CGImageByteOrderInfo, formatInfo: CGImagePixelFormatInfo = .mask, useFloatComponents: Bool = false, colorSpace: CGColorSpace?) {
         self.bitsPerComponent = bitsPerComponent
         self.numberOfComponents = numberOfComponents
         self.alphaInfo = alphaInfo
         self.byteOrder = byteOrder
+        self.formatInfo = formatInfo
         self.useFloatComponents = useFloatComponents
         self.colorSpace = colorSpace
     }
 
-    public static let rgba = PixelFormat(bitsPerComponent: 8, numberOfComponents: 4, alphaInfo: .premultipliedLast, byteOrder: .order32Little, useFloatComponents: false, colorSpace: CGColorSpaceCreateDeviceRGB())
+    public static let rgba = PixelFormat(bitsPerComponent: 8, numberOfComponents: 4, alphaInfo: .premultipliedLast, byteOrder: .order32Little, formatInfo: .packed, useFloatComponents: false, colorSpace: CGColorSpaceCreateDeviceRGB())
 }
 
 public extension PixelFormat {
     var bitmapInfo: CGBitmapInfo {
-        CGBitmapInfo(alphaInfo: alphaInfo, useFloatComponents: useFloatComponents, byteOrderInfo: byteOrder)
+        CGBitmapInfo(alphaInfo: alphaInfo, byteOrderInfo: byteOrder, formatInfo: formatInfo, useFloatComponents: useFloatComponents)
     }
 }
 

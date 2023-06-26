@@ -34,19 +34,3 @@ public struct Platform: Hashable {
         }()
     #endif
 }
-
-extension Character: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let string = try container.decode(String.self)
-        guard string.count == 1, let first = string.first else {
-            throw GeneralError.illegalValue
-        }
-        self = first
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(String(self))
-    }
-}
