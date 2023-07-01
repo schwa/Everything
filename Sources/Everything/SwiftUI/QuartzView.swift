@@ -11,6 +11,7 @@ import SwiftUI
     public typealias QuartzPlatformView = UIView
 #endif
 
+@available(*, deprecated, message: "Use Canvas.with…")
 public struct QuartzView: View {
     public struct Options: OptionSet {
         public let rawValue: Int

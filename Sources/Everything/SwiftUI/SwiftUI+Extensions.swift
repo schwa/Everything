@@ -8,48 +8,7 @@ import SwiftUI
 
 // MARK: -
 
-public struct DescriptionView<Value>: View {
-    public enum Mode {
-        case describing
-        case dumping
-    }
-
-    let value: Value
-    let mode: Mode
-
-    public init(_ value: Value, mode: Mode = .describing) {
-        self.value = value
-        self.mode = mode
-    }
-
-    public var body: some View {
-        var content: String
-        switch mode {
-        case .describing:
-            content = String(describing: value)
-        case .dumping:
-            content = ""
-            dump(value, to: &content)
-        }
-        return Text(content)
-    }
-}
-
-public struct SubscribedDescriptionView<P>: View where P: Publisher, P.Failure == Never {
-    let publisher: P
-    @State var value: P.Output?
-
-    public init(publisher: P) {
-        self.publisher = publisher
-    }
-
-    public var body: some View {
-        DescriptionView(value).onReceive(publisher) { value in
-            self.value = value
-        }
-    }
-}
-
+@available(*, deprecated, message: "Stop using.")
 public struct PublishedContentView<Content, P>: View where Content: View, P: Publisher, P.Failure == Never {
     let publisher: P
     let animated: Bool
@@ -86,63 +45,6 @@ public extension View {
     }
 }
 
-// public struct TitledView<Content>: View where Content: View {
-//    public let title: String
-//    public let content: () -> Content
-//
-//    public init(title: String, content: @escaping () -> Content) {
-//        self.title = title
-//        self.content = content
-//    }
-//
-//    public var body: some View {
-//        content()
-//    }
-// }
-//
-// public extension View {
-//    func titled(_ title: String) -> TitledView<Self> {
-//        return TitledView(title: title) {
-//            self
-//        }
-//    }
-// }
-
-#if os(macOS)
-    public struct ViewControllerView<VC>: NSViewControllerRepresentable where VC: NSViewController {
-        let viewController: VC
-
-        public init(viewController: VC) {
-            self.viewController = viewController
-        }
-
-        public func makeNSViewController(context: NSViewControllerRepresentableContext<ViewControllerView>) -> VC {
-            viewController
-        }
-
-        public func updateNSViewController(_ nsViewController: VC, context: NSViewControllerRepresentableContext<ViewControllerView>) {
-        }
-    }
-#endif // os(macOS)
-
-public extension Binding {
-    func unwrappingRebound<T>() -> Binding<T> where Value == T? {
-        Binding<T>(get: {
-            self.wrappedValue!
-        }, set: {
-            self.wrappedValue = $0
-        })
-    }
-
-    func unwrappingRebound<T>(default: @escaping () -> T) -> Binding<T> where Value == T? {
-        Binding<T>(get: {
-            self.wrappedValue ?? `default`()
-        }, set: {
-            self.wrappedValue = $0
-        })
-    }
-}
-
 /**
  Tired of sprinkling those little one shot `isPresenting` style state properties through your code?
 
@@ -167,22 +69,6 @@ public struct ValueView<Value, Content>: View where Content: View {
 
     public var body: some View {
         content($value)
-    }
-}
-
-public extension Button {
-    init(title: String, systemImage: String, action: @escaping () -> Void) where Label == SwiftUI.Label<Text, Image> {
-        self = Button(action: action) {
-            Label(title, systemImage: systemImage)
-        }
-    }
-}
-
-public extension Button {
-    init(systemImage systemName: String, action: @escaping () -> Void) where Label == Image {
-        self = Button(action: action) {
-            Image(systemName: systemName)
-        }
     }
 }
 
@@ -236,18 +122,6 @@ public struct PopoverButton<Label, Content>: View where Label: View, Content: Vi
     }
 }
 
-// TODO: Make generic
-public struct RoundedPanel<Content>: View where Content: View {
-    let content: () -> Content
-
-    public var body: some View {
-        content()
-            .frame(width: 320, height: 480)
-            .cornerRadius(8)
-            .padding()
-    }
-}
-
 public extension Gesture {
     func eraseToAnyGesture() -> AnyGesture<Self.Value> {
         AnyGesture(self)
@@ -266,17 +140,8 @@ public extension View {
     }
 }
 
-public struct PaneledModifier: ViewModifier {
-    public func body(content: Content) -> some View {
-        content
-            .padding()
-            .background(Color.white.cornerRadius(8))
-            .padding()
-    }
-}
-
-public extension View {
-    func paneled() -> some View {
-        modifier(PaneledModifier())
+public extension Text {
+    init(describing value: Any) {
+        self = Text(verbatim: "\(value)")
     }
 }

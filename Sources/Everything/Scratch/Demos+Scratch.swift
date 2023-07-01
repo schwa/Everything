@@ -104,16 +104,6 @@ public extension CGSize {
     }
 }
 
-public extension Binding {
-    func unsafeBinding<V>() -> Binding<V> where Value == V? {
-        Binding<V> {
-            wrappedValue!
-        } set: {
-            wrappedValue = $0
-        }
-    }
-}
-
 public extension CGRect {
     func unitPoint(_ p: CGPoint) -> CGPoint {
         origin + CGPoint(size) * p
