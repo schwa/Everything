@@ -72,10 +72,10 @@ public func uncallable(_ message: @autoclosure () -> String = String(), file: St
 // MARK: -
 
 public func generalError(_ error: GeneralError, file: StaticString = #file, line: UInt = #line) -> Never {
-    fatalError(error: error, file: file, line: line)
+    fatalError(error, file: file, line: line)
 }
 
-public func fatalError(error: Error, file: StaticString = #file, line: UInt = #line) -> Never {
+public func fatalError(_ error: Error, file: StaticString = #file, line: UInt = #line) -> Never {
     fatalError(String(describing: error), file: file, line: line)
 }
 
