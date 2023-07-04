@@ -2,6 +2,7 @@ import Combine
 import CoreMedia
 import CoreVideo
 import QuartzCore
+import SwiftUI
 
 public struct DisplayLinkEvent<Time>: Sendable where Time: Sendable {
     public let currentTime: Time
@@ -113,5 +114,49 @@ public extension CMTime {
 public extension CFTimeInterval {
     var seconds: TimeInterval {
         self
+    }
+}
+
+// DisplayLink
+
+public struct DisplayLink {
+
+    public let displayLinkPublisher: DisplayLinkPublisher
+
+    public init() {
+        displayLinkPublisher = DisplayLinkPublisher()
+    }
+
+    #if os(iOS)
+    public init(preferredFramesPerSecond: Int) {
+        displayLinkPublisher = DisplayLinkPublisher(preferredFramesPerSecond: preferredFramesPerSecond)
+    }
+    #endif
+
+    public func events() -> AsyncPublisher<DisplayLinkPublisher> {
+        return displayLinkPublisher.values
+    }
+}
+
+// MARK: -
+
+public struct DisplayLinkKey: EnvironmentKey {
+    public static var defaultValue: DisplayLink? = nil
+}
+
+public extension EnvironmentValues {
+    var displayLink: DisplayLink? {
+        get {
+            self[DisplayLinkKey.self]
+        }
+        set {
+            self[DisplayLinkKey.self] = newValue
+        }
+    }
+}
+
+public extension View {
+    func displayLink(_ displayLink: DisplayLink) -> some View {
+        environment(\.displayLink, displayLink)
     }
 }
