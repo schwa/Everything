@@ -7,7 +7,7 @@ public extension Button {
             Label(title, image: image)
         }
     }
-    
+
     init(title: LocalizedStringKey, systemImage: String, action: @escaping () -> Void) where Label == SwiftUI.Label<Text, Image> {
         self = Button(action: action) {
             Label(title, systemImage: systemImage)
@@ -22,7 +22,7 @@ public extension Button {
             Image(systemName: systemName)
         }
     }
-    
+
     init(title: String, systemImage systemName: String, action: @escaping @Sendable () async -> Void) where Label == SwiftUI.Label<Text, Image> {
         self = Button(action: {
             Task {

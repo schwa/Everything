@@ -17,7 +17,7 @@ public struct AnyDecodable: Decodable {
     public init(from decoder: Decoder) throws {
         if let container = try? decoder.container(keyedBy: CodingKeys.self) {
             var result = [String: Any]()
-            try container.allKeys.forEach { (key) throws in
+            try container.allKeys.forEach { key throws in
                 result[key.stringValue] = try container.decode(AnyDecodable.self, forKey: key).value
             }
             value = result

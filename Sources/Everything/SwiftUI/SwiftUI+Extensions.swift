@@ -93,7 +93,6 @@ public extension Text {
 
 @available(macOS 13.0, iOS 16.0, *)
 public struct RedlineModifier: ViewModifier {
-
     init() {
     }
 
@@ -131,7 +130,7 @@ public struct RedlineModifier: ViewModifier {
                         .padding(1)
                         .background(.thickMaterial)
                         .tag("height")
-                }
+                    }
                 }
             }
     }
@@ -177,7 +176,7 @@ internal struct DebuggingInfoModifier: ViewModifier {
     @AppStorage("showDebuggingInfo")
     var showDebuggingInfo = false
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         if showDebuggingInfo {
             content
                 .font(.caption.monospaced())

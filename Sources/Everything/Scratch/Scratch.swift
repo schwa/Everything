@@ -6,7 +6,7 @@ public extension Array {
     func extended(with element: Element, count: Int) -> Self {
         self + repeatElement(element, count: count - self.count)
     }
-    
+
     func extended(with element: Element?, count: Int) -> [Element?] {
         self + repeatElement(element, count: count - self.count)
     }
@@ -63,7 +63,7 @@ public extension Optional where Wrapped: Collection {
 
 public struct WeakBox<Content> where Content: AnyObject {
     public weak var content: Content?
-    
+
     public init(_ content: Content) {
         self.content = content
     }
@@ -73,7 +73,7 @@ public struct WeakBox<Content> where Content: AnyObject {
 
 public struct CompositeHash<Element>: Hashable where Element: Hashable {
     let elements: [Element]
-    
+
     public init(_ elements: [Element]) {
         self.elements = elements
     }
@@ -87,7 +87,7 @@ extension CompositeHash: Codable where Element: Codable {
         let container = try decoder.singleValueContainer()
         elements = try container.decode([Element].self)
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(elements)
@@ -142,7 +142,6 @@ public extension Collection where Element: Identifiable {
     }
 }
 
-
 // MARK: Metal
 
 public extension IntSize {
@@ -174,7 +173,6 @@ public extension OptionSet {
         lhs.union(rhs)
     }
 }
-
 
 public extension Collection {
     func counted() -> Self {
