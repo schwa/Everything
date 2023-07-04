@@ -36,6 +36,10 @@ public struct QuartzView: View {
         weak var view: _View?
         var redrawEveryFrame = false
 
+        #if os(macOS)
+        typealias DisplayLinkPublisher = DisplayLinkPublisherClassic
+        #endif
+
         var redraw: AnyPublisher<Void, Never>!
 
         init() {

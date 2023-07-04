@@ -31,7 +31,7 @@ public struct DisplayLinkTiming<Time>: Sendable where Time: Sendable {
 }
 
 #if os(macOS)
-    public final class DisplayLinkPublisher: Publisher, @unchecked Sendable {
+    public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
         public typealias Output = DisplayLinkEvent<CMTime>
         public typealias Failure = Never
         private var displayLink: CVDisplayLink!
@@ -72,38 +72,40 @@ public struct DisplayLinkTiming<Time>: Sendable where Time: Sendable {
 
     // swiftlint:disable:next function_parameter_count line_length
     private func _callback(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn {
-        let displayLinkPublisher = Unmanaged<DisplayLinkPublisher>.fromOpaque(displayLinkContext!).takeUnretainedValue()
+        let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext!).takeUnretainedValue()
         displayLinkPublisher.tick(currentTime: inNow.pointee, displayTime: inOutputTime.pointee)
         return 0
     }
-
-#elseif os(iOS) || os(tvOS)
-    public class DisplayLinkPublisher: Publisher {
-        public typealias Output = DisplayLinkEvent<CFTimeInterval>
-        public typealias Failure = Never
-
-        private var timing = DisplayLinkTiming<CFTimeInterval>()
-        private var passthrough = PassthroughSubject<Output, Failure>()
-        private var displayLink: CADisplayLink!
-
-        public init(preferredFramesPerSecond: Int? = nil) {
-            displayLink = CADisplayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
-            if let preferredFramesPerSecond {
-                displayLink.preferredFramesPerSecond = preferredFramesPerSecond
-            }
-            displayLink.add(to: RunLoop.main, forMode: RunLoop.Mode.default)
-        }
-
-        public func receive<S>(subscriber: S) where S: Subscriber, Failure == S.Failure, Output == S.Input {
-            passthrough.receive(subscriber: subscriber)
-        }
-
-        @objc
-        private func tick(_ displayLink: CADisplayLink) {
-            passthrough.send(timing.tick(currentTime: displayLink.timestamp, displayTime: displayLink.targetTimestamp, duration: displayLink.duration))
-        }
-    }
 #endif
+
+@available(macOS 14, iOS 15, tvOS 16, *)
+public class DisplayLinkPublisher: Publisher {
+    public typealias Output = DisplayLinkEvent<CFTimeInterval>
+    public typealias Failure = Never
+
+    private var timing = DisplayLinkTiming<CFTimeInterval>()
+    private var passthrough = PassthroughSubject<Output, Failure>()
+    private var displayLink: CADisplayLink!
+
+    public init() {
+        #if os(macOS)
+        // TODO: for now - use main screen displaylink
+        NSScreen.main!.displayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
+        #else
+        displayLink = CADisplayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
+        #endif
+        displayLink.add(to: RunLoop.main, forMode: RunLoop.Mode.default)
+    }
+
+    public func receive<S>(subscriber: S) where S: Subscriber, Failure == S.Failure, Output == S.Input {
+        passthrough.receive(subscriber: subscriber)
+    }
+
+    @objc
+    private func tick(_ displayLink: CADisplayLink) {
+        passthrough.send(timing.tick(currentTime: displayLink.timestamp, displayTime: displayLink.targetTimestamp, duration: displayLink.duration))
+    }
+}
 
 public extension CMTime {
     var seconds: TimeInterval {
@@ -118,8 +120,10 @@ public extension CFTimeInterval {
 }
 
 // DisplayLink
-
+@available(macOS 14, iOS 15, tvOS 16, *)
 public struct DisplayLink {
+
+    // TODO: Get rid of publisher and just use a Async* api directly.
 
     public let displayLinkPublisher: DisplayLinkPublisher
 
@@ -140,10 +144,12 @@ public struct DisplayLink {
 
 // MARK: -
 
+@available(macOS 14, iOS 15, tvOS 16, *)
 public struct DisplayLinkKey: EnvironmentKey {
     public static var defaultValue: DisplayLink? = nil
 }
 
+@available(macOS 14, iOS 15, tvOS 16, *)
 public extension EnvironmentValues {
     var displayLink: DisplayLink? {
         get {
@@ -155,6 +161,7 @@ public extension EnvironmentValues {
     }
 }
 
+@available(macOS 14, iOS 15, tvOS 16, *)
 public extension View {
     func displayLink(_ displayLink: DisplayLink) -> some View {
         environment(\.displayLink, displayLink)
