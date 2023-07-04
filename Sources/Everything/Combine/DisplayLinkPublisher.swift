@@ -90,7 +90,10 @@ public class DisplayLinkPublisher: Publisher {
     public init() {
         #if os(macOS)
         // TODO: for now - use main screen displaylink
-        NSScreen.main!.displayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
+        guard let screen = NSScreen.main ?? NSScreen.screens.first else {
+            fatalError("No screen")
+        }
+        displayLink = screen.displayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
         #else
         displayLink = CADisplayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
         #endif
@@ -103,7 +106,8 @@ public class DisplayLinkPublisher: Publisher {
 
     @objc
     private func tick(_ displayLink: CADisplayLink) {
-        passthrough.send(timing.tick(currentTime: displayLink.timestamp, displayTime: displayLink.targetTimestamp, duration: displayLink.duration))
+        let event = timing.tick(currentTime: displayLink.timestamp, displayTime: displayLink.targetTimestamp, duration: displayLink.duration)
+        passthrough.send(event)
     }
 }
 
