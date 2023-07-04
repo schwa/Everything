@@ -23,18 +23,6 @@ public extension Color {
     }
 }
 
-public extension Sequence<UInt8> {
-    // djb2 - http://www.cse.yorku.ca/~oz/hash.html
-    func djb2Hash() -> UInt {
-        var hash: UInt = 5381
-        for c in self {
-            let c = UInt(c)
-            hash = ((hash << 5) &+ hash) &+ c
-        }
-        return hash
-    }
-}
-
 public extension Color {
     init(_ v: SIMD3<Double>) {
         self = Color(.displayP3, red: v.x, green: v.y, blue: v.z, opacity: 1.0)

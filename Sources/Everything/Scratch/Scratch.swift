@@ -1,5 +1,6 @@
 import Foundation
-import SwiftUI
+
+// TODO: Move all this
 
 public extension Array {
     func extended(with element: Element, count: Int) -> Self {
@@ -60,55 +61,12 @@ public extension Optional where Wrapped: Collection {
     }
 }
 
-public extension Image {
-    init(data: Data) throws {
-#if os(macOS)
-        guard let nsImage = NSImage(data: data) else {
-            throw GeneralError.generic("Could not load image")
-        }
-        self = Image(nsImage: nsImage)
-#else
-        guard let uiImage = UIImage(data: data) else {
-            throw GeneralError.generic("Could not load image")
-        }
-        self = Image(uiImage: uiImage)
-#endif
-    }
-}
-
-public extension Image {
-    init(url: URL) throws {
-#if os(macOS)
-        guard let nsImage = NSImage(contentsOf: url) else {
-            throw GeneralError.generic("Could not load image")
-        }
-        self = Image(nsImage: nsImage)
-#else
-        guard let uiImage = UIImage(contentsOfFile: url.path) else {
-            throw GeneralError.generic("Could not load image")
-        }
-        self = Image(uiImage: uiImage)
-#endif
-    }
-}
-
 public struct WeakBox<Content> where Content: AnyObject {
     public weak var content: Content?
     
     public init(_ content: Content) {
         self.content = content
     }
-}
-
-public struct TypeID: Hashable {
-    public let rawValue: String
-    
-    public init(_ type: (some Any).Type) {
-        rawValue = String(describing: type)
-    }
-}
-
-extension TypeID: Codable {
 }
 
 // MARK: -
@@ -174,167 +132,130 @@ public extension Collection {
     }
 }
 
-// MARK: -
-
-@available(macOS 13.0, iOS 16.0, *)
-public struct RedlineModifier: ViewModifier {
-    
-    init() {
+public extension Collection where Element: Identifiable {
+    func first(identifiedBy id: Element.ID) -> Element? {
+        first { $0.id == id }
     }
-    
-    public func body(content: Content) -> some View {
-        content
-            .overlay {
-                GeometryReader { proxy in
-                    Canvas { context, size in
-                        let r = CGRect(origin: .zero, size: size)
-                        let lines: [(CGPoint, CGPoint)] = [
-                            (r.minXMidY, r.maxXMidY),
-                            (r.minXMidY + [0, -r.height * 0.25], r.minXMidY + [0, r.height * 0.25]),
-                            (r.maxXMidY + [0, -r.height * 0.25], r.maxXMidY + [0, r.height * 0.25]),
-                            
-                            (r.midXMinY, r.midXMaxY),
-                            (r.midXMinY + [-r.width * 0.25, 0], r.midXMinY + [r.width * 0.25, 0]),
-                            (r.midXMaxY + [-r.width * 0.25, 0], r.midXMaxY + [r.width * 0.25, 0]),
-                        ]
-                        
-                        context.stroke(Path(lines: lines), with: .color(.white.opacity(0.5)), lineWidth: 3)
-                        context.stroke(Path(lines: lines), with: .color(.red), lineWidth: 1)
-                        if let symbol = context.resolveSymbol(id: "width") {
-                            context.draw(symbol, at: (r.midXMidY + r.minXMidY) / 2, anchor: .center)
-                        }
-                        if let symbol = context.resolveSymbol(id: "height") {
-                            context.draw(symbol, at: (r.midXMidY + r.midXMinY) / 2, anchor: .center)
-                        }
-                    }
-                symbols: {
-                    Text(verbatim: proxy.size.width.formatted())
-                        .padding(1)
-                        .background(.thickMaterial)
-                        .tag("width")
-                    Text(verbatim: proxy.size.height.formatted())
-                        .padding(1)
-                        .background(.thickMaterial)
-                        .tag("height")
-                }
-                }
-            }
+
+    func firstIndex(identifiedBy id: Element.ID) -> Index? {
+        firstIndex { $0.id == id }
     }
 }
 
-@available(macOS 13.0, iOS 16.0, *)
-public extension View {
-    @ViewBuilder
-    func redlined(_ enabled: Bool = true) -> some View {
-        if enabled {
-            modifier(RedlineModifier())
+
+// MARK: Metal
+
+public extension IntSize {
+    func contains(_ point: IntPoint) -> Bool {
+        point.x >= 0 && point.x < width && point.y >= 0 && point.y < height
+    }
+}
+
+public extension Array {
+    mutating func mutate(_ block: (inout Element) throws -> Void) rethrows {
+        try indexed().forEach { index, element in
+            var element = element
+            try block(&element)
+            self[index] = element
         }
-        else {
-            self
+    }
+
+    func mutated(_ block: (inout Element) throws -> Void) rethrows -> [Element] {
+        try map { element in
+            var element = element
+            try block(&element)
+            return element
         }
     }
 }
 
-public extension Button {
-    init(title: String, systemImage systemName: String, action: @escaping @Sendable () async -> Void) where Label == SwiftUI.Label<Text, Image> {
-        self = Button(action: {
-            Task {
-                await action()
-            }
-        }, label: {
-            SwiftUI.Label(title, systemImage: systemName)
-        })
+public extension OptionSet {
+    static func | (lhs: Self, rhs: Self) -> Self {
+        lhs.union(rhs)
     }
-    
-    init(_ title: String, action: @escaping @Sendable () async -> Void) where Label == Text {
-        self = Button(title) {
-            Task {
-                await action()
-            }
+}
+
+
+public extension Collection {
+    func counted() -> Self {
+        print("\(count)")
+        return self
+    }
+}
+
+// TODO: Move (maybe put in Rect)
+public extension CGRect {
+    init(_ scalars: [CGFloat]) {
+        assert(!scalars.isEmpty)
+        self = CGRect(x: scalars[0], y: scalars[1], width: scalars[2], height: scalars[3])
+    }
+
+    static func * (lhs: CGRect, rhs: CGSize) -> CGRect {
+        CGRect(x: lhs.origin.x * rhs.width, y: lhs.origin.y * rhs.height, width: lhs.size.width * rhs.width, height: lhs.size.height * rhs.height)
+    }
+
+    static func / (lhs: CGRect, rhs: CGSize) -> CGRect {
+        CGRect(x: lhs.origin.x / rhs.width, y: lhs.origin.y / rhs.height, width: lhs.size.width / rhs.width, height: lhs.size.height / rhs.height)
+    }
+}
+
+// TODO: Move
+public extension CGSize {
+    init(_ size: IntSize) {
+        self = CGSize(width: CGFloat(size.width), height: CGFloat(size.height))
+    }
+}
+
+public extension CGRect {
+    func unitPoint(_ p: CGPoint) -> CGPoint {
+        origin + CGPoint(size) * p
+    }
+}
+
+public extension RegularExpression.Match {
+    struct CaptureGroups {
+        public let match: RegularExpression.Match
+
+        public subscript(index: Int) -> String {
+            let range = match.result.range(at: index)
+            let r2 = Range(range, in: match.string)!
+            return String(match.string[r2])
+        }
+
+        public subscript(name: String) -> String {
+            let range = match.result.range(withName: name)
+            let r2 = Range(range, in: match.string)!
+            return String(match.string[r2])
         }
     }
-    
-    init(systemImage systemName: String, action: @escaping @Sendable () async -> Void) where Label == Image {
-        self = Button(action: {
-            Task {
-                await action()
-            }
-        }, label: {
-            Image(systemName: systemName)
-        })
-    }
-    
-    init(action: @Sendable @escaping () async -> Void, @ViewBuilder label: () -> Label) {
-        self = Button(action: {
-            Task {
-                await action()
-            }
-        }, label: {
-            label()
-        })
+
+    var groups: CaptureGroups {
+        CaptureGroups(match: self)
     }
 }
 
-@available(macOS 13.0, iOS 16.0, *)
-public struct WorkInProgressView: View {
-    let colors: (Color, Color)
-    
-    public init(colors: (Color, Color) = (.black, .yellow)) {
-        self.colors = colors
+public extension UInt8 {
+    init(character: Character) {
+        assert(character.utf8.count == 1)
+        self = character.utf8.first!
     }
-    
-    public var body: some View {
-        let tileSize = CGSize(16, 16)
-        // swiftlint:disable:next accessibility_label_for_image
-        let tile = Image(size: tileSize) { context in
-            context.fill(Path(tileSize), with: .color(colors.0))
-            context.fill(Path(vertices: [[0.0, 0.0], [0.0, 0.5], [0.5, 0]].map { $0 * CGPoint(tileSize) }), with: .color(colors.1))
-            context.fill(Path(vertices: [[0.0, 1], [1.0, 0.0], [1, 0.5], [0.5, 1]].map { $0 * CGPoint(tileSize) }), with: .color(colors.1))
+}
+
+public extension Character {
+    init(utf8: UInt8) {
+        self = Character(UnicodeScalar(utf8))
+    }
+}
+
+public extension Sequence<UInt8> {
+    // djb2 - http://www.cse.yorku.ca/~oz/hash.html
+    func djb2Hash() -> UInt {
+        var hash: UInt = 5381
+        for c in self {
+            let c = UInt(c)
+            hash = ((hash << 5) &+ hash) &+ c
         }
-        Canvas { context, size in
-            context.fill(Path(size), with: .tiledImage(tile, sourceRect: CGRect(size: tileSize)))
-        }
+        return hash
     }
 }
 
-@available(macOS 13.0, iOS 16.0, *)
-internal struct DebuggingInfoModifier: ViewModifier {
-    @AppStorage("showDebuggingInfo")
-    var showDebuggingInfo = false
-    
-    public func body(content: Content) -> some View {
-        if showDebuggingInfo {
-            content
-                .font(.caption.monospaced())
-                #if !os(tvOS)
-                .textSelection(.enabled)
-                #endif
-                .padding(4)
-                .background {
-                    WorkInProgressView()
-                        .opacity(0.1)
-                }
-        }
-    }
-}
-
-@available(macOS 13.0, iOS 16.0, *)
-public extension View {
-    func debuggingInfo() -> some View {
-        modifier(DebuggingInfoModifier())
-    }
-}
-
-public extension Path {
-    init(_ rectSize: CGSize) {
-        self = Path(CGRect(size: rectSize))
-    }
-}
-
-public extension FSPath {
-#if os(macOS)
-    func reveal() {
-        NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
-    }
-#endif
-}

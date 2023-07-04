@@ -2,42 +2,6 @@
 
 import Combine
 import SwiftUI
-#if os(macOS)
-    import AppKit
-#endif
-
-// MARK: -
-
-@available(*, deprecated, message: "Stop using.")
-public struct PublishedContentView<Content, P>: View where Content: View, P: Publisher, P.Failure == Never {
-    let publisher: P
-    let animated: Bool
-    let content: (P.Output) -> Content
-
-    @State var value: P.Output?
-
-    public init(publisher: P, animated: Bool = false, content: @escaping (P.Output) -> Content) {
-        self.publisher = publisher
-        self.animated = animated
-        self.content = content
-    }
-
-    public var body: some View {
-        ZStack {
-            value.map { content($0) }
-        }
-        .onReceive(publisher) { value in
-            if self.animated {
-                withAnimation {
-                    self.value = value
-                }
-            }
-            else {
-                self.value = value
-            }
-        }
-    }
-}
 
 public extension View {
     func eraseToAnyView() -> AnyView {
@@ -80,27 +44,6 @@ public struct LazyView<Content: View>: View {
 
     public var body: Content {
         content()
-    }
-}
-
-// TODO: Use LazyView
-public struct DeferredView<Content>: View where Content: View {
-    var content: () -> Content
-
-    @State
-    private var appeared = false
-
-    public var body: some View {
-        Group {
-            EmptyView()
-            appeared ? content() : nil
-        }
-        .onAppear {
-            self.appeared = true
-        }
-        .onDisappear {
-            self.appeared = false
-        }
     }
 }
 
@@ -148,29 +91,121 @@ public extension Text {
     }
 }
 
-public struct DebugDescriptionView<Value>: View {
-    let value: Value
+@available(macOS 13.0, iOS 16.0, *)
+public struct RedlineModifier: ViewModifier {
 
-    public init(_ value: Value) {
-        self.value = value
+    init() {
     }
 
-    public var body: some View {
-        Group {
-            if let value = value as? CustomDebugStringConvertible {
-                Text(verbatim: "\(value.debugDescription)")
+    public func body(content: Content) -> some View {
+        content
+            .overlay {
+                GeometryReader { proxy in
+                    Canvas { context, size in
+                        let r = CGRect(origin: .zero, size: size)
+                        let lines: [(CGPoint, CGPoint)] = [
+                            (r.minXMidY, r.maxXMidY),
+                            (r.minXMidY + [0, -r.height * 0.25], r.minXMidY + [0, r.height * 0.25]),
+                            (r.maxXMidY + [0, -r.height * 0.25], r.maxXMidY + [0, r.height * 0.25]),
+
+                            (r.midXMinY, r.midXMaxY),
+                            (r.midXMinY + [-r.width * 0.25, 0], r.midXMinY + [r.width * 0.25, 0]),
+                            (r.midXMaxY + [-r.width * 0.25, 0], r.midXMaxY + [r.width * 0.25, 0]),
+                        ]
+
+                        context.stroke(Path(lines: lines), with: .color(.white.opacity(0.5)), lineWidth: 3)
+                        context.stroke(Path(lines: lines), with: .color(.red), lineWidth: 1)
+                        if let symbol = context.resolveSymbol(id: "width") {
+                            context.draw(symbol, at: (r.midXMidY + r.minXMidY) / 2, anchor: .center)
+                        }
+                        if let symbol = context.resolveSymbol(id: "height") {
+                            context.draw(symbol, at: (r.midXMidY + r.midXMinY) / 2, anchor: .center)
+                        }
+                    }
+                symbols: {
+                    Text(verbatim: proxy.size.width.formatted())
+                        .padding(1)
+                        .background(.thickMaterial)
+                        .tag("width")
+                    Text(verbatim: proxy.size.height.formatted())
+                        .padding(1)
+                        .background(.thickMaterial)
+                        .tag("height")
+                }
+                }
             }
-            else if let value = value as? CustomStringConvertible {
-                Text(verbatim: "\(value.description)")
-            }
-            else {
-                Text(verbatim: "\(String(describing: value))")
-            }
-        }
-#if !os(tvOS)
-        .textSelection(.enabled)
-#endif
-        .font(.body.monospaced())
     }
 }
 
+@available(macOS 13.0, iOS 16.0, *)
+public extension View {
+    @ViewBuilder
+    func redlined(_ enabled: Bool = true) -> some View {
+        if enabled {
+            modifier(RedlineModifier())
+        }
+        else {
+            self
+        }
+    }
+}
+
+@available(macOS 13.0, iOS 16.0, *)
+public struct WorkInProgressView: View {
+    let colors: (Color, Color)
+
+    public init(colors: (Color, Color) = (.black, .yellow)) {
+        self.colors = colors
+    }
+
+    public var body: some View {
+        let tileSize = CGSize(16, 16)
+        // swiftlint:disable:next accessibility_label_for_image
+        let tile = Image(size: tileSize) { context in
+            context.fill(Path(tileSize), with: .color(colors.0))
+            context.fill(Path(vertices: [[0.0, 0.0], [0.0, 0.5], [0.5, 0]].map { $0 * CGPoint(tileSize) }), with: .color(colors.1))
+            context.fill(Path(vertices: [[0.0, 1], [1.0, 0.0], [1, 0.5], [0.5, 1]].map { $0 * CGPoint(tileSize) }), with: .color(colors.1))
+        }
+        Canvas { context, size in
+            context.fill(Path(size), with: .tiledImage(tile, sourceRect: CGRect(size: tileSize)))
+        }
+    }
+}
+
+@available(macOS 13.0, iOS 16.0, *)
+internal struct DebuggingInfoModifier: ViewModifier {
+    @AppStorage("showDebuggingInfo")
+    var showDebuggingInfo = false
+
+    public func body(content: Content) -> some View {
+        if showDebuggingInfo {
+            content
+                .font(.caption.monospaced())
+#if !os(tvOS)
+                .textSelection(.enabled)
+#endif
+                .padding(4)
+                .background {
+                    WorkInProgressView()
+                        .opacity(0.1)
+                }
+        }
+    }
+}
+
+@available(macOS 13.0, iOS 16.0, *)
+public extension View {
+    func debuggingInfo() -> some View {
+        modifier(DebuggingInfoModifier())
+    }
+}
+
+public extension Text {
+    static func lorem() -> Self {
+        // swiftlint:disable line_length
+        Text("""
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """)
+        // swiftlint:enable line_length
+    }
+}

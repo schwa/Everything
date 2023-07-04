@@ -183,3 +183,10 @@ public extension Path {
         return self
     }
 }
+
+public extension Path {
+    init(_ rectSize: CGSize) {
+        self = Path(CGRect(size: rectSize))
+    }
+}
+

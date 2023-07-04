@@ -565,3 +565,13 @@ public extension FSPath {
         FileManager().displayName(atPath: path)
     }
 }
+
+// MARK: -
+
+public extension FSPath {
+#if os(macOS)
+    func reveal() {
+        NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
+    }
+#endif
+}
