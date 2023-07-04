@@ -2,7 +2,7 @@ import CoreGraphics
 
 #if os(macOS)
     import AppKit
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     import UIKit
 #endif
 
@@ -50,7 +50,7 @@ public protocol SystemColorPalette {
         public static var brown: SystemColor { NSColor.brown.cgColor }
     }
 
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     extension UIColor: SystemColorPalette {
         public typealias SystemColor = UIColor
     }

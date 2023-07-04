@@ -5,7 +5,7 @@ import SwiftUI
     import AppKit
 
     public typealias QuartzPlatformView = NSView
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     import UIKit
 
     public typealias QuartzPlatformView = UIView

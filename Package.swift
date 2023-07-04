@@ -9,6 +9,7 @@ let package = Package(
         .iOS("15.0"),
         .macOS("12.0"),
         .macCatalyst("15.0"),
+        .tvOS(.v16),
     ],
     products: [
         .library(name: "Everything", targets: ["Everything"]),

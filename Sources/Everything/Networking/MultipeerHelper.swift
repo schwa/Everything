@@ -35,7 +35,7 @@ public class MultipeerHelper: NSObject, ObservableObject, MCSessionDelegate, MCN
     public required init(serviceType: String) {
         self.serviceType = serviceType
 
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
             peerID = MCPeerID(displayName: UIDevice.current.name)
         #else
             peerID = MCPeerID(displayName: Host.current().localizedName!)

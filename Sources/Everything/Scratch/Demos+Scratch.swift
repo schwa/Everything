@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 #if os(macOS)
     import AppKit
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     import UIKit
 #endif
 import Combine

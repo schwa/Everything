@@ -9,7 +9,9 @@ public class CoreLocationManager: NSObject, CLLocationManagerDelegate {
 
     private let _location = PassthroughSubject<CLLocation, Error>()
     public var location: AnyPublisher<CLLocation, Error> {
+        #if !os(tvOS)
         manager.startUpdatingLocation()
+        #endif
         return _location.eraseToAnyPublisher()
     }
 
@@ -18,7 +20,7 @@ public class CoreLocationManager: NSObject, CLLocationManagerDelegate {
     override public init() {
         super.init()
         manager.delegate = self
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
             manager.requestWhenInUseAuthorization()
         #endif
     }

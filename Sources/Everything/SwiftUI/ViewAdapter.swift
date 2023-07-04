@@ -1,7 +1,6 @@
 import SwiftUI
 
 #if os(macOS)
-
     public struct ViewAdaptor<ViewType>: View where ViewType: NSView {
         let make: () -> ViewType
         let update: (ViewType) -> Void
@@ -29,7 +28,7 @@ import SwiftUI
         }
     }
 
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     public struct ViewAdaptor<ViewType>: View where ViewType: UIView {
         let make: () -> ViewType
         let update: (ViewType) -> Void

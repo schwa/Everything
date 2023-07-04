@@ -26,7 +26,7 @@ public struct Platform: Hashable {
 
     #if os(macOS)
         public static let current = macOS
-    #elseif os(iOS)
+    #elseif os(iOS) || os(tvOS)
         public static let current = iOS
     #else
         public static let current: Platform = {

@@ -76,7 +76,7 @@ public struct DisplayLinkTiming<Time>: Sendable where Time: Sendable {
         return 0
     }
 
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     public class DisplayLinkPublisher: Publisher {
         public typealias Output = DisplayLinkEvent<CFTimeInterval>
         public typealias Failure = Never

@@ -7,7 +7,11 @@ import SwiftUI
 /// A type-erased `ButtonStyle`.
 ///
 /// Allows creation of type-erased `ButtonStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyButtonStyle <Body>: ButtonStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -20,7 +24,11 @@ public struct AnyButtonStyle <Body>: ButtonStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `buttonStyle` style via a closure.
     func buttonStyle<B>(_ body: @escaping (AnyButtonStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -35,7 +43,13 @@ public extension View {
 /// A type-erased `ControlGroupStyle`.
 ///
 /// Allows creation of type-erased `ControlGroupStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(tvOS 17.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyControlGroupStyle <Body>: ControlGroupStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -48,7 +62,13 @@ public struct AnyControlGroupStyle <Body>: ControlGroupStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(tvOS 17.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `controlGroupStyle` style via a closure.
     func controlGroupStyle<B>(_ body: @escaping (AnyControlGroupStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -63,7 +83,13 @@ public extension View {
 /// A type-erased `DatePickerStyle`.
 ///
 /// Allows creation of type-erased `DatePickerStyle` using a closure to create the style's body.
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 46)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyDatePickerStyle <Body>: DatePickerStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -76,7 +102,13 @@ public struct AnyDatePickerStyle <Body>: DatePickerStyle where Body: View {
     }
 }
 
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 64)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `datePickerStyle` style via a closure.
     func datePickerStyle<B>(_ body: @escaping (AnyDatePickerStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -91,7 +123,13 @@ public extension View {
 /// A type-erased `DisclosureGroupStyle`.
 ///
 /// Allows creation of type-erased `DisclosureGroupStyle` using a closure to create the style's body.
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 46)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyDisclosureGroupStyle <Body>: DisclosureGroupStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -104,7 +142,13 @@ public struct AnyDisclosureGroupStyle <Body>: DisclosureGroupStyle where Body: V
     }
 }
 
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 64)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `disclosureGroupStyle` style via a closure.
     func disclosureGroupStyle<B>(_ body: @escaping (AnyDisclosureGroupStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -119,7 +163,11 @@ public extension View {
 /// A type-erased `FormStyle`.
 ///
 /// Allows creation of type-erased `FormStyle` using a closure to create the style's body.
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyFormStyle <Body>: FormStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -132,7 +180,11 @@ public struct AnyFormStyle <Body>: FormStyle where Body: View {
     }
 }
 
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `formStyle` style via a closure.
     func formStyle<B>(_ body: @escaping (AnyFormStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -147,7 +199,13 @@ public extension View {
 /// A type-erased `GaugeStyle`.
 ///
 /// Allows creation of type-erased `GaugeStyle` using a closure to create the style's body.
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 46)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyGaugeStyle <Body>: GaugeStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -160,7 +218,13 @@ public struct AnyGaugeStyle <Body>: GaugeStyle where Body: View {
     }
 }
 
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 64)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `gaugeStyle` style via a closure.
     func gaugeStyle<B>(_ body: @escaping (AnyGaugeStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -175,7 +239,13 @@ public extension View {
 /// A type-erased `GroupBoxStyle`.
 ///
 /// Allows creation of type-erased `GroupBoxStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 46)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyGroupBoxStyle <Body>: GroupBoxStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -188,7 +258,13 @@ public struct AnyGroupBoxStyle <Body>: GroupBoxStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 64)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `groupBoxStyle` style via a closure.
     func groupBoxStyle<B>(_ body: @escaping (AnyGroupBoxStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -203,7 +279,11 @@ public extension View {
 /// A type-erased `LabelStyle`.
 ///
 /// Allows creation of type-erased `LabelStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyLabelStyle <Body>: LabelStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -216,7 +296,11 @@ public struct AnyLabelStyle <Body>: LabelStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `labelStyle` style via a closure.
     func labelStyle<B>(_ body: @escaping (AnyLabelStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -231,7 +315,11 @@ public extension View {
 /// A type-erased `LabeledContentStyle`.
 ///
 /// Allows creation of type-erased `LabeledContentStyle` using a closure to create the style's body.
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyLabeledContentStyle <Body>: LabeledContentStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -244,7 +332,11 @@ public struct AnyLabeledContentStyle <Body>: LabeledContentStyle where Body: Vie
     }
 }
 
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `labeledContentStyle` style via a closure.
     func labeledContentStyle<B>(_ body: @escaping (AnyLabeledContentStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -259,7 +351,13 @@ public extension View {
 /// A type-erased `MenuStyle`.
 ///
 /// Allows creation of type-erased `MenuStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(tvOS 17.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyMenuStyle <Body>: MenuStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -272,7 +370,13 @@ public struct AnyMenuStyle <Body>: MenuStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(tvOS 17.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `menuStyle` style via a closure.
     func menuStyle<B>(_ body: @escaping (AnyMenuStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -287,7 +391,11 @@ public extension View {
 /// A type-erased `NavigationSplitViewStyle`.
 ///
 /// Allows creation of type-erased `NavigationSplitViewStyle` using a closure to create the style's body.
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyNavigationSplitViewStyle <Body>: NavigationSplitViewStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -300,7 +408,11 @@ public struct AnyNavigationSplitViewStyle <Body>: NavigationSplitViewStyle where
     }
 }
 
-@available(macOS 13, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 13, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `navigationSplitViewStyle` style via a closure.
     func navigationSplitViewStyle<B>(_ body: @escaping (AnyNavigationSplitViewStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -315,7 +427,11 @@ public extension View {
 /// A type-erased `ProgressViewStyle`.
 ///
 /// Allows creation of type-erased `ProgressViewStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyProgressViewStyle <Body>: ProgressViewStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -328,7 +444,11 @@ public struct AnyProgressViewStyle <Body>: ProgressViewStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `progressViewStyle` style via a closure.
     func progressViewStyle<B>(_ body: @escaping (AnyProgressViewStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -343,7 +463,13 @@ public extension View {
 /// A type-erased `TableStyle`.
 ///
 /// Allows creation of type-erased `TableStyle` using a closure to create the style's body.
-@available(macOS 12, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 12, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 46)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyTableStyle <Body>: TableStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -356,7 +482,13 @@ public struct AnyTableStyle <Body>: TableStyle where Body: View {
     }
 }
 
-@available(macOS 12, iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 12, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 16.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 64)
+@available(tvOS, unavailable)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `tableStyle` style via a closure.
     func tableStyle<B>(_ body: @escaping (AnyTableStyle<B>.Configuration) -> B) -> some View where B: View {
@@ -371,7 +503,11 @@ public extension View {
 /// A type-erased `ToggleStyle`.
 ///
 /// Allows creation of type-erased `ToggleStyle` using a closure to create the style's body.
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 43)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 48)
 public struct AnyToggleStyle <Body>: ToggleStyle where Body: View {
     let body: (Configuration) -> Body
 
@@ -384,7 +520,11 @@ public struct AnyToggleStyle <Body>: ToggleStyle where Body: View {
     }
 }
 
-@available(macOS 10.15, iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(macOS 10.15, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 61)
+@available(iOS 13.0, *)
+// ###sourceLocation(file: "/Users/schwa/Shared/Projects/Everything/Sources/Everything/SwiftUI/Styles.swift.gyb", line: 66)
 public extension View {
     /// Modify the `toggleStyle` style via a closure.
     func toggleStyle<B>(_ body: @escaping (AnyToggleStyle<B>.Configuration) -> B) -> some View where B: View {

@@ -2,7 +2,7 @@ import CoreGraphics
 import Foundation
 #if os(macOS)
     import AppKit
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     import UIKit
 #endif
 
@@ -22,7 +22,7 @@ public struct SimpleColor {
     public var cgColor: CGColor {
         #if os(macOS)
             return NSColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
-        #elseif os(iOS)
+        #elseif os(iOS) || os(tvOS)
             return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
         #endif
     }

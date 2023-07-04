@@ -104,6 +104,7 @@ public struct DeferredView<Content>: View where Content: View {
     }
 }
 
+#if !os(tvOS)
 public struct PopoverButton<Label, Content>: View where Label: View, Content: View {
     let label: () -> Label
     let content: () -> Content
@@ -121,6 +122,7 @@ public struct PopoverButton<Label, Content>: View where Label: View, Content: Vi
             .popover(isPresented: $visible, content: content)
     }
 }
+#endif
 
 public extension Gesture {
     func eraseToAnyGesture() -> AnyGesture<Self.Value> {
@@ -145,3 +147,30 @@ public extension Text {
         self = Text(verbatim: "\(value)")
     }
 }
+
+public struct DebugDescriptionView<Value>: View {
+    let value: Value
+
+    public init(_ value: Value) {
+        self.value = value
+    }
+
+    public var body: some View {
+        Group {
+            if let value = value as? CustomDebugStringConvertible {
+                Text(verbatim: "\(value.debugDescription)")
+            }
+            else if let value = value as? CustomStringConvertible {
+                Text(verbatim: "\(value.description)")
+            }
+            else {
+                Text(verbatim: "\(String(describing: value))")
+            }
+        }
+#if !os(tvOS)
+        .textSelection(.enabled)
+#endif
+        .font(.body.monospaced())
+    }
+}
+

@@ -2,7 +2,7 @@ import CoreGraphics
 
 #if os(macOS)
     import AppKit
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     import UIKit
 #endif
 
@@ -12,7 +12,7 @@ public extension CGColor {
             NSColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
         }
 
-    #elseif os(iOS)
+    #elseif os(iOS) || os(tvOS)
         static func HSV(hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat = 1.0) -> CGColor {
             UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha).cgColor
         }

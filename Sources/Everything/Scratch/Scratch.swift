@@ -306,7 +306,9 @@ internal struct DebuggingInfoModifier: ViewModifier {
         if showDebuggingInfo {
             content
                 .font(.caption.monospaced())
+                #if !os(tvOS)
                 .textSelection(.enabled)
+                #endif
                 .padding(4)
                 .background {
                     WorkInProgressView()
@@ -336,28 +338,3 @@ public extension FSPath {
     }
 #endif
 }
-
-public struct DebugDescriptionView<Value>: View {
-    let value: Value
-    
-    public init(_ value: Value) {
-        self.value = value
-    }
-    
-    public var body: some View {
-        Group {
-            if let value = value as? CustomDebugStringConvertible {
-                Text(verbatim: "\(value.debugDescription)")
-            }
-            else if let value = value as? CustomStringConvertible {
-                Text(verbatim: "\(value.description)")
-            }
-            else {
-                Text(verbatim: "\(String(describing: value))")
-            }
-        }
-        .textSelection(.enabled)
-        .font(.body.monospaced())
-    }
-}
-

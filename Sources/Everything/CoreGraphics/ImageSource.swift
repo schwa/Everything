@@ -77,7 +77,7 @@ public extension ImageSource {
         }
     }
 
-#elseif os(iOS)
+#elseif os(iOS) || os(tvOS)
     import UIKit
 
     public extension CGImage {
