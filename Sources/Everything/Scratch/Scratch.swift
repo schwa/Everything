@@ -259,3 +259,52 @@ public extension Sequence<UInt8> {
     }
 }
 
+public extension Sequence {
+    func cast <T>(to: T.Type) -> [T?] {
+        compactMap { $0 as? T }
+    }
+}
+
+public extension AsyncSequence {
+    func cast <T>(to: T.Type) -> AsyncCompactMapSequence<Self, T?> {
+        compactMap { $0 as? T }
+    }
+}
+
+public extension Array where Element == UInt8 {
+    mutating func append <Other>(contentsOf bytes: Other, alignment: Int) where Other: Sequence, Other.Element == UInt8 {
+        let alignedPosition = align(offset: count, alignment: alignment)
+        append(contentsOf: Array(repeating: 0, count: alignedPosition - count))
+        append(contentsOf: bytes)
+    }
+}
+
+/// An object that provides access to the bytes of a value.
+/// Avoids issues where getting the bytes of an onject cast to Any is not the same as getting the bytes to the object
+public struct UnsafeBytesAccessor: Sendable {
+    private let closure: @Sendable (@Sendable (UnsafeRawBufferPointer) -> Void) -> Void
+
+    public init(_ value: some Any) {
+        closure = { (callback: (UnsafeRawBufferPointer) -> Void) in
+            Swift.withUnsafeBytes(of: value) { buffer in
+                callback(buffer)
+            }
+        }
+    }
+
+    public init(_ value: [some Any]) {
+        closure = { (callback: (UnsafeRawBufferPointer) -> Void) in
+            value.withUnsafeBytes { buffer in
+                callback(buffer)
+            }
+        }
+    }
+
+    public func withUnsafeBytes(_ body: @Sendable (UnsafeRawBufferPointer) -> Void) {
+        closure(body)
+    }
+}
+
+public func bytes <T>(of value: T) -> [UInt8] {
+    withUnsafeBytes(of: value) { return Array($0) }
+}
