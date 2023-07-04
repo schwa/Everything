@@ -131,12 +131,6 @@ public struct DisplayLink {
         displayLinkPublisher = DisplayLinkPublisher()
     }
 
-    #if os(iOS)
-    public init(preferredFramesPerSecond: Int) {
-        displayLinkPublisher = DisplayLinkPublisher(preferredFramesPerSecond: preferredFramesPerSecond)
-    }
-    #endif
-
     public func events() -> AsyncPublisher<DisplayLinkPublisher> {
         return displayLinkPublisher.values
     }
