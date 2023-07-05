@@ -2,33 +2,33 @@ import Foundation
 
 // TODO: This could just be a function that returns a closure.
 // https://oroboro.com/irregular-ema/
-public class ExponentialMovingAverageIrregular {
-    var prevSample: Double = 0
-    var prevTime: Double?
-    var emaPrev: Double = 0
-    let alpha: Double = 0.2
+public struct ExponentialMovingAverageIrregular {
 
-    public init() {}
+    private typealias Sample = (time: Double, value: Double)
 
-    public func update(sample: Double, time: Double) -> Double {
-        let ema: Double
-        if let prevTime {
-            let deltaTime = time - prevTime
+    public private(set) var exponentialMovingAverage: Double = 0
+    private let alpha: Double
+    private var lastSample: Sample?
+
+    public init(alpha: Double = 0.2) {
+        self.alpha = alpha
+    }
+
+    @discardableResult
+    public mutating func update(time: Double, value: Double) -> Double {
+        let newMovingAverage: Double
+        if let lastSample {
+            let deltaTime = time - lastSample.time
             let a = deltaTime / alpha
             let u = exp(a * -1)
             let v = (1 - u) / a
-            ema = (u * emaPrev) + ((v - u) * prevSample) + ((1 - v) * sample)
+            newMovingAverage = (u * exponentialMovingAverage) + ((v - u) * lastSample.value) + ((1 - v) * value)
         }
         else {
-            ema = sample
+            newMovingAverage = value
         }
-        prevSample = sample
-        prevTime = time
-        emaPrev = ema
-        return ema
+        lastSample = (time: time, value: value)
+        exponentialMovingAverage = newMovingAverage
+        return exponentialMovingAverage
     }
-}
-
-public func exponentialMovingAverageIrregular() -> (_ sample: Double, _ time: Double) -> Double {
-    ExponentialMovingAverageIrregular().update
 }
