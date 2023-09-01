@@ -170,18 +170,6 @@ public extension Path {
         }
     }
 
-    @discardableResult
-    mutating func add(curve: BezierCurve) -> Path {
-        switch curve.order {
-        case .cubic:
-            addCurve(to: curve.end, control1: curve.controls[0], control2: curve.controls[1])
-        case .quadratic:
-            addQuadCurve(to: curve.end, control: curve.controls[0])
-        default:
-            assertionFailure("Unsupported bezier curve order.")
-        }
-        return self
-    }
 }
 
 public extension Path {

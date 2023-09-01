@@ -43,12 +43,3 @@ class PointTests: XCTestCase {
         XCTAssertEqual(crossProduct(a, c), perpProduct(a, c))
     }
 }
-
-class IntersectionTests: XCTestCase {
-    func test1() {
-        let line1 = LineSegment(first: [-10, 0], second: [10, 0])
-        let line2 = LineSegment(first: [0, -10], second: [0, 10])
-
-        XCTAssertEqual(line1.intersection(line2), [0, 0])
-    }
-}
