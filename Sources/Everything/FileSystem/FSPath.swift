@@ -502,64 +502,6 @@ public extension FSPath {
     }
 }
 
-// MARK: Deprecated but hanging around!
-
-@available(*, deprecated, message: "Rewrite this as FSPath.open() or FSPath.content.data or use the async .lines, .bytes")
-public extension FSPath {
-    var data: Data {
-        get throws {
-            try Data(contentsOf: url)
-        }
-    }
-
-    var sha256: SHA256Digest {
-        get throws {
-            SHA256.hash(data: try data)
-        }
-    }
-}
-
-public extension FSPath {
-    @available(*, deprecated, message: "Rewrite this with better otions")
-    func createFile() throws {
-        if FileManager.default.createFile(atPath: path, contents: nil, attributes: nil) == false {
-            throw GeneralError.generic("Could not create file")
-        }
-    }
-
-    @available(*, deprecated, message: "Rewrite this with better otions")
-    func read() throws -> String {
-        try String(contentsOf: url)
-    }
-
-    @available(*, deprecated, message: "Rewrite this with better otions")
-    func write(_ string: String, encoding: String.Encoding = .utf8) throws {
-        try string.write(toFile: path, atomically: true, encoding: encoding)
-    }
-}
-
-@available(*, deprecated, message: "Better if we exposed a 'directoryContents'")
-extension FSPath: Sequence {
-    public class Iterator: IteratorProtocol {
-        let enumerator: NSEnumerator
-
-        init(path: FSPath) {
-            enumerator = FileManager().enumerator(at: path.url, includingPropertiesForKeys: nil, options: [.skipsSubdirectoryDescendants, .skipsPackageDescendants], errorHandler: nil)!
-        }
-
-        public func next() -> FSPath? {
-            guard let url = enumerator.nextObject() as? URL else {
-                return nil
-            }
-            return FSPath(url)
-        }
-    }
-
-    public func makeIterator() -> Iterator {
-        Iterator(path: self)
-    }
-}
-
 public extension FSPath {
     var displayName: String {
         FileManager().displayName(atPath: path)
