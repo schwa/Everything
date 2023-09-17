@@ -1,6 +1,5 @@
 import Foundation
 
-// @available(*, deprecated, message: "Work in progress. Code not fully tested or implemented yet.")
 public struct BitSet {
     public private(set) var count: Int
 
