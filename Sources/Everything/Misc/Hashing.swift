@@ -6,7 +6,6 @@ internal extension Int {
     }
 }
 
-@available(*, deprecated, message: "Recommend you do not use. Use Hashable instead.")
 public func hash_combine(_ lhs: Int, _ rhs: Int) -> Int {
     // 0x9e3779b9
     // http://stackoverflow.com/questions/5889238/why-is-xor-the-default-way-to-combine-hashes#5889254

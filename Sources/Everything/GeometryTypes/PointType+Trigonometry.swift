@@ -100,11 +100,6 @@ public func perpProduct<Point: PointType>(_ lhs: Point, _ rhs: Point) -> Point.S
     lhs.x * rhs.y - lhs.y * rhs.x
 }
 
-@available(*, deprecated, message: "Replace with member")
-internal func atan2(point: CGPoint) -> CGFloat { // (-M_PI, M_PI]
-    atan2(point.y, point.x)
-}
-
 /// Return true if a, b, and c all lie on the same line.
 public func collinear<T>(_ a: T, _ b: T, _ c: T) -> Bool where T: PointType, T.Scalar: FuzzyEquatable {
     let lhs = (b.x - a.x) * (c.y - a.y)

@@ -87,11 +87,6 @@ public extension PointType {
 }
 
 public extension PointType {
-    @available(*, deprecated, message: "Use Point(_ size: Size)")
-    init<Size: SizeType>(size: Size) where Scalar == Size.Scalar {
-        self.init(x: size.width, y: size.height)
-    }
-
     init<Size: SizeType>(_ size: Size) where Scalar == Size.Scalar {
         self.init(x: size.width, y: size.height)
     }
