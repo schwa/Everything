@@ -18,7 +18,8 @@ import Foundation
  helper.getAssociatedValueForObject(object) // nil
  ```
  */
-public class AssociatedObjectHelper<T> {
+@available(*, deprecated, message: "Deprecated")
+public final class AssociatedObjectHelper<T> {
     public let policy: objc_AssociationPolicy
 
     public init(atomic: Bool = true) {

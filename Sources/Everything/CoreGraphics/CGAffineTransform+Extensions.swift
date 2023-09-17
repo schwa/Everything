@@ -7,7 +7,7 @@ public extension CGAffineTransform {
     init(transforms: [CGAffineTransform]) {
         var current = CGAffineTransform.identity
         for transform in transforms {
-            current = current.concat(other: transform)
+            current = current * transform
         }
         self = current
     }
@@ -21,8 +21,8 @@ public extension CGAffineTransform {
             let scale = to2.distance(to: to1) / from2.distance(to: from1)
             let angle1 = (to2 - to1).angle, angle2 = (from2 - from1).angle
             self = CGAffineTransform(translation: to1 - from1)
-                + CGAffineTransform(scale: scale, origin: to1)
-                + CGAffineTransform(rotation: angle1 - angle2, origin: to1)
+                * CGAffineTransform(scale: scale, origin: to1)
+                * CGAffineTransform(rotation: angle1 - angle2, origin: to1)
         }
     }
 }

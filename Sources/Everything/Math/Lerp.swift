@@ -126,3 +126,7 @@ public func smootherstep<T>(from edge0: T, to edge1: T, by x: T) -> T where T: F
     let p3 = (x * p2 + 10)
     return p1 * p3
 }
+
+public func inverseLerp(from lowerBound: Float, to upperBound: Float, by value: Float) -> Float {
+    (value - lowerBound) / (upperBound - lowerBound)
+}

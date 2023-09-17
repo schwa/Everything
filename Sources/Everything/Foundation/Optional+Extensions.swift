@@ -20,3 +20,19 @@ public extension Optional {
         }
     }
 }
+
+public extension Optional where Wrapped: Collection {
+    func nilify() -> Wrapped? {
+        switch self {
+        case .some(let value):
+            if value.isEmpty {
+                return nil
+            }
+            else {
+                return value
+            }
+        case .none:
+            return nil
+        }
+    }
+}

@@ -1,3 +1,5 @@
+import CoreGraphics
+
 extension Int: ScalarType {
 }
 
@@ -177,5 +179,17 @@ public extension IntPoint {
 public extension IntSize {
     init(_ v: SIMD2<Float>) {
         self = IntSize(Int(v.x), Int(v.y))
+    }
+}
+
+public extension IntSize {
+    func contains(_ point: IntPoint) -> Bool {
+        point.x >= 0 && point.x < width && point.y >= 0 && point.y < height
+    }
+}
+
+public extension CGSize {
+    init(_ size: IntSize) {
+        self = CGSize(width: CGFloat(size.width), height: CGFloat(size.height))
     }
 }

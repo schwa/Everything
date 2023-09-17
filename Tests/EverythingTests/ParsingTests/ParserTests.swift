@@ -1,6 +1,7 @@
 @testable import Everything
 import XCTest
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 class ParserTests: XCTestCase {
     func testDelimitedList() {
         let identifier = identifierValue()

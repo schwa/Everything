@@ -12,6 +12,7 @@ import Foundation
 // ?()              applies a filter (script) expression.
 // ()               script expression, using the underlying script engine.
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class JSONPath {
     public enum Error: Swift.Error {
         case unknown
@@ -67,6 +68,7 @@ open class JSONPath {
 
 // MARK: -
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public extension JSONPath {
     func evaluate<T>(_ parameter: AnyObject) throws -> [T] {
         // TODO: what about other SequenceTypes
@@ -85,6 +87,7 @@ public extension JSONPath {
 
 // MARK: -
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class Evaluator {
     let type: String
     let parameter: Any
@@ -97,6 +100,7 @@ open class Evaluator {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 extension Evaluator: CustomStringConvertible {
     public var description: String {
         "Evaluator(\(type), \(parameter))"
@@ -106,6 +110,7 @@ extension Evaluator: CustomStringConvertible {
 // MARK: -
 
 // swiftlint:disable:next closure_body_length
+@available(*, deprecated, message: "Deprecated. Removing.")
 private let parser: Element = {
     let DOLLAR = Literal("$").makeStripped()
     let LBRACKET = Literal("[").makeStripped()
@@ -168,6 +173,7 @@ private let parser: Element = {
 
 // MARK: -
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 private func wildcard(_ value: AnyObject) throws -> AnyObject? {
     switch value {
     case let dictionary as [String: AnyObject]:
@@ -179,6 +185,7 @@ private func wildcard(_ value: AnyObject) throws -> AnyObject? {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 private func lookup(_ key: String, value: AnyObject) throws -> AnyObject? {
     switch value {
     case let dictionary as [String: AnyObject]:
@@ -190,6 +197,7 @@ private func lookup(_ key: String, value: AnyObject) throws -> AnyObject? {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 private func lookup(_ keys: [String], value: AnyObject) throws -> AnyObject? {
     let values = try keys.map { (key: String) -> AnyObject in
         guard let value = try lookup(key, value: value) else {
@@ -200,10 +208,12 @@ private func lookup(_ keys: [String], value: AnyObject) throws -> AnyObject? {
     return values as AnyObject?
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 private func lookup(_ key: String, value: [String: AnyObject]) throws -> AnyObject? {
     value[key]
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 private func lookup(_ key: String, value: [AnyObject]) throws -> AnyObject? {
     let values: [AnyObject] = try value.map { value in
         guard let result = try lookup(key, value: value) else {
@@ -214,6 +224,7 @@ private func lookup(_ key: String, value: [AnyObject]) throws -> AnyObject? {
     return values as AnyObject?
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 private func lookup(_ index: Int, value: AnyObject) throws -> AnyObject? {
     switch value {
     case let array as [AnyObject]:

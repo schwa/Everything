@@ -222,3 +222,87 @@ public struct PairsIterator<Base>: IteratorProtocol where Base: Collection {
         return (first, second)
     }
 }
+
+public extension Array {
+    func extended(with element: Element, count: Int) -> Self {
+        self + repeatElement(element, count: count - self.count)
+    }
+
+    func extended(with element: Element?, count: Int) -> [Element?] {
+        self + repeatElement(element, count: count - self.count)
+    }
+}
+
+public extension Collection {
+    func extended(count: Int) -> [Element?] {
+        let extra = count - self.count
+        return map { Optional($0) } + repeatElement(nil, count: extra)
+    }
+}
+
+public extension Collection where Element: Identifiable {
+    func first(identifiedBy id: Element.ID) -> Element? {
+        first { $0.id == id }
+    }
+
+    func firstIndex(identifiedBy id: Element.ID) -> Index? {
+        firstIndex { $0.id == id }
+    }
+}
+
+public extension Array {
+    mutating func mutate(_ block: (inout Element) throws -> Void) rethrows {
+        try indexed().forEach { index, element in
+            var element = element
+            try block(&element)
+            self[index] = element
+        }
+    }
+
+    func mutated(_ block: (inout Element) throws -> Void) rethrows -> [Element] {
+        try map { element in
+            var element = element
+            try block(&element)
+            return element
+        }
+    }
+}
+
+public extension OptionSet {
+    static func | (lhs: Self, rhs: Self) -> Self {
+        lhs.union(rhs)
+    }
+}
+
+public extension Collection {
+    func counted() -> Self {
+        print("\(count)")
+        return self
+    }
+}
+
+public extension Sequence<UInt8> {
+    // djb2 - http://www.cse.yorku.ca/~oz/hash.html
+    func djb2Hash() -> UInt {
+        var hash: UInt = 5381
+        for c in self {
+            let c = UInt(c)
+            hash = ((hash << 5) &+ hash) &+ c
+        }
+        return hash
+    }
+}
+
+public extension Sequence {
+    func cast <T>(to: T.Type) -> [T?] {
+        compactMap { $0 as? T }
+    }
+}
+
+public extension Array where Element == UInt8 {
+    mutating func append <Other>(contentsOf bytes: Other, alignment: Int) where Other: Sequence, Other.Element == UInt8 {
+        let alignedPosition = align(offset: count, alignment: alignment)
+        append(contentsOf: Array(repeating: 0, count: alignedPosition - count))
+        append(contentsOf: bytes)
+    }
+}

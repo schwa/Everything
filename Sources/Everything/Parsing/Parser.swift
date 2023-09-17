@@ -4,6 +4,7 @@ import Foundation
 
 public typealias Value = Any
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public struct ParsingError: Swift.Error {
     public let string: String
     public init(_ string: String) {
@@ -11,6 +12,7 @@ public struct ParsingError: Swift.Error {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public struct ParsingOptions: OptionSet {
     public let rawValue: Int
     public init(rawValue: Int) {
@@ -22,6 +24,7 @@ public struct ParsingOptions: OptionSet {
     public static let disallowStripping = ParsingOptions(rawValue: 0x100)
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class ParsingContext {
     public let scanner: YAScanner
     public let options: ParsingOptions
@@ -32,6 +35,7 @@ open class ParsingContext {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public enum Parsing {
     public typealias Converter = (Value) throws -> Value?
     public typealias Action = (Value) throws -> Void
@@ -39,12 +43,14 @@ public enum Parsing {
 
 // MARK: Protocols
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public protocol ContainerElement {
     var subelements: [Element] { get }
 }
 
 // MARK: Element
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class Element {
     public init() {}
 
@@ -85,12 +91,14 @@ open class Element {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 extension Element: CustomStringConvertible {
     public var description: String {
         "\(type(of: self))(id: \(String(describing: id)))"
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public extension Element {
     func setID(_ id: String) -> Element {
         self.id = id
@@ -120,6 +128,7 @@ public extension Element {
 
 // MARK: Literal
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class Literal: Element {
     public let value: String
 
@@ -138,6 +147,7 @@ open class Literal: Element {
 
 // MARK: Literal
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class Pattern: Element {
     open var expression: RegularExpression!
 
@@ -157,6 +167,7 @@ open class Pattern: Element {
 
 // MARK: Value
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class ScannedValue: Element {
     public let scan: (_ scanner: YAScanner) throws -> Value?
 
@@ -172,6 +183,7 @@ open class ScannedValue: Element {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func DoubleValue() -> ScannedValue {
     ScannedValue { scanner in
         let result: Double? = scanner.scan()
@@ -179,6 +191,7 @@ public func DoubleValue() -> ScannedValue {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func IntValue() -> ScannedValue {
     ScannedValue { scanner in
         let result: Int? = scanner.scan()
@@ -186,6 +199,7 @@ public func IntValue() -> ScannedValue {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func identifierValue() -> ScannedValue {
     ScannedValue { scanner in
         let result = try scanner.scan(regularExpression: "^[A-Za-z_]+")
@@ -193,6 +207,7 @@ public func identifierValue() -> ScannedValue {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func patternValue(_ pattern: String) -> ScannedValue {
     ScannedValue { scanner in
         let result = try scanner.scan(regularExpression: pattern)
@@ -202,6 +217,7 @@ public func patternValue(_ pattern: String) -> ScannedValue {
 
 // MARK: Range
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class RangeOf: Element {
     public let min: Int?
     public let max: Int?
@@ -248,6 +264,7 @@ open class RangeOf: Element {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 extension RangeOf: ContainerElement {
     public var subelements: [Element] {
         [subelement]
@@ -256,17 +273,20 @@ extension RangeOf: ContainerElement {
 
 // MARK: -
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func zeroOrOne(_ subelement: Element) -> RangeOf {
     let rangeOf = RangeOf(min: 0, max: 1, subelement: subelement)
     rangeOf.flatten = true
     return rangeOf
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func oneOrMore(_ subelement: Element) -> RangeOf {
     let rangeOf = RangeOf(min: 1, max: nil, subelement: subelement)
     return rangeOf
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public func zeroOrMore(_ subelement: Element) -> RangeOf {
     let rangeOf = RangeOf(min: 0, max: nil, subelement: subelement)
     return rangeOf
@@ -274,6 +294,7 @@ public func zeroOrMore(_ subelement: Element) -> RangeOf {
 
 // MARK: OneOf
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class OneOf: Element {
     public let subelements: [Element]
 
@@ -293,10 +314,12 @@ open class OneOf: Element {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 extension OneOf: ContainerElement {}
 
 // MARK: Compound
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class Compound: Element {
     public let subelements: [Element]
 
@@ -347,10 +370,12 @@ open class Compound: Element {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 extension Compound: ContainerElement {}
 
 // MARK: AtEnd
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class AtEnd: Element {
     override open func parse(_ context: ParsingContext) throws -> Value? {
         if context.scanner.atEnd {
@@ -362,10 +387,12 @@ open class AtEnd: Element {
     }
 }
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public let atEnd = AtEnd()
 
 // MARK: Delimited List
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 open class DelimitedList: Element {
     let subelement: Element
     let min: Int
@@ -416,6 +443,7 @@ open class DelimitedList: Element {
 
 // MARK: Covenience operators
 
+@available(*, deprecated, message: "Deprecated. Removing.")
 public extension Element {
     static func | (lhs: Element, rhs: Element) -> OneOf {
         let result: OneOf

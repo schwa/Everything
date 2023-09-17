@@ -20,6 +20,7 @@ func XCTAssertThrows(_ block: () throws -> Void) {
     XCTAssertTrue(false)
 }
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 class ScannerTests: XCTestCase {
     func testScanSimpleString() {
         let scanner = YAScanner(string: "Hello world")

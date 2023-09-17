@@ -1,5 +1,6 @@
 import Foundation
 
+@available(*, deprecated, message: "Use Swift Regex")
 public struct RegularExpression {
     public let pattern: String
     public let expression: NSRegularExpression
@@ -77,6 +78,7 @@ public struct RegularExpression {
     }
 }
 
+@available(*, deprecated, message: "Use Swift Regex")
 public extension RegularExpression {
     static func ~= (pattern: RegularExpression, value: String) -> Bool {
         let match = pattern.search(value)
@@ -84,6 +86,7 @@ public extension RegularExpression {
     }
 }
 
+@available(*, deprecated, message: "Use Swift Regex")
 public extension NSTextCheckingResult {
     func namedGroups(in string: String, names: [String]) -> [String: String] {
         names.reduce(into: [:]) { dictionary, name in
@@ -96,6 +99,7 @@ public extension NSTextCheckingResult {
     }
 }
 
+@available(*, deprecated, message: "Use Swift Regex")
 public extension NSRegularExpression {
     func firstMatch(in string: String, options: NSRegularExpression.MatchingOptions = [], range: Range<String.Index>? = nil) -> NSTextCheckingResult? {
         let nsRange: NSRange
@@ -106,5 +110,28 @@ public extension NSRegularExpression {
             nsRange = NSRange(string.startIndex ..< string.endIndex, in: string)
         }
         return firstMatch(in: string, options: options, range: nsRange)
+    }
+}
+
+@available(*, deprecated, message: "Use Swift Regex")
+public extension RegularExpression.Match {
+    struct CaptureGroups {
+        public let match: RegularExpression.Match
+
+        public subscript(index: Int) -> String {
+            let range = match.result.range(at: index)
+            let r2 = Range(range, in: match.string)!
+            return String(match.string[r2])
+        }
+
+        public subscript(name: String) -> String {
+            let range = match.result.range(withName: name)
+            let r2 = Range(range, in: match.string)!
+            return String(match.string[r2])
+        }
+    }
+
+    var groups: CaptureGroups {
+        CaptureGroups(match: self)
     }
 }

@@ -52,12 +52,6 @@ extension CharacterSet {
     }
 }
 
-public extension CharacterSet {
-    static func ~= (lhs: CharacterSet, rhs: Character) -> Bool {
-        lhs.contains(rhs.unicodeScalars.first!)
-    }
-}
-
 public extension Character {
     static let escape = Character("\u{1B}")
 }
@@ -67,5 +61,17 @@ public extension String.Encoding {
         var encoding: String.Encoding = .ascii
         _ = try String(contentsOf: url, usedEncoding: &encoding)
         self = encoding
+    }
+}
+
+public extension Character {
+    static func random(in set: String) -> Character {
+        set.randomElement()!
+    }
+}
+
+public extension Character {
+    init(utf8: UInt8) {
+        self = Character(UnicodeScalar(utf8))
     }
 }

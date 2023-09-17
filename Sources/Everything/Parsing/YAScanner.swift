@@ -2,7 +2,7 @@ import CoreGraphics
 import Foundation
 
 // TODO: Deprecate
-// @available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 open class YAScanner: IteratorProtocol {
     public typealias Element = Character
 
@@ -67,6 +67,7 @@ open class YAScanner: IteratorProtocol {
 
 // MARK: SequenceType
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 extension YAScanner: Sequence {
     public typealias Iterator = YAScanner
     public func makeIterator() -> Iterator {
@@ -76,6 +77,7 @@ extension YAScanner: Sequence {
 
 // MARK: CustomStringConvertible
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 extension YAScanner: CustomStringConvertible {
     public var description: String {
         let prefix = String(characters.prefix(upTo: location))
@@ -86,6 +88,7 @@ extension YAScanner: CustomStringConvertible {
 
 // MARK: Transactions
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 public extension YAScanner {
     func with(closure: () throws -> Bool) rethrows -> Bool {
         let savedLocation = location
@@ -108,6 +111,7 @@ public extension YAScanner {
 
 // MARK: Primitive Types
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 public extension YAScanner {
     func scan(string: String) -> Bool {
         assert(string.isEmpty == false)
@@ -226,6 +230,7 @@ public extension YAScanner {
 
 // MARK: Regular Expressions
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 public extension YAScanner {
     func scan(_ expression: RegularExpression) -> String? {
         with {
@@ -248,6 +253,7 @@ public extension YAScanner {
 
 // MARK: CGFloat
 
+@available(*, deprecated, message: "Use Scanner or CollectionScanner instead?")
 public extension YAScanner {
     func scan() -> CGFloat? {
         guard let double: Double = scan() else {

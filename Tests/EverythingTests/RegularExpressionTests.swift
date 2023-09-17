@@ -1,6 +1,7 @@
 @testable import Everything
 import XCTest
 
+@available(*, deprecated, message: "Deprecated")
 class RegularExpressionTests: XCTestCase {
     func testExample1() {
         let regex = try! RegularExpression("[a-z]+")
