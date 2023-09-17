@@ -7,7 +7,7 @@ public extension CGAffineTransform {
     init(transforms: [CGAffineTransform]) {
         var current = CGAffineTransform.identity
         for transform in transforms {
-            current = current * transform
+            current *= transform
         }
         self = current
     }
