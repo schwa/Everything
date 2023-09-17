@@ -14,6 +14,7 @@ public func equal(_ lhs: Double, _ rhs: Double, accuracy: Double) -> Bool {
 
 // MARK: Fuzzy equality
 
+@available(*, deprecated, message: "Use https://github.com/schwa/ApproximateEquality")
 public protocol FuzzyEquatable {
     static func ==% (lhs: Self, rhs: Self) -> Bool
 }
@@ -25,12 +26,14 @@ infix operator ==%: ComparisonPrecedence
 infix operator !=%: ComparisonPrecedence
 
 // swiftlint:disable:next static_operator
+@available(*, deprecated, message: "Use https://github.com/schwa/ApproximateEquality")
 public func !=% <T: FuzzyEquatable>(lhs: T, rhs: T) -> Bool {
     !(lhs ==% rhs)
 }
 
 // MARK: Float
 
+@available(*, deprecated, message: "Use https://github.com/schwa/ApproximateEquality")
 extension Float: FuzzyEquatable {
     public static func ==% (lhs: Float, rhs: Float) -> Bool {
         equal(lhs, rhs, accuracy: .ulpOfOne)
@@ -39,6 +42,7 @@ extension Float: FuzzyEquatable {
 
 // MARK: Double
 
+@available(*, deprecated, message: "Use https://github.com/schwa/ApproximateEquality")
 extension Double: FuzzyEquatable {
     public static func ==% (lhs: Double, rhs: Double) -> Bool {
         equal(lhs, rhs, accuracy: .ulpOfOne)
@@ -47,6 +51,7 @@ extension Double: FuzzyEquatable {
 
 // MARK: CGFloat
 
+@available(*, deprecated, message: "Use https://github.com/schwa/ApproximateEquality")
 extension CGFloat: FuzzyEquatable {
     public static func ==% (lhs: CGFloat, rhs: CGFloat) -> Bool {
         equal(lhs, rhs, accuracy: .ulpOfOne)
@@ -55,6 +60,7 @@ extension CGFloat: FuzzyEquatable {
 
 // MARK: CGPoint
 
+@available(*, deprecated, message: "Use https://github.com/schwa/ApproximateEquality")
 extension CGPoint: FuzzyEquatable {
     public static func ==% (lhs: CGPoint, rhs: CGPoint) -> Bool {
         lhs.x ==% rhs.x && lhs.y ==% rhs.y
