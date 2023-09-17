@@ -9,15 +9,6 @@ public extension Binding {
         }
     }
 
-    @available(*, deprecated, message: "Deprecated. Use unsafeRebound")
-    func unwrappingRebound<T>() -> Binding<T> where Value == T? {
-        Binding<T>(get: {
-            self.wrappedValue!
-        }, set: {
-            self.wrappedValue = $0
-        })
-    }
-
     func unwrappingRebound<T>(default: @escaping () -> T) -> Binding<T> where Value == T? {
         Binding<T>(get: {
             self.wrappedValue ?? `default`()
