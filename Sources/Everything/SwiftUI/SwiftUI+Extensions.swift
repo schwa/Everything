@@ -2,6 +2,7 @@
 
 import Combine
 import SwiftUI
+import Geometry
 
 public extension View {
     func eraseToAnyView() -> AnyView {

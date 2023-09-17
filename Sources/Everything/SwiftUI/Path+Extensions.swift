@@ -1,4 +1,5 @@
 import SwiftUI
+import Geometry
 
 public struct PlaceholderShape: Shape {
     public init() {
@@ -24,8 +25,8 @@ public extension Path {
     mutating func addSCurve(from start: CGPoint, to end: CGPoint) {
         let mid = (end + start) * 0.5
 
-        let c1 = CGPoint(mid.x, start.y)
-        let c2 = CGPoint(mid.x, end.y)
+        let c1 = CGPoint(x: mid.x, y: start.y)
+        let c2 = CGPoint(x: mid.x, y: end.y)
 
         move(to: start)
         addQuadCurve(to: mid, control: c1)

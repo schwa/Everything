@@ -164,6 +164,7 @@ public extension IteratorProtocol {
 
 // MARK: -
 
+@available(*, deprecated, message: "Too specialised")
 public struct Cursor<Iterator: IteratorProtocol>: IteratorProtocol {
     public private(set) var iterator: Iterator
     public private(set) var current: Iterator.Element?
@@ -252,7 +253,7 @@ public extension Collection where Element: Identifiable {
 
 public extension Array {
     mutating func mutate(_ block: (inout Element) throws -> Void) rethrows {
-        try indexed().forEach { index, element in
+        try enumerated().forEach { index, element in
             var element = element
             try block(&element)
             self[index] = element

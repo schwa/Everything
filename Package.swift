@@ -16,16 +16,17 @@ let package = Package(
         .library(name: "EverythingUnsafeConformances", targets: ["EverythingUnsafeConformances"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", from: "0.1.0"),
         .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
+        .package(path: "/Users/schwa/Projects/SwiftGraphics")
     ],
     targets: [
         .target(
             name: "Everything",
             dependencies: [
                 "EverythingHelpers",
-                "CoreGraphicsGeometrySupport",
-                .product(name: "Algorithms", package: "swift-algorithms")
+                .product(name: "Algorithms", package: "swift-algorithms"),
+                .product(name: "Geometry", package: "SwiftGraphics"),
+                .product(name: "CoreGraphicsSupport", package: "SwiftGraphics"),
             ],
             swiftSettings:
             unsafeFlags()
