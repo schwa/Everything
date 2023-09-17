@@ -10,9 +10,7 @@
         }
 
         func test2() throws {
-            XCTAssertThrows {
-                _ = try Process.checkOutputString(launchPath: "/usr/bin/false", arguments: [])
-            }
+            XCTAssertThrowsError(try Process.checkOutputString(launchPath: "/usr/bin/false", arguments: []))
         }
 
         func test4() throws {
