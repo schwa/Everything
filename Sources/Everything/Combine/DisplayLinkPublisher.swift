@@ -126,7 +126,6 @@ public extension CFTimeInterval {
 // DisplayLink
 @available(macOS 14, iOS 15, tvOS 16, *)
 public struct DisplayLink {
-
     // TODO: Get rid of publisher and just use a Async* api directly.
 
     public let displayLinkPublisher: DisplayLinkPublisher
@@ -144,7 +143,7 @@ public struct DisplayLink {
 
 @available(macOS 14, iOS 15, tvOS 16, *)
 public struct DisplayLinkKey: EnvironmentKey {
-    public static var defaultValue: DisplayLink? = nil
+    public static var defaultValue: DisplayLink?
 }
 
 @available(macOS 14, iOS 15, tvOS 16, *)

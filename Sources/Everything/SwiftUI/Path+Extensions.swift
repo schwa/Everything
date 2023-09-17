@@ -169,7 +169,6 @@ public extension Path {
             closeSubpath()
         }
     }
-
 }
 
 public extension Path {

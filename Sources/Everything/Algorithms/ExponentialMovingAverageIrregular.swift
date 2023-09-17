@@ -3,7 +3,6 @@ import Foundation
 // TODO: This could just be a function that returns a closure.
 // https://oroboro.com/irregular-ema/
 public struct ExponentialMovingAverageIrregular {
-
     private typealias Sample = (time: Double, value: Double)
 
     public private(set) var exponentialMovingAverage: Double = 0
