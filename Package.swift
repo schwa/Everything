@@ -17,7 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
-        .package(path: "/Users/schwa/Projects/SwiftGraphics")
+        .package(url: "https://github.com/schwa/SwiftGraphics", branch: "jwight/develop"),
     ],
     targets: [
         .target(
