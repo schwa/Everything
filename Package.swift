@@ -27,21 +27,10 @@ let package = Package(
                 "EverythingHelpers",
                 .product(name: "Algorithms", package: "swift-algorithms"),
                 .product(name: "Geometry", package: "SwiftGraphics"),
-                .product(name: "CoreGraphicsSupport", package: "SwiftGraphics"),
-            ],
-            swiftSettings:
-            unsafeFlags()
+            ]
         ),
         .target(name: "EverythingHelpers"),
         .target(name: "EverythingUnsafeConformances"),
         .testTarget(name: "EverythingTests", dependencies: ["Everything"]),
     ]
 )
-
-func unsafeFlags() -> [PackageDescription.SwiftSetting] {
-    [
-    ]
-//    return [
-//        .unsafeFlags(["-Xfrontend", "-warn-concurrency", "-Xfrontend", "-enable-actor-data-race-checks"])
-//    ]
-}
