@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "Everything",
     platforms: [
-        .iOS(.v15),
+        .iOS(.v17),
         .macOS(.v14),
-        .macCatalyst(.v15),
-        .tvOS(.v16),
+        .macCatalyst(.v17),
+        .tvOS(.v17),
         .visionOS(.v1),
     ],
     products: [
@@ -17,7 +17,7 @@ let package = Package(
         .library(name: "EverythingUnsafeConformances", targets: ["EverythingUnsafeConformances"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.1.0"),
         .package(url: "https://github.com/schwa/SwiftGraphics", branch: "jwight/develop"),
     ],
     targets: [
