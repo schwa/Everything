@@ -5,10 +5,11 @@ import PackageDescription
 let package = Package(
     name: "Everything",
     platforms: [
-        .iOS(.v15),
+        .iOS(.v17),
         .macOS(.v14),
-        .macCatalyst(.v15),
-        .tvOS(.v16),
+        .macCatalyst(.v17),
+        .tvOS(.v17),
+        .visionOS(.v1),
     ],
     products: [
         .library(name: "Everything", targets: ["Everything"]),
@@ -16,30 +17,20 @@ let package = Package(
         .library(name: "EverythingUnsafeConformances", targets: ["EverythingUnsafeConformances"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/schwa/CoreGraphicsGeometrySupport", from: "0.1.0"),
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.1.0"),
+        .package(url: "https://github.com/schwa/SwiftGraphics", branch: "jwight/develop"),
     ],
     targets: [
         .target(
             name: "Everything",
             dependencies: [
                 "EverythingHelpers",
-                "CoreGraphicsGeometrySupport",
-                .product(name: "Algorithms", package: "swift-algorithms")
-            ],
-            swiftSettings:
-            unsafeFlags()
+                .product(name: "Algorithms", package: "swift-algorithms"),
+                .product(name: "Geometry", package: "SwiftGraphics"),
+            ]
         ),
         .target(name: "EverythingHelpers"),
         .target(name: "EverythingUnsafeConformances"),
         .testTarget(name: "EverythingTests", dependencies: ["Everything"]),
     ]
 )
-
-func unsafeFlags() -> [PackageDescription.SwiftSetting] {
-    [
-    ]
-//    return [
-//        .unsafeFlags(["-Xfrontend", "-warn-concurrency", "-Xfrontend", "-enable-actor-data-race-checks"])
-//    ]
-}

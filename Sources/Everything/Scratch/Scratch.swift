@@ -21,12 +21,6 @@ public struct WeakBox<Content> where Content: AnyObject {
 
 // TODO: Move
 
-public extension CGRect {
-    func unitPoint(_ p: CGPoint) -> CGPoint {
-        origin + CGPoint(size) * p
-    }
-}
-
 public extension UInt8 {
     init(character: Character) {
         assert(character.utf8.count == 1)
