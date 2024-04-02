@@ -1,5 +1,6 @@
 import SwiftUI
-import Geometry
+import CoreGraphics
+import CoreGraphicsSupport
 
 public struct PlaceholderShape: Shape {
     public init() {
@@ -174,7 +175,7 @@ public extension Path {
 
 public extension Path {
     init(_ rectSize: CGSize) {
-        self = Path(CGRect(size: rectSize))
+        self = Path(CGRect(origin: .zero, size: rectSize))
     }
 }
 

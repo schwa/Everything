@@ -2,7 +2,7 @@
 
 import Combine
 import SwiftUI
-import Geometry
+import CoreGraphicsSupport
 
 public extension View {
     func eraseToAnyView() -> AnyView {
@@ -167,7 +167,7 @@ public struct WorkInProgressView: View {
             context.fill(Path(vertices: [[0.0, 1], [1.0, 0.0], [1, 0.5], [0.5, 1]].map { $0 * CGPoint(tileSize) }), with: .color(colors.1))
         }
         Canvas { context, size in
-            context.fill(Path(size), with: .tiledImage(tile, sourceRect: CGRect(size: tileSize)))
+            context.fill(Path(size), with: .tiledImage(tile, sourceRect: CGRect(origin: .zero, size: tileSize)))
         }
     }
 }

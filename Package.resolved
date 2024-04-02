@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/schwa/SwiftGraphics",
       "state" : {
-        "branch" : "jwight/develop",
-        "revision" : "731010d1ac8ef22eb2f8f8b21eb1c4ceaad5c09f"
+        "revision" : "4301fd3dc5db0ac491a7cafb984e4e6b0eaf9305",
+        "version" : "0.0.1"
       }
     }
   ],
