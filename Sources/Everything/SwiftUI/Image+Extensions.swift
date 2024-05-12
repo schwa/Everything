@@ -35,7 +35,7 @@ public extension Image {
 public extension Image {
     init(cgImage: CGImage) {
 #if os(macOS)
-        let nsImage = NSImage(cgImage: cgImage)
+        let nsImage = NSImage(cgImage: cgImage, size: CGSize(width: cgImage.width, height: cgImage.height))
         self = Image(nsImage: nsImage)
 #else
         let uiImage = UIImage(cgImage: cgImage)

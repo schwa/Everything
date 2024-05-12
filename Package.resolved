@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "approximateequality",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/schwa/ApproximateEquality",
-      "state" : {
-        "revision" : "13ae17c1b1eb3bab0912bb29b264d3be2ea38115",
-        "version" : "0.2.1"
-      }
-    },
-    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms",
@@ -25,24 +16,6 @@
       "state" : {
         "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
         "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
-      "state" : {
-        "revision" : "74203046135342e4a4a627476dd6caf8b28fe11b",
-        "version" : "509.0.0"
-      }
-    },
-    {
-      "identity" : "swiftgraphics",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/schwa/SwiftGraphics",
-      "state" : {
-        "revision" : "4301fd3dc5db0ac491a7cafb984e4e6b0eaf9305",
-        "version" : "0.0.1"
       }
     }
   ],

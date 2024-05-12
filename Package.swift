@@ -18,7 +18,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-algorithms", from: "1.1.0"),
-        .package(url: "https://github.com/schwa/SwiftGraphics", from: "0.0.1"),
     ],
     targets: [
         .target(
@@ -26,7 +25,6 @@ let package = Package(
             dependencies: [
                 "EverythingHelpers",
                 .product(name: "Algorithms", package: "swift-algorithms"),
-                .product(name: "CoreGraphicsSupport", package: "SwiftGraphics"),
 
             ]
         ),
