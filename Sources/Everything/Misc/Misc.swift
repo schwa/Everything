@@ -34,3 +34,10 @@ public struct Platform: Hashable {
         }()
     #endif
 }
+
+public func cast<T>(_ value: Any, as: T.Type) throws -> T {
+    guard let value = value as? T else {
+        throw GeneralError.valueConversionFailure
+    }
+    return value
+}
