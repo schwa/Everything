@@ -5,7 +5,6 @@ import Foundation
     import AppKit
 #endif
 import CryptoKit
-import EverythingHelpers
 
 public struct FSPath: Equatable, Comparable, Hashable {
     public let path: String
@@ -478,9 +477,11 @@ extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral,
 
 public extension FSPath {
     init(fileDescriptor fd: Int32) throws {
+
+
         var buffer = [Int8](repeating: 0, count: Int(PATH_MAX))
         buffer.withUnsafeMutableBufferPointer { buffer in
-            if fcntl_FGETPATH(fd, buffer.baseAddress!) == -1 {
+            if fcntl(fd, F_GETPATH, buffer.baseAddress!) == -1 {
                 fatalError("fcntl_FGETPATH failed")
             }
         }

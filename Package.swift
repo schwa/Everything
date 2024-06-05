@@ -13,7 +13,6 @@ let package = Package(
     ],
     products: [
         .library(name: "Everything", targets: ["Everything"]),
-        .library(name: "EverythingHelpers", targets: ["EverythingHelpers"]),
         .library(name: "EverythingUnsafeConformances", targets: ["EverythingUnsafeConformances"]),
     ],
     dependencies: [
@@ -23,12 +22,10 @@ let package = Package(
         .target(
             name: "Everything",
             dependencies: [
-                "EverythingHelpers",
                 .product(name: "Algorithms", package: "swift-algorithms"),
 
             ]
         ),
-        .target(name: "EverythingHelpers"),
         .target(name: "EverythingUnsafeConformances"),
         .testTarget(name: "EverythingTests", dependencies: ["Everything"]),
     ]
