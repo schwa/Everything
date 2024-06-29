@@ -9,11 +9,9 @@ public extension CLGeocoder {
             self.geocodeAddressString(addressString) { placemarks, error in
                 if let placemarks {
                     future(.success(placemarks))
-                }
-                else if let error {
+                } else if let error {
                     future(.failure(error))
-                }
-                else {
+                } else {
                     unimplemented()
                 }
             }
@@ -26,11 +24,9 @@ public extension CLGeocoder {
             self.reverseGeocodeLocation(location) { placemarks, error in
                 if let placemarks {
                     future(.success(placemarks))
-                }
-                else if let error {
+                } else if let error {
                     future(.failure(error))
-                }
-                else {
+                } else {
                     unimplemented()
                 }
             }

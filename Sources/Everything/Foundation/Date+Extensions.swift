@@ -20,8 +20,7 @@ public extension Date {
     func startOfDay(in calendar: Calendar? = nil) -> Date {
         let calender = calendar ?? Calendar.current
         let components = calender.dateComponents([.era, .year, .month, .day, .timeZone], from: self)
-        let date = calender.date(from: components)!
-        return date
+        return calender.date(from: components)!
     }
 
     func addingDays(_ days: Int, in calendar: Calendar? = nil) -> Date {

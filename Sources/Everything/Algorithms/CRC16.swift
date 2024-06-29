@@ -24,7 +24,7 @@ public struct CRC16 {
         if crc == nil {
             crc = 0xFFFF
         }
-        crc = CRC16.accumulate(buffer, crc: crc)
+        crc = Self.accumulate(buffer, crc: crc)
     }
 }
 

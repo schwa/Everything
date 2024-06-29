@@ -6,16 +6,16 @@ import SwiftUI
  Then deeper in your code do this to automatically catch and handle errors
 
  struct MyView: View {
-     @Environment(\.errorHandler)
-     var errorHandler
+ @Environment(\.errorHandler)
+ var errorHandler
 
-     var body: some View {
-         Button("Maybe Fail") {
-             errorHandler {
-                 throw MyError.oops
-             }
-         }
-     }
+ var body: some View {
+ Button("Maybe Fail") {
+ errorHandler {
+ throw MyError.oops
+ }
+ }
+ }
  }
  */
 public struct ErrorHandler: Sendable {
@@ -28,8 +28,7 @@ public struct ErrorHandler: Sendable {
     public func callAsFunction<R>(_ block: @Sendable () throws -> R?) -> R? where R: Sendable {
         do {
             return try block()
-        }
-        catch {
+        } catch {
             handle(error: error)
             return nil
         }
@@ -38,8 +37,7 @@ public struct ErrorHandler: Sendable {
     public func callAsFunction<R>(_ block: @Sendable () async throws -> R?) async -> R? where R: Sendable {
         do {
             return try await block()
-        }
-        catch {
+        } catch {
             handle(error: error)
             return nil
         }
@@ -72,8 +70,8 @@ public struct ErrorHandlingModifier: ViewModifier {
 
     public func body(content: Content) -> some View {
         content.environment(\.errorHandler, ErrorHandler {
-            self.error = $0
-            self.isPresented = true
+            error = $0
+            isPresented = true
         })
         .alert(isPresented: $isPresented) {
             guard let error else {

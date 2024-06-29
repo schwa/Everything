@@ -9,12 +9,12 @@ public struct Directory: Codable, Hashable, Comparable {
 
     public init(path: String) {
         let path = FSPath(path: path)
-        self = Directory(path: path)
+        self = Self(path: path)
     }
 
     public init(url: URL) {
         let path = FSPath(url: url)
-        self = Directory(path: path)
+        self = Self(path: path)
     }
 
     public var url: URL {
@@ -25,11 +25,11 @@ public struct Directory: Codable, Hashable, Comparable {
         url.hash(into: &hasher)
     }
 
-    public static func == (lhs: Directory, rhs: Directory) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.url.path == rhs.url.path
     }
 
-    public static func < (lhs: Directory, rhs: Directory) -> Bool {
+    public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.url.path < rhs.url.path
     }
 
@@ -37,18 +37,17 @@ public struct Directory: Codable, Hashable, Comparable {
         path.exists
     }
 
-    public var subdirectories: [Directory] {
+    public var subdirectories: [Self] {
         do {
             return try FileManager().contentsOfDirectory(at: path.url, includingPropertiesForKeys: [.isDirectoryKey], options: [])
                 .filter {
                     let resourceValues = try $0.resourceValues(forKeys: [.isDirectoryKey])
                     return resourceValues.isDirectory ?? false
                 }
-                .map { url -> Directory in
-                    Directory(url: url)
+                .map { url -> Self in
+                    Self(url: url)
                 }
-        }
-        catch {
+        } catch {
             fatalError("\(error)")
         }
     }
@@ -150,7 +149,7 @@ public struct URLBookmark: Codable {
     }
 
     public init(path: FSPath) throws {
-        self = try URLBookmark(url: path.url)
+        self = try Self(url: path.url)
     }
 
     public func resolve() throws -> FSPath {

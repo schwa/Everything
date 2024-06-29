@@ -32,20 +32,21 @@ extension CompositeHash: Comparable where Element: Comparable {
             switch (lhs, rhs) {
             case (.none, .none):
                 fatalError("Should be impossible to be get here.")
+
             case (.some, .none):
                 return false
+
             case (.none, .some):
                 return true
+
             case (.some(let lhs), .some(let rhs)):
                 if lhs < rhs {
                     return true
                 }
-                else if lhs > rhs {
+                if lhs > rhs {
                     return false
                 }
-                else {
-                    continue
-                }
+                continue
             }
         }
         return false

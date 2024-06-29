@@ -21,4 +21,3 @@ public extension CharacterSet {
         lhs.contains(rhs.unicodeScalars.first!)
     }
 }
-

@@ -6,7 +6,7 @@ import Foundation
 public func breadth_first_search<Location: Hashable>(_ start: Location, goal: Location, neighbors: (Location) -> [Location]) -> [Location] {
     var frontier = [Location]()
     frontier.put(start)
-//    var came_from: [Location: Location!] = [start: nil]
+    //    var came_from: [Location: Location!] = [start: nil]
     var came_from: [Location: Location] = [:]
 
     while frontier.isEmpty == false {

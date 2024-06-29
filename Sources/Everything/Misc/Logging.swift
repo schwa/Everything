@@ -23,8 +23,7 @@ public func warning(_ closure: @autoclosure () -> Bool = false, _ message: @auto
     let logger = Logger()
     if let message = message() {
         logger.debug("\(message)")
-    }
-    else {
+    } else {
         logger.debug("Warning! \(file)#\(line)")
     }
 }

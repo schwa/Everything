@@ -2,7 +2,7 @@
 
 import Foundation
 #if os(macOS)
-    import AppKit
+import AppKit
 #endif
 import CryptoKit
 
@@ -22,15 +22,15 @@ public struct FSPath: Equatable, Comparable, Hashable {
         URL(fileURLWithPath: path)
     }
 
-    public var normalized: FSPath {
-        FSPath((path as NSString).expandingTildeInPath)
+    public var normalized: Self {
+        Self((path as NSString).expandingTildeInPath)
     }
 
-    public static func == (lhs: FSPath, rhs: FSPath) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.normalized.path == rhs.normalized.path
     }
 
-    public static func < (lhs: FSPath, rhs: FSPath) -> Bool {
+    public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.normalized.path < rhs.normalized.path
     }
 }
@@ -72,8 +72,8 @@ public extension FSPath {
         (path as NSString).pathComponents
     }
 
-//    var parents: [Path] {
-//    }
+    //    var parents: [Path] {
+    //    }
 
     var parent: FSPath? {
         FSPath((path as NSString).deletingLastPathComponent)
@@ -250,8 +250,7 @@ public struct FileAttributes {
     }
 
     public func getAttributes() throws -> [FileAttributeKey: Any] {
-        let attributes = try FileManager().attributesOfItem(atPath: path)
-        return attributes
+        try FileManager().attributesOfItem(atPath: path)
     }
 
     public func getAttribute<T>(key: FileAttributeKey) throws -> T {
@@ -268,21 +267,26 @@ public struct FileAttributes {
             switch type {
             case FileAttributeType.typeDirectory:
                 return .directory
+
             case FileAttributeType.typeRegular:
                 return .regular
+
             case FileAttributeType.typeSymbolicLink:
                 return .symbolicLink
+
             case FileAttributeType.typeSocket:
                 return .socket
+
             case FileAttributeType.typeCharacterSpecial:
                 return .characterSpecial
+
             case FileAttributeType.typeBlockSpecial:
                 return .blockSpecial
+
             default:
                 return .unknown
             }
-        }
-        catch {
+        } catch {
             return .unknown
         }
     }
@@ -338,9 +342,9 @@ public extension FSPath {
             closure(path)
         }
 
-//        if let mainError {
-//            throw mainError
-//        }
+        //        if let mainError {
+        //            throw mainError
+        //        }
     }
 }
 
@@ -404,8 +408,7 @@ public extension FSPath {
         return template.withUnsafeMutableBufferPointer { (buffer: inout UnsafeMutableBufferPointer<Int8>) -> FSPath in
             let pointer = mkdtemp(buffer.baseAddress)
             let pathString = String(validatingUTF8: pointer!)!
-            let path = FSPath(pathString)
-            return path
+            return FSPath(pathString)
         }
     }
 
@@ -466,19 +469,17 @@ extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral,
 }
 
 #if os(macOS)
-    public extension FSPath {
-        var icon: NSImage {
-            NSWorkspace.shared.icon(forFile: path)
-        }
+public extension FSPath {
+    var icon: NSImage {
+        NSWorkspace.shared.icon(forFile: path)
     }
+}
 #endif
 
 // MARK: -
 
 public extension FSPath {
     init(fileDescriptor fd: Int32) throws {
-
-
         var buffer = [Int8](repeating: 0, count: Int(PATH_MAX))
         buffer.withUnsafeMutableBufferPointer { buffer in
             if fcntl(fd, F_GETPATH, buffer.baseAddress!) == -1 {
@@ -495,8 +496,7 @@ public extension FSPath {
         if components.first == "/" {
             let s = components.dropFirst().joined(separator: "/")
             self = FSPath(path: "/" + s)
-        }
-        else {
+        } else {
             let s = components.joined(separator: "/")
             self = FSPath(path: s)
         }
@@ -512,9 +512,9 @@ public extension FSPath {
 // MARK: -
 
 public extension FSPath {
-#if os(macOS)
+    #if os(macOS)
     func reveal() {
         NSWorkspace.shared.selectFile(path, inFileViewerRootedAtPath: "")
     }
-#endif
+    #endif
 }

@@ -15,13 +15,13 @@ public class CoreLocationManager: NSObject, CLLocationManagerDelegate {
         return _location.eraseToAnyPublisher()
     }
 
-//    @Publisher var location2: CLLocation
+    //    @Publisher var location2: CLLocation
 
     override public init() {
         super.init()
         manager.delegate = self
         #if os(iOS) || os(tvOS)
-            manager.requestWhenInUseAuthorization()
+        manager.requestWhenInUseAuthorization()
         #endif
     }
 
@@ -54,10 +54,13 @@ public func hemisphere(for degrees: CLLocationDegrees, latlon: LatitudeLongitude
     switch (degrees >= 0, latlon) {
     case (true, .latitude):
         return .north
+
     case (false, .latitude):
         return .south
+
     case (true, .longitude):
         return .east
+
     case (false, .longitude):
         return .west
     }

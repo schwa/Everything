@@ -20,8 +20,7 @@ public func printColumnar <Target>(_ columns: [Any], headerRow: Bool = false, le
     func printCell(_ cell: (any StringProtocol)?, columnWidth: Int) {
         if let cell {
             print(cell + String(repeating: " ", count: columnWidth - cell.count), terminator: "", to: &target)
-        }
-        else {
+        } else {
             print(String(repeating: " ", count: columnWidth), terminator: "", to: &target)
         }
     }
@@ -40,7 +39,7 @@ public func printColumnar <Target>(_ columns: [Any], headerRow: Bool = false, le
     }
 
     func printDivider() {
-        //print(leadingSeparator + String(repeating: "-", count: columnWidths.reduce(0, +) + (columns.count - 1) * (fieldSeparator.count)) + trailingSeparator)
+        // print(leadingSeparator + String(repeating: "-", count: columnWidths.reduce(0, +) + (columns.count - 1) * (fieldSeparator.count)) + trailingSeparator)
         printRow(cells: columnWidths.map { String(repeating: "-", count: $0) })
     }
 

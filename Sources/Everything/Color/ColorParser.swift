@@ -14,11 +14,11 @@ public struct ColorParsingOptions: OptionSet {
         self.rawValue = rawValue
     }
 
-    public static let allowThreeDigitHex = ColorParsingOptions(rawValue: 0b00001)
-    public static let allowSixDititHex = ColorParsingOptions(rawValue: 0b00010)
-    public static let allowIntegerFunctional = ColorParsingOptions(rawValue: 0b00100)
-    public static let allowFloatFunctional = ColorParsingOptions(rawValue: 0b01000)
-    public static let allowKeyword = ColorParsingOptions(rawValue: 0b10000)
+    public static let allowThreeDigitHex = Self(rawValue: 0b00001)
+    public static let allowSixDititHex = Self(rawValue: 0b00010)
+    public static let allowIntegerFunctional = Self(rawValue: 0b00100)
+    public static let allowFloatFunctional = Self(rawValue: 0b01000)
+    public static let allowKeyword = Self(rawValue: 0b10000)
 
     public static let `default`: ColorParsingOptions = [allowThreeDigitHex, allowSixDititHex, allowIntegerFunctional, allowFloatFunctional, allowKeyword]
 }
@@ -61,6 +61,7 @@ public struct ColorParser {
                 }
                 assert(values.count == 3)
                 return C(red: values[0], green: values[1], blue: values[2])
+
             case 6:
                 let values = [0 ..< 2, 2 ..< 4, 4 ..< 6].map {
                     let a = string.index(string.startIndex, offsetBy: $0.lowerBound, limitedBy: string.endIndex)!
@@ -73,6 +74,7 @@ public struct ColorParser {
                 }
                 assert(values.count == 3)
                 return C(red: values[0], green: values[1], blue: values[2])
+
             default:
                 throw Error.generic
             }
@@ -276,5 +278,5 @@ let rawColors: [String: (UInt8, UInt8, UInt8)] = [
     "white": (255, 255, 255),
     "whitesmoke": (245, 245, 245),
     "yellow": (255, 255, 0),
-    "yellowgreen": (154, 205, 50),
+    "yellowgreen": (154, 205, 50)
 ]

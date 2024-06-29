@@ -69,12 +69,14 @@ public class BinaryOutputStream<Buffer>: OutputStream where Buffer: RangeReplace
                 throw GeneralError.valueConversionFailure
             }
             try write(bytes: data)
+
         case .nilTerminated:
             guard let data = value.data(using: stringEncoding, allowLossyConversion: allowLossyStringConversion) else {
                 throw GeneralError.valueConversionFailure
             }
             try write(bytes: data)
             try write(bytes: [UInt8(0)])
+
         case .lengthPrefixed:
             guard let data = value.data(using: stringEncoding, allowLossyConversion: allowLossyStringConversion) else {
                 throw GeneralError.valueConversionFailure
@@ -84,6 +86,7 @@ public class BinaryOutputStream<Buffer>: OutputStream where Buffer: RangeReplace
             }
             try write(bytes: [UInt8(data.count)])
             try write(bytes: data)
+
         case .custom(let custom):
             try custom(self, value)
         }

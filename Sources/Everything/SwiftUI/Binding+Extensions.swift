@@ -22,9 +22,7 @@ public extension Binding {
         if wrappedValue != nil {
             return try block(Binding<V> { wrappedValue! } set: { wrappedValue = $0 })
         }
-        else {
-            return nil
-        }
+        return nil
     }
 }
 
@@ -41,7 +39,7 @@ public extension Binding where Value == SwiftUI.Angle {
 public extension Binding where Value == CGColor {
     init(simd: Binding<SIMD3<Float>>, colorSpace: CGColorSpace) {
         self = .init(get: {
-            return CGColor(colorSpace: colorSpace, components: [CGFloat(simd.wrappedValue[0]), CGFloat(simd.wrappedValue[1]), CGFloat(simd.wrappedValue[2])])!
+            CGColor(colorSpace: colorSpace, components: [CGFloat(simd.wrappedValue[0]), CGFloat(simd.wrappedValue[1]), CGFloat(simd.wrappedValue[2])])!
         }, set: { newValue in
             let newValue = newValue.converted(to: colorSpace, intent: .defaultIntent, options: nil)!
             let components = newValue.components!
@@ -53,10 +51,9 @@ public extension Binding where Value == CGColor {
 public extension Binding where Value == Double {
     init <Other>(_ binding: Binding<Other>) where Other: BinaryFloatingPoint {
         self.init {
-            return Double(binding.wrappedValue)
+            Double(binding.wrappedValue)
         } set: { newValue in
             binding.wrappedValue = Other(newValue)
         }
     }
 }
-

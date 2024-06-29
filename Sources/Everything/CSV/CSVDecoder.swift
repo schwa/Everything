@@ -20,7 +20,7 @@ public struct CSVReader {
 
     public init(url: URL, lineEndings: LineEnding = .CRLF) throws {
         let data = try Data(contentsOf: url, options: .mappedIfSafe)
-        self = CSVReader(data: data, lineEndings: lineEndings)
+        self = Self(data: data, lineEndings: lineEndings)
         // TODO: Dont ignore BOM on other encodings
     }
 
@@ -29,8 +29,10 @@ public struct CSVReader {
         switch self.lineEndings {
         case .LF:
             lineEndings = [0x0A]
+
         case .CR:
             lineEndings = [0x0D]
+
         case .CRLF:
             lineEndings = [0x0D, 0x0A]
         }
@@ -102,14 +104,12 @@ public extension CollectionScanner {
                         if peek() == "\"" {
                             _ = scan(value: "\"")
                             field.append("\"")
-                        }
-                        else {
+                        } else {
                             fields.append(field)
                             break
                         }
                     }
-                }
-                else if let field = scanUpTo(value: ",").map(String.init) {
+                } else if let field = scanUpTo(value: ",").map(String.init) {
                     fields.append(field)
                 }
                 if scan(value: ",") {

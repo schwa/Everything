@@ -35,8 +35,10 @@ public struct CSVFormatter {
         switch options.quoteLevel {
         case .none:
             quote = false
+
         case .all, .nonnumeric:
             quote = true
+
         case .minimal:
             quote = field.contains {
                 specials.contains($0)
@@ -45,8 +47,7 @@ public struct CSVFormatter {
 
         if quote && options.doubleQuote {
             field = field.replacingOccurrences(of: options.quote, with: options.quote + options.quote)
-        }
-        else if let escape = options.escape, options.quoteLevel == .none {
+        } else if let escape = options.escape, options.quoteLevel == .none {
             field = field.replacingOccurrences(of: escape, with: escape + escape)
             field = field.replacingOccurrences(of: options.quote, with: escape + options.quote)
             field = field.replacingOccurrences(of: options.delimiter, with: escape + options.delimiter)

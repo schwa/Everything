@@ -4,11 +4,6 @@ import os
 public struct AnnotatedError: Swift.Error {
     let error: Swift.Error
     let message: String
-
-    init(error: Swift.Error, message: String) {
-        self.error = error
-        self.message = message
-    }
 }
 
 public struct UndefinedError: Error {
@@ -41,6 +36,7 @@ extension GeneralError: CustomStringConvertible {
         switch self {
         case .generic(let string):
             return string
+
         case .dispatchIO(let code, let string):
             return "\(code) \(string)"
         case .illegalValue:
@@ -88,8 +84,7 @@ public func makeOSStatusError(_ status: some BinaryInteger, description: String?
         userInfo = [NSLocalizedDescriptionKey: description]
     }
 
-    let error = NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: userInfo)
-    return error
+    return NSError(domain: NSOSStatusErrorDomain, code: Int(status), userInfo: userInfo)
 }
 
 public func withNoOutput<R>(_ block: () throws -> R) throws -> R {
@@ -127,9 +122,7 @@ public func withNoOutput<R>(_ block: () throws -> R) throws -> R {
         assert(err >= 0)
     }
 
-    let result = try block()
-
-    return result
+    return try block()
 }
 
 public func assertChange<R>(value: @autoclosure () -> some Equatable, transaction: () throws -> R) rethrows -> R {
@@ -153,13 +146,11 @@ public func withPOSIX(_ block: () -> Int32) throws {
 public func tryElseLog<R>(_ type: OSLogType = .error, _ message: @autoclosure () -> String = String(), _ block: () throws -> R) -> R? {
     do {
         return try block()
-    }
-    catch {
+    } catch {
         let message = message()
         if message.isEmpty {
             os_log(type, "%s", String(describing: error))
-        }
-        else {
+        } else {
             os_log(type, "%s: %s", message, String(describing: error))
         }
         return nil
@@ -168,10 +159,8 @@ public func tryElseLog<R>(_ type: OSLogType = .error, _ message: @autoclosure ()
 
 public func forceTry<Result>(_ message: @autoclosure () -> String = String(), file: StaticString = #file, line: UInt = #line, closure: () throws -> Result) -> Result {
     do {
-        let result = try closure()
-        return result
-    }
-    catch {
+        return try closure()
+    } catch {
         fatalError(message(), file: file, line: line)
     }
 }

@@ -24,6 +24,7 @@ public extension Publisher {
             switch completion {
             case .failure(let error):
                 result = .failure(error)
+
             default:
                 unimplemented()
             }

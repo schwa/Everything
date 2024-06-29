@@ -15,6 +15,7 @@ public extension Array {
         switch position {
         case .start:
             copy = repeatElement(element, count: count - self.count) + copy
+
         case .end:
             copy += repeatElement(element, count: count - self.count)
         }
@@ -32,6 +33,7 @@ public extension String {
         switch position {
         case .start:
             copy = repeatElement(element, count: count - self.count) + copy
+
         case .end:
             copy += repeatElement(element, count: count - self.count)
         }

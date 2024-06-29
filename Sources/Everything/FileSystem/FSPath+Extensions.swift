@@ -17,8 +17,7 @@ public extension FSPath {
                     return
                 }
             }
-        }
-        else {
+        } else {
             destination = parent + (name + ".1")
         }
         try destination.rotate(limit: limit)

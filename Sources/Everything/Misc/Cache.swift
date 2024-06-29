@@ -10,13 +10,11 @@ public protocol CacheProtocol {
     func set(key: Key, value: Value) throws
     func set(key: Key, value: Value, cost: Int?) throws
     func remove(key: Key)
-
 }
 
 enum CacheError: Swift.Error {
     case typeMismatch
 }
-
 
 /// A class that wraps NSCache and allows you to use any types as keys/values.
 public final class Cache <Key: Hashable, Value>: Identifiable, CacheProtocol {
@@ -80,6 +78,7 @@ public final class Cache <Key: Hashable, Value>: Identifiable, CacheProtocol {
                 return nil
             }
             value = box.base as? Value
+
         case .anyCache(let cache):
             value = try cache.get(key: key)
         }
@@ -96,10 +95,10 @@ public final class Cache <Key: Hashable, Value>: Identifiable, CacheProtocol {
             let value = ValueBox<Any>(value)
             if let cost {
                 nsCache.setObject(value, forKey: key, cost: cost)
-            }
-            else {
+            } else {
                 nsCache.setObject(value, forKey: key)
             }
+
         case .anyCache(let cache):
             cache.set(key: key, value: value, cost: cost)
         }
@@ -110,6 +109,7 @@ public final class Cache <Key: Hashable, Value>: Identifiable, CacheProtocol {
         case .nsCache(let nsCache):
             let key = KeyBox(key)
             nsCache.removeObject(forKey: key)
+
         case .anyCache(let cache):
             cache.remove(key: key)
         }
@@ -132,8 +132,7 @@ public extension CacheProtocol {
         set {
             if let newValue {
                 try! set(key: key, value: newValue)
-            }
-            else {
+            } else {
                 remove(key: key)
             }
         }
@@ -145,22 +144,18 @@ public extension CacheProtocol {
         if let value: Value = try get(key: key) {
             return value
         }
-        else {
-            let value = try factory()
-            try set(key: key, value: value)
-            return value
-        }
+        let value = try factory()
+        try set(key: key, value: value)
+        return value
     }
 
     func get(key: Key, factory: () throws -> (Value, Int)) throws -> Value {
         if let value: Value = try get(key: key) {
             return value
         }
-        else {
-            let (value, cost) = try factory()
-            try set(key: key, value: value, cost: cost)
-            return value
-        }
+        let (value, cost) = try factory()
+        try set(key: key, value: value, cost: cost)
+        return value
     }
 }
 
@@ -169,22 +164,18 @@ public extension CacheProtocol {
         if let value: Value = try get(key: key) {
             return value
         }
-        else {
-            let value = try await factory()
-            try set(key: key, value: value)
-            return value
-        }
+        let value = try await factory()
+        try set(key: key, value: value)
+        return value
     }
 
     func get(key: Key, factory: () async throws -> (Value, Int)) async throws -> Value {
         if let value: Value = try get(key: key) {
             return value
         }
-        else {
-            let (value, cost) = try await factory()
-            try set(key: key, value: value, cost: cost)
-            return value
-        }
+        let (value, cost) = try await factory()
+        try set(key: key, value: value, cost: cost)
+        return value
     }
 }
 
@@ -193,8 +184,7 @@ public extension Cache where Key == AnyHashable, Value == Any {
         Cache<Key, V>(base: self)
     }
 
-    func `as`<K,V>(keyType: K.Type, valueType: V.Type) -> Cache<K, V> where K: Hashable {
+    func `as`<K, V>(keyType: K.Type, valueType: V.Type) -> Cache<K, V> where K: Hashable {
         Cache<K, V>(base: self)
     }
 }
-

@@ -18,35 +18,28 @@ public struct AnyDecodable: Decodable {
         if let container = try? decoder.container(keyedBy: CodingKeys.self) {
             var result = [String: Any]()
             try container.allKeys.forEach { key throws in
-                result[key.stringValue] = try container.decode(AnyDecodable.self, forKey: key).value
+                result[key.stringValue] = try container.decode(Self.self, forKey: key).value
             }
             value = result
-        }
-        else if var container = try? decoder.unkeyedContainer() {
+        } else if var container = try? decoder.unkeyedContainer() {
             var result = [Any]()
             while !container.isAtEnd {
-                result.append(try container.decode(AnyDecodable.self).value)
+                result.append(try container.decode(Self.self).value)
             }
             value = result
-        }
-        else if let container = try? decoder.singleValueContainer() {
+        } else if let container = try? decoder.singleValueContainer() {
             if let intVal = try? container.decode(Int.self) {
                 value = intVal
-            }
-            else if let doubleVal = try? container.decode(Double.self) {
+            } else if let doubleVal = try? container.decode(Double.self) {
                 value = doubleVal
-            }
-            else if let boolVal = try? container.decode(Bool.self) {
+            } else if let boolVal = try? container.decode(Bool.self) {
                 value = boolVal
-            }
-            else if let stringVal = try? container.decode(String.self) {
+            } else if let stringVal = try? container.decode(String.self) {
                 value = stringVal
-            }
-            else {
+            } else {
                 throw DecodingError.dataCorruptedError(in: container, debugDescription: "the container contains nothing serialisable")
             }
-        }
-        else {
+        } else {
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Could not serialise"))
         }
     }

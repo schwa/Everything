@@ -6,6 +6,7 @@ public extension Optional {
         switch self {
         case .none:
             throw error()
+
         case .some(let wrapped):
             return wrapped
         }
@@ -15,6 +16,7 @@ public extension Optional {
         switch self {
         case .none:
             fatalError(message(), file: file, line: line)
+
         case .some(let wrapped):
             return wrapped
         }
@@ -28,9 +30,8 @@ public extension Optional where Wrapped: Collection {
             if value.isEmpty {
                 return nil
             }
-            else {
-                return value
-            }
+            return value
+
         case .none:
             return nil
         }

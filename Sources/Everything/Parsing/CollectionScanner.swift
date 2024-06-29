@@ -116,8 +116,7 @@ public extension CollectionScanner where Element: Equatable {
                     return result
                 }
                 remainingToSearch = remainingToSearch[index...]
-            }
-            else {
+            } else {
                 break
             }
         }

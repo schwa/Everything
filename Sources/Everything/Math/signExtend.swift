@@ -6,11 +6,8 @@ public func signExtend(_ n: UInt32, bits: Int) -> Int32 {
     if !signed {
         return Int32(truncatingIfNeeded: n)
     }
-    else {
-        let ones = UInt32.max << bits
-        let r = Int32(bitPattern: ones | n)
-        return r
-    }
+    let ones = UInt32.max << bits
+    return Int32(bitPattern: ones | n)
 }
 
 @inlinable

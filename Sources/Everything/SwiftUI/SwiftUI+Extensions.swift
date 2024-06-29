@@ -13,17 +13,17 @@ public extension View {
  Tired of sprinkling those little one shot `isPresenting` style state properties through your code?
 
  ValueView(value: false) { value in
-     Button("Mass Follow") {
-         value.wrappedValue = true
-     }
-     .fileImporter(isPresented: value, allowedContentTypes: [.commaSeparatedText]) { result in
+ Button("Mass Follow") {
+ value.wrappedValue = true
+ }
+ .fileImporter(isPresented: value, allowedContentTypes: [.commaSeparatedText]) { result in
 
-     }
+ }
  }
  */
 public struct ValueView<Value, Content>: View where Content: View {
     @State
-    var value: Value
+    private var value: Value
     let content: (Binding<Value>) -> Content
 
     public init(value: Value, @ViewBuilder content: @escaping (Binding<Value>) -> Content) {
@@ -53,7 +53,7 @@ public struct PopoverButton<Label, Content>: View where Label: View, Content: Vi
     let content: () -> Content
 
     @State
-    var visible = false
+    private var visible = false
 
     public init(label: @escaping () -> Label, content: @escaping () -> Content) {
         self.label = label
@@ -61,7 +61,7 @@ public struct PopoverButton<Label, Content>: View where Label: View, Content: Vi
     }
 
     public var body: some View {
-        Button(action: { self.visible.toggle() }, label: label)
+        Button(action: { visible.toggle() }, label: label)
             .popover(isPresented: $visible, content: content)
     }
 }

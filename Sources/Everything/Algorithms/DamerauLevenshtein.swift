@@ -24,8 +24,6 @@ public enum DamerauLevenshteinAlgorithm: StringDifferenceAlgorithm {
         if len(a) > 1, len(b) > 1, a[wrapping: -1] == b[wrapping: -2], a[wrapping: -2] == b[wrapping: -1] {
             return min(distance(a, new_b) + 1, distance(new_a, b) + 1, distance(new_a, new_b) + indicator, distance(another_a, another_b) + 1)
         }
-        else {
-            return min(distance(new_a, b) + 1, distance(a, new_b) + 1, distance(new_a, new_b) + indicator)
-        }
+        return min(distance(new_a, b) + 1, distance(a, new_b) + 1, distance(new_a, new_b) + indicator)
     }
 }

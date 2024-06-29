@@ -71,10 +71,13 @@ public class MultipeerHelper: NSObject, ObservableObject, MCSessionDelegate, MCN
         switch state {
         case .connected:
             passthrough.send(.init(peer: peerID, message: .connected))
+
         case .connecting:
             passthrough.send(.init(peer: peerID, message: .connecting))
+
         case .notConnected:
             passthrough.send(.init(peer: peerID, message: .notConnected))
+
         default:
             break
         }
@@ -103,7 +106,7 @@ public class MultipeerHelper: NSObject, ObservableObject, MCSessionDelegate, MCN
     // MARK: -
 
     public func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
-//        print("##", #function, error)
+        //        print("##", #function, error)
     }
 
     public func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
@@ -133,4 +136,3 @@ public class MultipeerHelper: NSObject, ObservableObject, MCSessionDelegate, MCN
 }
 
 // MARK: -
-

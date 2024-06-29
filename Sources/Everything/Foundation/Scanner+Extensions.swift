@@ -61,11 +61,13 @@ public extension Scanner {
                 switch c {
                 case "\"":
                     result.append("\"")
+
                 default:
                     fatalError("Unknown escape code: \(String(describing: c))")
                 }
             case "\"":
                 break
+
             default:
                 return nil
             }

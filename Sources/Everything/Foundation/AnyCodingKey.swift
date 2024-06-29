@@ -16,6 +16,7 @@ public enum AnyCodingKey: CodingKey, CustomStringConvertible {
         switch self {
         case .string(let value):
             return value
+
         case .int(let value):
             return "#\(value)"
         }
@@ -25,16 +26,13 @@ public enum AnyCodingKey: CodingKey, CustomStringConvertible {
         if case .int(let value) = self {
             return value
         }
-        else {
-            fatalError("TODO")
-        }
+        fatalError("TODO")
     }
 
     public init(key: some CodingKey) {
         if let value = key.intValue {
             self = .int(value)
-        }
-        else {
+        } else {
             self = .string(key.stringValue)
         }
     }
@@ -43,6 +41,7 @@ public enum AnyCodingKey: CodingKey, CustomStringConvertible {
         switch self {
         case .string(let value):
             return value
+
         case .int(let value):
             return "#\(value)"
         }

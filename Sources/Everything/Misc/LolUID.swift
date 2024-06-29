@@ -16,6 +16,6 @@ public struct LolUID: Hashable {
     public let id: Int
 
     public init() {
-        id = LolUID.nextID()
+        id = Self.nextID()
     }
 }
