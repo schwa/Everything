@@ -477,8 +477,6 @@ extension FSPath: ExpressibleByUnicodeScalarLiteral, ExpressibleByStringLiteral,
 
 public extension FSPath {
     init(fileDescriptor fd: Int32) throws {
-
-
         var buffer = [Int8](repeating: 0, count: Int(PATH_MAX))
         buffer.withUnsafeMutableBufferPointer { buffer in
             if fcntl(fd, F_GETPATH, buffer.baseAddress!) == -1 {

@@ -194,10 +194,6 @@ public extension Collection {
 public struct PairsSequence<Base>: Sequence where Base: Collection {
     let base: Base
 
-    init(base: Base) {
-        self.base = base
-    }
-
     public func makeIterator() -> PairsIterator<Base> {
         PairsIterator<Base>(base: base)
     }
@@ -285,7 +281,7 @@ public extension Collection {
 public extension Sequence<UInt8> {
     // djb2 - http://www.cse.yorku.ca/~oz/hash.html
     func djb2Hash() -> UInt {
-        var hash: UInt = 5381
+        var hash: UInt = 5_381
         for c in self {
             let c = UInt(c)
             hash = ((hash << 5) &+ hash) &+ c

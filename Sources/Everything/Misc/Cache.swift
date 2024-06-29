@@ -10,13 +10,11 @@ public protocol CacheProtocol {
     func set(key: Key, value: Value) throws
     func set(key: Key, value: Value, cost: Int?) throws
     func remove(key: Key)
-
 }
 
 enum CacheError: Swift.Error {
     case typeMismatch
 }
-
 
 /// A class that wraps NSCache and allows you to use any types as keys/values.
 public final class Cache <Key: Hashable, Value>: Identifiable, CacheProtocol {
@@ -193,7 +191,7 @@ public extension Cache where Key == AnyHashable, Value == Any {
         Cache<Key, V>(base: self)
     }
 
-    func `as`<K,V>(keyType: K.Type, valueType: V.Type) -> Cache<K, V> where K: Hashable {
+    func `as`<K, V>(keyType: K.Type, valueType: V.Type) -> Cache<K, V> where K: Hashable {
         Cache<K, V>(base: self)
     }
 }

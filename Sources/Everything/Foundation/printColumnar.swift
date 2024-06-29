@@ -40,7 +40,7 @@ public func printColumnar <Target>(_ columns: [Any], headerRow: Bool = false, le
     }
 
     func printDivider() {
-        //print(leadingSeparator + String(repeating: "-", count: columnWidths.reduce(0, +) + (columns.count - 1) * (fieldSeparator.count)) + trailingSeparator)
+        // print(leadingSeparator + String(repeating: "-", count: columnWidths.reduce(0, +) + (columns.count - 1) * (fieldSeparator.count)) + trailingSeparator)
         printRow(cells: columnWidths.map { String(repeating: "-", count: $0) })
     }
 

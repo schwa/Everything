@@ -9,7 +9,6 @@ import Foundation
 import os
 
 public struct TrivialID: Sendable, Hashable {
-
     struct StaticState {
         var scopesByName: [String: Scope] = [:]
         var nextSerials: [Scope: Int] = [:]
@@ -21,7 +20,7 @@ public struct TrivialID: Sendable, Hashable {
         var name: String
         var token: Int
 
-        init(name: String, token: Int  = .random(in: 0...0xFFFFFF)) {
+        init(name: String, token: Int = .random(in: 0...0xFFFFFF)) {
             self.name = name
             self.token = token
         }

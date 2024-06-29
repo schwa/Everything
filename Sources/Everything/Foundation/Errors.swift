@@ -4,11 +4,6 @@ import os
 public struct AnnotatedError: Swift.Error {
     let error: Swift.Error
     let message: String
-
-    init(error: Swift.Error, message: String) {
-        self.error = error
-        self.message = message
-    }
 }
 
 public struct UndefinedError: Error {
