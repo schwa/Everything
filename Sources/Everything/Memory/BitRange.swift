@@ -34,24 +34,24 @@ public func bitRange<T: UnsignedInteger>(value: T, range: ClosedRange<Int>, flip
 
 @inlinable
 public func bitRange(buffer: UnsafeBufferPointer<some Any>, start: Int, count: Int) -> UInt64 {
-    let pointer = UnsafeRawPointer(buffer.baseAddress)!
+    let rawPointer = UnsafeRawPointer(buffer.baseAddress)!
 
     // TODO: Swift3 - clean this up in the same manner (or better) we did bitSet (below)
     // Fast path; we want whole integers and the range is aligned to integer size.
     if count == 64, start.isMultiple(of: count) {
-        return pointer.assumingMemoryBound(to: UInt64.self)[start / (MemoryLayout<UInt64>.size * 8)]
+        return rawPointer.assumingMemoryBound(to: UInt64.self)[start / (MemoryLayout<UInt64>.size * 8)]
     }
     if count == 32, start.isMultiple(of: count) {
-        return UInt64(pointer.assumingMemoryBound(to: UInt32.self)[start / (MemoryLayout<UInt32>.size * 8)])
+        return UInt64(rawPointer.assumingMemoryBound(to: UInt32.self)[start / (MemoryLayout<UInt32>.size * 8)])
     }
     if count == 16, start.isMultiple(of: count) {
-        return UInt64(pointer.assumingMemoryBound(to: UInt16.self)[start / (MemoryLayout<UInt16>.size * 8)])
+        return UInt64(rawPointer.assumingMemoryBound(to: UInt16.self)[start / (MemoryLayout<UInt16>.size * 8)])
     }
     if count == 8, start.isMultiple(of: count) {
-        return UInt64(pointer.assumingMemoryBound(to: UInt8.self)[start / (MemoryLayout<UInt8>.size * 8)])
+        return UInt64(rawPointer.assumingMemoryBound(to: UInt8.self)[start / (MemoryLayout<UInt8>.size * 8)])
     }
     // Slow(er) path. Range is not aligned.
-    let pointer = pointer.assumingMemoryBound(to: UInt64.self)
+    let pointer = rawPointer.assumingMemoryBound(to: UInt64.self)
     let wordSize = MemoryLayout<UInt64>.size * 8
 
     let end = start + count
