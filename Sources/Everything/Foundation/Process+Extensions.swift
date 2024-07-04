@@ -15,7 +15,7 @@ public extension Process {
         case cannotReadOutput
     }
 
-    enum Input {
+    enum Input: Sendable {
         case pipe(Pipe)
         case fileHandle(FileHandle)
         case file(URL)
@@ -45,7 +45,7 @@ public extension Process {
         }
     }
 
-    enum Output {
+    enum Output: Sendable {
         case pipe(Pipe)
         case fileHandle(FileHandle)
 
@@ -71,7 +71,7 @@ public extension Process {
         }
     }
 
-    struct Options: OptionSet {
+    struct Options: OptionSet, Sendable {
         public let rawValue: Int
 
         public static let `default`: Options = []
@@ -198,25 +198,5 @@ extension Process.Result: CustomStringConvertible {
 }
 
 // TODO:
-
-public extension Process {
-    static func publisher(launchPath: String, arguments: [String], options: Options = .default, standardInput: Input? = nil, standardOutput: Output? = nil, standardError: Output? = nil, currentDirectoryURL: URL? = nil) -> AnyPublisher<Result, Error> {
-        let deferredFuture = Deferred {
-            Future<Process.Result, Error> { promise in
-                do {
-                    let process = try prepare(launchPath: launchPath, arguments: arguments, options: options, standardInput: standardInput, standardOutput: standardOutput, standardError: standardError, currentDirectoryURL: currentDirectoryURL)
-                    process.terminationHandler = { process in
-                        let result = Result(terminationStatus: process.terminationStatus, standardOutput: standardOutput, standardError: standardError)
-                        promise(.success(result))
-                    }
-                    try process.run()
-                } catch {
-                    promise(.failure(error))
-                }
-            }
-        }
-        return deferredFuture.eraseToAnyPublisher()
-    }
-}
 
 #endif

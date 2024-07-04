@@ -1,6 +1,6 @@
 import Foundation
 
-public struct YACharacterSet {
+public struct YACharacterSet: Sendable {
     public let set: Set<Character>
 
     public init(_ set: Set<Character>) {

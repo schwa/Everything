@@ -1,7 +1,7 @@
-public enum Endianness {
+public enum Endianness: Sendable {
     case big
     case little
-    public static var Native: Endianness = {
+    public static let Native: Endianness = {
         #if arch(x86_64) || arch(arm) || arch(arm64) || arch(i386)
         return .little
         #else
@@ -10,7 +10,7 @@ public enum Endianness {
         #endif
     }()
 
-    public static var Network: Endianness = .big
+    public static let Network: Endianness = .big
 }
 
 // MARK: -

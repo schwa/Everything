@@ -28,7 +28,7 @@ public extension Color {
 }
 
 // https://iquilezles.org/www/articles/palettes/palettes.htm
-public struct InigoColourPalette {
+public struct InigoColourPalette: Sendable {
     init(_ a: SIMD3<Double>, _ b: SIMD3<Double>, _ c: SIMD3<Double>, _ d: SIMD3<Double>) {
         self.a = a
         self.b = b

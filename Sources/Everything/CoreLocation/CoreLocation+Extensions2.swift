@@ -1,5 +1,5 @@
 import Combine
-import CoreLocation
+@preconcurrency import CoreLocation
 
 public extension CLGeocoder {
     static let shared = CLGeocoder()

@@ -2,8 +2,6 @@
 import AppKit
 
 public class KeyboardState {
-    public static let shared = KeyboardState()
-
     @Published
     public var rawKeysDown: Set<UInt16> = []
 

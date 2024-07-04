@@ -1,11 +1,11 @@
-import Combine
-import CoreLocation
+@preconcurrency import Combine
+@preconcurrency import CoreLocation
 import Foundation
 
-public class CoreLocationManager: NSObject, CLLocationManagerDelegate {
+final class CoreLocationManager: NSObject, CLLocationManagerDelegate, Sendable {
     public static let shared = CoreLocationManager()
 
-    public let manager = CLLocationManager()
+    private let manager = CLLocationManager()
 
     private let _location = PassthroughSubject<CLLocation, Error>()
     public var location: AnyPublisher<CLLocation, Error> {

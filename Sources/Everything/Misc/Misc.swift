@@ -16,7 +16,7 @@ public func makeRamDisk(size: UInt64, name: String) throws -> URL {
 }
 #endif
 
-public struct Platform: Hashable {
+public struct Platform: Hashable, Sendable {
     let rawValue: String
     public static let macOS = Self(rawValue: "macOS")
     public static let iOS = Self(rawValue: "iOS")

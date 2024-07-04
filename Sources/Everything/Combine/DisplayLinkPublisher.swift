@@ -41,6 +41,14 @@ public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
 
     public init() {
         CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
+
+        func _callback(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn {
+            let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext!).takeUnretainedValue()
+            displayLinkPublisher.tick(currentTime: inNow.pointee, displayTime: inOutputTime.pointee)
+            return 0
+        }
+
+
         CVDisplayLinkSetOutputCallback(displayLink!, _callback, Unmanaged.passUnretained(self).toOpaque())
     }
 
@@ -68,13 +76,6 @@ public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
 
         passthrough.send(timing.tick(currentTime: currentTime, displayTime: displayTime, duration: duration))
     }
-}
-
-// swiftlint:disable:next function_parameter_count line_length
-private func _callback(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn {
-    let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext!).takeUnretainedValue()
-    displayLinkPublisher.tick(currentTime: inNow.pointee, displayTime: inOutputTime.pointee)
-    return 0
 }
 #endif
 
@@ -142,8 +143,9 @@ public struct DisplayLink {
 // MARK: -
 
 @available(macOS 14, iOS 15, tvOS 16, *)
-public struct DisplayLinkKey: EnvironmentKey {
-    public static var defaultValue: DisplayLink?
+public struct DisplayLinkKey: EnvironmentKey, Sendable {
+    // TODO: FIXME
+    nonisolated(unsafe) public static let defaultValue: DisplayLink? = nil
 }
 
 @available(macOS 14, iOS 15, tvOS 16, *)

@@ -7,7 +7,7 @@ public protocol ColorProtocol {
     init(red: Double, green: Double, blue: Double)
 }
 
-public struct ColorParsingOptions: OptionSet {
+public struct ColorParsingOptions: OptionSet, Sendable {
     public let rawValue: Int
 
     public init(rawValue: Int) {

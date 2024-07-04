@@ -30,7 +30,7 @@ public extension Converter {
 
 // TODO: Move
 public extension Binding {
-    func converting<C>(converter: C) -> Binding<C.Converted> where C: Converter, C.Value == Value {
+    func converting<C>(converter: C) -> Binding<C.Converted> where C: Converter & Sendable, C.Value == Value, Value: Sendable {
         Binding<C.Converted>(
             get: { converter.convert(self.wrappedValue) },
             set: { self.wrappedValue = converter.reverse($0) }

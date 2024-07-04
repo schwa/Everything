@@ -5,7 +5,7 @@ import Foundation
 
 public class FSEventPublisher: Publisher {
     public struct Event {
-        public struct Flags: OptionSet, CustomStringConvertible {
+        public struct Flags: OptionSet, CustomStringConvertible, Sendable {
             public let rawValue: Int
 
             public static let mustScanSubDirs = Self(rawValue: kFSEventStreamEventFlagMustScanSubDirs)
@@ -81,7 +81,7 @@ public class FSEventPublisher: Publisher {
     var stream: FSEventStreamRef!
     var subscriptions: Set<Subscription> = []
 
-    public struct Options: OptionSet {
+    public struct Options: OptionSet, Sendable {
         public let rawValue: Int
         public static let noDefer = Self(rawValue: kFSEventStreamCreateFlagNoDefer)
         public static let watchRoot = Self(rawValue: kFSEventStreamCreateFlagWatchRoot)
@@ -103,6 +103,25 @@ public class FSEventPublisher: Publisher {
         context.info = Unmanaged.passUnretained(self).toOpaque() // TODO: balance retain release
         let paths = paths as CFArray
         let flags = kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagUseExtendedData | options.rawValue
+
+        func _callback(stream: ConstFSEventStreamRef, callbackInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) {
+            guard let callbackInfo else {
+                return
+            }
+            let publisher = Unmanaged<FSEventPublisher>.fromOpaque(callbackInfo).takeUnretainedValue()
+            let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as! [NSDictionary]
+
+            let events = eventDictionaries.enumerated().map { arg -> FSEventPublisher.Event in
+                let (index, dictionary) = arg
+                let flags = eventFlags[index]
+                let eventID = eventIds[index]
+                let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as! String
+                let fileID = dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
+                return FSEventPublisher.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
+            }
+            publisher.send(events)
+        }
+
 
         stream = FSEventStreamCreate(kCFAllocatorDefault, _callback, &context, paths, lastEventID, latency, FSEventStreamCreateFlags(flags))
 
@@ -136,24 +155,4 @@ public class FSEventPublisher: Publisher {
         }
     }
 }
-
-// swiftlint:disable:next function_parameter_count line_length
-private func _callback(stream: ConstFSEventStreamRef, callbackInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) {
-    guard let callbackInfo else {
-        return
-    }
-    let publisher = Unmanaged<FSEventPublisher>.fromOpaque(callbackInfo).takeUnretainedValue()
-    let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as! [NSDictionary]
-
-    let events = eventDictionaries.enumerated().map { arg -> FSEventPublisher.Event in
-        let (index, dictionary) = arg
-        let flags = eventFlags[index]
-        let eventID = eventIds[index]
-        let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as! String
-        let fileID = dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
-        return FSEventPublisher.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
-    }
-    publisher.send(events)
-}
-
 #endif // os(macOS)
