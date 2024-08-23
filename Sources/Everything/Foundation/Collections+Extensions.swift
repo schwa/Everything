@@ -245,6 +245,17 @@ public extension Collection where Element: Identifiable {
     }
 }
 
+public extension Array where Element: Identifiable {
+    @discardableResult
+    mutating func remove(identifiedBy id: Element.ID) -> Element {
+        if let index = firstIndex(identifiedBy: id) {
+            remove(at: index)
+        } else {
+            fatalError("No element identified by \(id)")
+        }
+    }
+}
+
 public extension Array {
     mutating func mutate(_ block: (inout Element) throws -> Void) rethrows {
         try enumerated().forEach { index, element in
