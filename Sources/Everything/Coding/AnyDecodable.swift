@@ -45,26 +45,26 @@ public struct AnyDecodable: Decodable {
     }
 }
 
-//let json = """
-//{
-//"id": 12345,
-//"name": "Giuseppe",
-//"last_name": "Lanza",
-//"age": 31,
-//"happy": true,
-//"rate": 1.5,
-//"classes": ["maths", "phisics"],
-//"dogs": [
-//{
-//"name": "Gala",
-//"age": 1
-//}, {
-//"name": "Aria",
-//"age": 3
-//}
-//]
-//}
-//"""
+// let json = """
+// {
+// "id": 12345,
+// "name": "Giuseppe",
+// "last_name": "Lanza",
+// "age": 31,
+// "happy": true,
+// "rate": 1.5,
+// "classes": ["maths", "phisics"],
+// "dogs": [
+// {
+// "name": "Gala",
+// "age": 1
+// }, {
+// "name": "Aria",
+// "age": 3
+// }
+// ]
+// }
+// """
 
 // func test() {
 // let jsonData = json.data(using: .utf8)!
