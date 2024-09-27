@@ -2,7 +2,7 @@ import CoreGraphics
 import Foundation
 import MultipeerConnectivity
 
-extension CGImageAlphaInfo: CustomStringConvertible {
+extension CGImageAlphaInfo: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .none:
@@ -27,7 +27,7 @@ extension CGImageAlphaInfo: CustomStringConvertible {
     }
 }
 
-extension CGImageByteOrderInfo: CustomStringConvertible {
+extension CGImageByteOrderInfo: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .orderMask:
@@ -48,7 +48,7 @@ extension CGImageByteOrderInfo: CustomStringConvertible {
     }
 }
 
-extension MCSessionState: CustomStringConvertible {
+extension MCSessionState: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .connected:
@@ -77,4 +77,23 @@ extension Character: Codable {
         var container = encoder.singleValueContainer()
         try container.encode(String(self))
     }
+}
+
+extension CharacterSet: @retroactive ExpressibleByExtendedGraphemeClusterLiteral {}
+extension CharacterSet: @retroactive ExpressibleByUnicodeScalarLiteral {}
+extension CharacterSet: @retroactive ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self = CharacterSet(charactersIn: value)
+    }
+}
+
+extension URL: @retroactive ExpressibleByExtendedGraphemeClusterLiteral {}
+extension URL: @retroactive ExpressibleByUnicodeScalarLiteral {}
+extension URL: @retroactive ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self.init(string: value)!
+    }
+}
+
+extension URL: @retroactive ExpressibleByStringInterpolation {
 }

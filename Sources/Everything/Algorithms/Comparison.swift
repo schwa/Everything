@@ -8,12 +8,10 @@ public func compare<T: Comparable>(_ lhs: T, _ rhs: T) -> Comparison {
     if lhs == rhs {
         return .equal
     }
-    else if lhs < rhs {
+    if lhs < rhs {
         return .lesser
     }
-    else {
-        return .greater
-    }
+    return .greater
 }
 
 public extension Comparison {
@@ -22,8 +20,10 @@ public extension Comparison {
             switch comparison {
             case .lesser:
                 return .lesser
+
             case .greater:
                 return .lesser
+
             case .equal:
                 continue
             }
@@ -47,7 +47,5 @@ public func ordered<T: Comparable>(_ tuple: (T, T)) -> (T, T) {
     if lhs <= rhs {
         return (lhs, rhs)
     }
-    else {
-        return (rhs, lhs)
-    }
+    return (rhs, lhs)
 }

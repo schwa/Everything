@@ -87,19 +87,17 @@ extension OrderedSet: SetAlgebra {
             array.removeAll { $0 == result }
             return result
         }
-        else {
-            return nil
-        }
+        return nil
     }
 
     public mutating func update(with newMember: __owned Element) -> Element? {
         unimplemented()
-//        if let result = set.update(with: newMember) {
-//            unimplemented()
-//        }
-//        else {
-//            return nil
-//        }
+        //        if let result = set.update(with: newMember) {
+        //            unimplemented()
+        //        }
+        //        else {
+        //            return nil
+        //        }
     }
 
     public mutating func formUnion(_ other: __owned OrderedSet<Element>) {

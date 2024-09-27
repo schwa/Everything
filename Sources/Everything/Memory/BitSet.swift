@@ -11,26 +11,26 @@ public struct BitSet {
     }
 
     public init(count: Int, words: [UInt]) {
-        assert(count <= words.count * BitSet.bitsPerElement, "Not enough words (\(words.count)) to store \(count) bits")
-        assert(words.count <= BitSet.minWordsNeededFor(count: count), "Need only \(BitSet.minWordsNeededFor(count: count)) word(s) to store \(count) bits.")
+        assert(count <= words.count * Self.bitsPerElement, "Not enough words (\(words.count)) to store \(count) bits")
+        assert(words.count <= Self.minWordsNeededFor(count: count), "Need only \(Self.minWordsNeededFor(count: count)) word(s) to store \(count) bits.")
         self.count = count
         elements = words
     }
 
     public subscript(index: Int) -> UInt {
         get {
-            let element = index / BitSet.bitsPerElement
-            let bit = index % BitSet.bitsPerElement
+            let element = index / Self.bitsPerElement
+            let bit = index % Self.bitsPerElement
             return elements[element].bits[bit]
         }
         set {
-            let element = index / BitSet.bitsPerElement
-            let bit = index % BitSet.bitsPerElement
+            let element = index / Self.bitsPerElement
+            let bit = index % Self.bitsPerElement
             elements[element].bits[bit] = newValue
         }
     }
 
-    public subscript(range: ClosedRange<Int>) -> BitSet {
+    public subscript(range: ClosedRange<Int>) -> Self {
         get {
             unimplemented()
         }

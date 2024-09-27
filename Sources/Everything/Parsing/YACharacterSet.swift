@@ -1,6 +1,6 @@
 import Foundation
 
-public struct YACharacterSet {
+public struct YACharacterSet: Sendable {
     public let set: Set<Character>
 
     public init(_ set: Set<Character>) {
@@ -19,10 +19,10 @@ public struct YACharacterSet {
         set.contains(member)
     }
 
-    public static let asciiWhitespaces = YACharacterSet(charactersIn: " \t\n\r")
+    public static let asciiWhitespaces = Self(charactersIn: " \t\n\r")
     public static let whitespaces = asciiWhitespaces
 
-    public static let decimalDigits = YACharacterSet(charactersIn: "0123456789")
+    public static let decimalDigits = Self(charactersIn: "0123456789")
 }
 
 extension YACharacterSet {

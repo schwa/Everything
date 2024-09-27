@@ -28,6 +28,7 @@ public extension UnicodeScalar {
             return "\\\\"
         case 32 ..< 127:
             return String(self)
+
         default:
             return "\\u{\(String(value, radix: 16))}"
         }

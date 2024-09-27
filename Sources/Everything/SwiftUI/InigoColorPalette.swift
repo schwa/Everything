@@ -17,9 +17,7 @@ public extension Color {
         if brightness < 0.5 {
             return Color.white
         }
-        else {
-            return Color.black
-        }
+        return Color.black
     }
 }
 
@@ -30,7 +28,7 @@ public extension Color {
 }
 
 // https://iquilezles.org/www/articles/palettes/palettes.htm
-public struct InigoColourPalette {
+public struct InigoColourPalette: Sendable {
     init(_ a: SIMD3<Double>, _ b: SIMD3<Double>, _ c: SIMD3<Double>, _ d: SIMD3<Double>) {
         self.a = a
         self.b = b
@@ -47,12 +45,12 @@ public struct InigoColourPalette {
         a + b * cos(.pi * 2 * (c * t + d))
     }
 
-    static let example1 = InigoColourPalette([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0], [0.00, 0.33, 0.67])
-    static let example2 = InigoColourPalette([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0], [0.00, 0.10, 0.20])
-    static let example3 = InigoColourPalette([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0], [0.30, 0.20, 0.20])
-    static let example4 = InigoColourPalette([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 0.5], [0.80, 0.90, 0.30])
-    static let example5 = InigoColourPalette([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 0.7, 0.4], [0.00, 0.15, 0.20])
-    static let example6 = InigoColourPalette([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [2.0, 1.0, 0.0], [0.50, 0.20, 0.25])
-    static let example7 = InigoColourPalette([0.8, 0.5, 0.4], [0.2, 0.4, 0.2], [2.0, 1.0, 1.0], [0.00, 0.25, 0.25])
-    static let allExamples: [InigoColourPalette] = [.example1, .example2, .example3, .example4, .example5, .example6, .example7]
+    static let example1 = Self([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0], [0.00, 0.33, 0.67])
+    static let example2 = Self([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0], [0.00, 0.10, 0.20])
+    static let example3 = Self([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 1.0], [0.30, 0.20, 0.20])
+    static let example4 = Self([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 1.0, 0.5], [0.80, 0.90, 0.30])
+    static let example5 = Self([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [1.0, 0.7, 0.4], [0.00, 0.15, 0.20])
+    static let example6 = Self([0.5, 0.5, 0.5], [0.5, 0.5, 0.5], [2.0, 1.0, 0.0], [0.50, 0.20, 0.25])
+    static let example7 = Self([0.8, 0.5, 0.4], [0.2, 0.4, 0.2], [2.0, 1.0, 1.0], [0.00, 0.25, 0.25])
+    static let allExamples: [Self] = [.example1, .example2, .example3, .example4, .example5, .example6, .example7]
 }

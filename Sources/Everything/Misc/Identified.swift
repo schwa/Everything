@@ -11,7 +11,7 @@ public struct Identified<ID: Hashable, Value>: Identifiable, Hashable {
     }
 
     public init(id: KeyPath<Value, ID>, value: Value) {
-        self = Identified(id: value[keyPath: id], value: value)
+        self = Self(id: value[keyPath: id], value: value)
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {

@@ -30,8 +30,7 @@ public struct BinaryHeap<Element> {
             if comparator(array[index], array[parentIndex]) {
                 array.swapAt(index, parentIndex)
                 index = parentIndex
-            }
-            else {
+            } else {
                 break
             }
         }

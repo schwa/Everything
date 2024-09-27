@@ -14,12 +14,10 @@ public func bitRange<T: UnsignedInteger>(value: T, start: Int, count: Int, flipp
         let result = intermediate
         return T(result)
     }
-    else {
-        let shift = UInt64(start)
-        let mask = (UInt64(1) << UInt64(count)) - 1
-        let result = UInt64(value) >> shift & mask
-        return T(result)
-    }
+    let shift = UInt64(start)
+    let mask = (UInt64(1) << UInt64(count)) - 1
+    let result = UInt64(value) >> shift & mask
+    return T(result)
 }
 
 @inlinable
@@ -36,45 +34,40 @@ public func bitRange<T: UnsignedInteger>(value: T, range: ClosedRange<Int>, flip
 
 @inlinable
 public func bitRange(buffer: UnsafeBufferPointer<some Any>, start: Int, count: Int) -> UInt64 {
-    let pointer = UnsafeRawPointer(buffer.baseAddress)!
+    let rawPointer = UnsafeRawPointer(buffer.baseAddress)!
 
     // TODO: Swift3 - clean this up in the same manner (or better) we did bitSet (below)
     // Fast path; we want whole integers and the range is aligned to integer size.
     if count == 64, start.isMultiple(of: count) {
-        return pointer.assumingMemoryBound(to: UInt64.self)[start / (MemoryLayout<UInt64>.size * 8)]
+        return rawPointer.assumingMemoryBound(to: UInt64.self)[start / (MemoryLayout<UInt64>.size * 8)]
     }
-    else if count == 32, start.isMultiple(of: count) {
-        return UInt64(pointer.assumingMemoryBound(to: UInt32.self)[start / (MemoryLayout<UInt32>.size * 8)])
+    if count == 32, start.isMultiple(of: count) {
+        return UInt64(rawPointer.assumingMemoryBound(to: UInt32.self)[start / (MemoryLayout<UInt32>.size * 8)])
     }
-    else if count == 16, start.isMultiple(of: count) {
-        return UInt64(pointer.assumingMemoryBound(to: UInt16.self)[start / (MemoryLayout<UInt16>.size * 8)])
+    if count == 16, start.isMultiple(of: count) {
+        return UInt64(rawPointer.assumingMemoryBound(to: UInt16.self)[start / (MemoryLayout<UInt16>.size * 8)])
     }
-    else if count == 8, start.isMultiple(of: count) {
-        return UInt64(pointer.assumingMemoryBound(to: UInt8.self)[start / (MemoryLayout<UInt8>.size * 8)])
+    if count == 8, start.isMultiple(of: count) {
+        return UInt64(rawPointer.assumingMemoryBound(to: UInt8.self)[start / (MemoryLayout<UInt8>.size * 8)])
     }
-    else {
-        // Slow(er) path. Range is not aligned.
-        let pointer = pointer.assumingMemoryBound(to: UInt64.self)
-        let wordSize = MemoryLayout<UInt64>.size * 8
+    // Slow(er) path. Range is not aligned.
+    let pointer = rawPointer.assumingMemoryBound(to: UInt64.self)
+    let wordSize = MemoryLayout<UInt64>.size * 8
 
-        let end = start + count
+    let end = start + count
 
-        if start / wordSize == (end - 1) / wordSize {
-            // Bit range does not cross two words
-            let offset = start / wordSize
-            let result = bitRange(value: pointer[offset].bigEndian, start: start % wordSize, count: count, flipped: true)
-            return result
-        }
-        else {
-            // Bit range spans two words, get bit ranges for both words and then combine them.
-            let offset = start / wordSize
-            let offsettedStart = start % wordSize
-            let msw = bitRange(value: pointer[offset].bigEndian, range: offsettedStart ..< wordSize, flipped: true)
-            let bits = (end - offset * wordSize) % wordSize
-            let lsw = bitRange(value: pointer[offset + 1].bigEndian, range: 0 ..< bits, flipped: true)
-            return msw << UInt64(bits) | lsw
-        }
+    if start / wordSize == (end - 1) / wordSize {
+        // Bit range does not cross two words
+        let offset = start / wordSize
+        return bitRange(value: pointer[offset].bigEndian, start: start % wordSize, count: count, flipped: true)
     }
+    // Bit range spans two words, get bit ranges for both words and then combine them.
+    let offset = start / wordSize
+    let offsettedStart = start % wordSize
+    let msw = bitRange(value: pointer[offset].bigEndian, range: offsettedStart ..< wordSize, flipped: true)
+    let bits = (end - offset * wordSize) % wordSize
+    let lsw = bitRange(value: pointer[offset + 1].bigEndian, range: 0 ..< bits, flipped: true)
+    return msw << UInt64(bits) | lsw
 }
 
 @inlinable
@@ -118,17 +111,13 @@ public func bitSet(buffer: UnsafeMutableBufferPointer<some Any>, start: Int, cou
     // Fast path; we want whole integers and the range is aligned to integer size.
     if count == 64, start.isMultiple(of: count) {
         set(pointer: pointer, type: UInt64.self, newValue: newValue)
-    }
-    else if count == 32, start.isMultiple(of: count) {
+    } else if count == 32, start.isMultiple(of: count) {
         set(pointer: pointer, type: UInt32.self, newValue: newValue)
-    }
-    else if count == 16, start.isMultiple(of: count) {
+    } else if count == 16, start.isMultiple(of: count) {
         set(pointer: pointer, type: UInt16.self, newValue: newValue)
-    }
-    else if count == 8, start.isMultiple(of: count) {
+    } else if count == 8, start.isMultiple(of: count) {
         set(pointer: pointer, type: UInt8.self, newValue: newValue)
-    }
-    else {
+    } else {
         // Slow(er) path. Range is not aligned.
         let pointer = pointer.assumingMemoryBound(to: UInt64.self)
         let wordSize = MemoryLayout<UInt64>.size * 8
@@ -143,8 +132,7 @@ public func bitSet(buffer: UnsafeMutableBufferPointer<some Any>, start: Int, cou
 
             let result = UInt64(bigEndian: bitSet(value: value, start: start % wordSize, count: count, flipped: true, newValue: newValue))
             pointer[offset] = result
-        }
-        else {
+        } else {
             // Bit range spans two words, get bit ranges for both words and then combine them.
             unimplemented()
         }

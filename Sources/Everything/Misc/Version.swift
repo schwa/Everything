@@ -18,7 +18,7 @@ public struct Version {
     }
 
     public init(_ tuple: (UInt, UInt, UInt), labels: [String] = []) {
-        self = Version(major: tuple.0, minor: tuple.1, patch: tuple.2, labels: labels)
+        self = Self(major: tuple.0, minor: tuple.1, patch: tuple.2, labels: labels)
     }
 
     public var majorMinorPatch: (UInt, UInt, UInt) {
@@ -110,36 +110,40 @@ private enum Label: Comparable {
     init(string: String) {
         if string.isEmpty {
             self = .empty
-        }
-        else if string.isNumeric {
+        } else if string.isNumeric {
             self = .numeric(Int(string)!)
-        }
-        else {
+        } else {
             self = .string(string)
         }
     }
 
-    static func == (lhs: Label, rhs: Label) -> Bool {
+    static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.string(let lhs), .string(let rhs)):
             return lhs == rhs
+
         case (.numeric(let lhs), .numeric(let rhs)):
             return lhs == rhs
+
         default:
             return false
         }
     }
 
-    static func < (lhs: Label, rhs: Label) -> Bool {
+    static func < (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.string(let lhs), .string(let rhs)):
             return lhs < rhs
+
         case (.numeric(let lhs), .numeric(let rhs)):
             return lhs < rhs
+
         case (.empty, .numeric):
             return true
+
         case (.empty, .string):
             return true
+
         default:
             return false
         }
@@ -150,7 +154,7 @@ public func compare(_ lhs: Version, _ rhs: Version) -> Comparison {
     var comparisons = [
         compare(lhs.major, rhs.major),
         compare(lhs.minor, rhs.minor),
-        compare(lhs.patch, rhs.patch),
+        compare(lhs.patch, rhs.patch)
     ]
     let count = max(lhs.labels.count, rhs.labels.count)
 

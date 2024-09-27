@@ -8,8 +8,6 @@ public extension CVTimeStamp {
 }
 
 public class MachTime {
-    public static let shared = MachTime()
-
     public var timebase = mach_timebase_info_data_t()
 
     public init() {

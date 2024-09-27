@@ -9,10 +9,8 @@ public extension Set {
             remove(member)
             return true
         }
-        else {
-            insert(member)
-            return false
-        }
+        insert(member)
+        return false
     }
 }
 
@@ -194,10 +192,6 @@ public extension Collection {
 public struct PairsSequence<Base>: Sequence where Base: Collection {
     let base: Base
 
-    init(base: Base) {
-        self.base = base
-    }
-
     public func makeIterator() -> PairsIterator<Base> {
         PairsIterator<Base>(base: base)
     }
@@ -251,6 +245,17 @@ public extension Collection where Element: Identifiable {
     }
 }
 
+public extension Array where Element: Identifiable {
+    @discardableResult
+    mutating func remove(identifiedBy id: Element.ID) -> Element {
+        if let index = firstIndex(identifiedBy: id) {
+            remove(at: index)
+        } else {
+            fatalError("No element identified by \(id)")
+        }
+    }
+}
+
 public extension Array {
     mutating func mutate(_ block: (inout Element) throws -> Void) rethrows {
         try enumerated().forEach { index, element in
@@ -285,7 +290,7 @@ public extension Collection {
 public extension Sequence<UInt8> {
     // djb2 - http://www.cse.yorku.ca/~oz/hash.html
     func djb2Hash() -> UInt {
-        var hash: UInt = 5381
+        var hash: UInt = 5_381
         for c in self {
             let c = UInt(c)
             hash = ((hash << 5) &+ hash) &+ c

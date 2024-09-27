@@ -31,51 +31,52 @@ public struct DisplayLinkTiming<Time>: Sendable where Time: Sendable {
 }
 
 #if os(macOS)
-    public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
-        public typealias Output = DisplayLinkEvent<CMTime>
-        public typealias Failure = Never
-        private var displayLink: CVDisplayLink!
+public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
+    public typealias Output = DisplayLinkEvent<CMTime>
+    public typealias Failure = Never
+    private var displayLink: CVDisplayLink!
 
-        private var timing = DisplayLinkTiming<CMTime>()
-        private var passthrough = PassthroughSubject<Output, Failure>()
+    private var timing = DisplayLinkTiming<CMTime>()
+    private var passthrough = PassthroughSubject<Output, Failure>()
 
-        public init() {
-            CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
-            CVDisplayLinkSetOutputCallback(displayLink!, _callback, Unmanaged.passUnretained(self).toOpaque())
+    public init() {
+        CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
+
+        func _callback(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn {
+            let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext!).takeUnretainedValue()
+            displayLinkPublisher.tick(currentTime: inNow.pointee, displayTime: inOutputTime.pointee)
+            return 0
         }
 
-        deinit {
-            guard let displayLink else {
-                return
-            }
-            CVDisplayLinkStop(displayLink)
-        }
 
-        public func receive<S>(subscriber: S) where S: Subscriber, Failure == S.Failure, Output == S.Input {
-            CVDisplayLinkStart(displayLink)
-            passthrough.receive(subscriber: subscriber)
-        }
-
-        internal func tick(currentTime: CVTimeStamp, displayTime: CVTimeStamp) {
-            let currentTime = CMTimeMake(value: currentTime.videoTime, timescale: currentTime.videoTimeScale)
-            let displayTime = CMTimeMake(value: displayTime.videoTime, timescale: displayTime.videoTimeScale)
-
-            var duration: CMTime?
-            if let lastDisplayTime = timing.lastDisplayTime {
-                let range = CMTimeRange(start: lastDisplayTime, end: displayTime)
-                duration = range.duration
-            }
-
-            passthrough.send(timing.tick(currentTime: currentTime, displayTime: displayTime, duration: duration))
-        }
+        CVDisplayLinkSetOutputCallback(displayLink!, _callback, Unmanaged.passUnretained(self).toOpaque())
     }
 
-    // swiftlint:disable:next function_parameter_count line_length
-    private func _callback(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn {
-        let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext!).takeUnretainedValue()
-        displayLinkPublisher.tick(currentTime: inNow.pointee, displayTime: inOutputTime.pointee)
-        return 0
+    deinit {
+        guard let displayLink else {
+            return
+        }
+        CVDisplayLinkStop(displayLink)
     }
+
+    public func receive<S>(subscriber: S) where S: Subscriber, Failure == S.Failure, Output == S.Input {
+        CVDisplayLinkStart(displayLink)
+        passthrough.receive(subscriber: subscriber)
+    }
+
+    internal func tick(currentTime: CVTimeStamp, displayTime: CVTimeStamp) {
+        let currentTime = CMTimeMake(value: currentTime.videoTime, timescale: currentTime.videoTimeScale)
+        let displayTime = CMTimeMake(value: displayTime.videoTime, timescale: displayTime.videoTimeScale)
+
+        var duration: CMTime?
+        if let lastDisplayTime = timing.lastDisplayTime {
+            let range = CMTimeRange(start: lastDisplayTime, end: displayTime)
+            duration = range.duration
+        }
+
+        passthrough.send(timing.tick(currentTime: currentTime, displayTime: displayTime, duration: duration))
+    }
+}
 #endif
 
 @available(macOS 14, iOS 15, tvOS 16, *)
@@ -93,9 +94,9 @@ public class DisplayLinkPublisher: Publisher {
         guard let screen = NSScreen.main ?? NSScreen.screens.first else {
             fatalError("No screen")
         }
-        displayLink = screen.displayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
+        displayLink = screen.displayLink(target: self, selector: #selector(Self.tick))
         #else
-        displayLink = CADisplayLink(target: self, selector: #selector(DisplayLinkPublisher.tick))
+        displayLink = CADisplayLink(target: self, selector: #selector(Self.tick))
         #endif
         displayLink.add(to: RunLoop.main, forMode: RunLoop.Mode.default)
     }
@@ -135,15 +136,16 @@ public struct DisplayLink {
     }
 
     public func events() -> AsyncPublisher<DisplayLinkPublisher> {
-        return displayLinkPublisher.values
+        displayLinkPublisher.values
     }
 }
 
 // MARK: -
 
 @available(macOS 14, iOS 15, tvOS 16, *)
-public struct DisplayLinkKey: EnvironmentKey {
-    public static var defaultValue: DisplayLink?
+public struct DisplayLinkKey: EnvironmentKey, Sendable {
+    // TODO: FIXME
+    nonisolated(unsafe) public static let defaultValue: DisplayLink? = nil
 }
 
 @available(macOS 14, iOS 15, tvOS 16, *)

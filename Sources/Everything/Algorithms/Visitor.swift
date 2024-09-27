@@ -25,6 +25,7 @@ public struct Visitor<Node, Children>: Sequence where Children: Sequence, Childr
                     return result
                 }
             }
+
         case .postorder:
             // TODO: BROKEN - returns in reverse order
             _makeIterator = {
@@ -34,15 +35,13 @@ public struct Visitor<Node, Children>: Sequence where Children: Sequence, Childr
                     if !out.isEmpty {
                         return out.popLast()
                     }
-                    else if !s.isEmpty {
+                    if !s.isEmpty {
                         let current = s.popLast()
                         out.append(current!)
                         s.append(contentsOf: current![keyPath: children])
                         return out.popLast()
                     }
-                    else {
-                        return nil
-                    }
+                    return nil
                 }
             }
         }

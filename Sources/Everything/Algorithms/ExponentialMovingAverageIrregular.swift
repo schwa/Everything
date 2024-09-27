@@ -22,8 +22,7 @@ public struct ExponentialMovingAverageIrregular: Sendable {
             let u = exp(a * -1)
             let v = (1 - u) / a
             newMovingAverage = (u * exponentialMovingAverage) + ((v - u) * lastSample.value) + ((1 - v) * value)
-        }
-        else {
+        } else {
             newMovingAverage = value
         }
         lastSample = (time: time, value: value)

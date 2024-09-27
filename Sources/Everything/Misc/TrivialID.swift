@@ -9,7 +9,6 @@ import Foundation
 import os
 
 public struct TrivialID: Sendable, Hashable {
-
     struct StaticState {
         var scopesByName: [String: Scope] = [:]
         var nextSerials: [Scope: Int] = [:]
@@ -21,14 +20,14 @@ public struct TrivialID: Sendable, Hashable {
         var name: String
         var token: Int
 
-        init(name: String, token: Int  = .random(in: 0...0xFFFFFF)) {
+        init(name: String, token: Int = .random(in: 0...0xFFFFFF)) {
             self.name = name
             self.token = token
         }
     }
 
     static func scope(for name: String) -> Scope {
-        TrivialID.staticState.withLock { staticState in
+        Self.staticState.withLock { staticState in
             let scope = staticState.scopesByName[name, default: .init(name: name)]
             staticState.scopesByName[name] = scope
             return scope
@@ -44,7 +43,7 @@ public struct TrivialID: Sendable, Hashable {
     }
 
     public init(scope name: String = "") {
-        self = TrivialID.staticState.withLock { staticState in
+        self = Self.staticState.withLock { staticState in
             let scope = staticState.scopesByName[name, default: .init(name: name)]
             let serial = staticState.nextSerials[scope, default: 0] + 1
             staticState.scopesByName[name] = scope
@@ -65,15 +64,13 @@ extension TrivialID: CustomStringConvertible {
         if scope.name.isEmpty {
             return "#\(serial)"
         }
-        else {
-            return "\(scope.name):#\(serial)"
-        }
+        return "\(scope.name):#\(serial)"
     }
 }
 
 extension TrivialID: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return "TrivialID(scope: \(scope), serial: \(serial))"
+        "TrivialID(scope: \(scope), serial: \(serial))"
     }
 }
 
@@ -110,6 +107,6 @@ extension TrivialID: Codable {
 
 extension TrivialID.Scope: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "\(name).\(String(token, radix: 16))"
+        "\(name).\(String(token, radix: 16))"
     }
 }

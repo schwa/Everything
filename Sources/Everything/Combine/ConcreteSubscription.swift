@@ -3,10 +3,10 @@ import Combine
 public struct ConcreteSubscription<Output, Failure>: Subscription, Hashable where Failure: Error {
     public let combineIdentifier: CombineIdentifier
     public let subscriber: AnySubscriber<Output, Failure>
-    let _request: ((ConcreteSubscription, Subscribers.Demand) -> Void)?
-    let _cancel: ((ConcreteSubscription) -> Void)?
+    let _request: ((Self, Subscribers.Demand) -> Void)?
+    let _cancel: ((Self) -> Void)?
 
-    public init<S>(subscriber: S, request: @escaping (ConcreteSubscription, Subscribers.Demand) -> Void, cancel: @escaping (ConcreteSubscription) -> Void) where S: Subscriber, S.Input == Output, S.Failure == Failure {
+    public init<S>(subscriber: S, request: @escaping (Self, Subscribers.Demand) -> Void, cancel: @escaping (Self) -> Void) where S: Subscriber, S.Input == Output, S.Failure == Failure {
         let subscriber = AnySubscriber(subscriber)
         combineIdentifier = subscriber.combineIdentifier
         self.subscriber = subscriber
@@ -22,7 +22,7 @@ public struct ConcreteSubscription<Output, Failure>: Subscription, Hashable wher
         _cancel?(self)
     }
 
-    public static func == (lhs: ConcreteSubscription, rhs: ConcreteSubscription) -> Bool {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.combineIdentifier == rhs.combineIdentifier
     }
 
