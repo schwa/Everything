@@ -4,7 +4,7 @@ struct BloomFilter<Element: Hashable> {
     let count: Int
     var storage: [UInt8]
     // swiftlint:disable:next opening_brace
-    var hashFunctions: [(Element) -> Int] = [{ $0.hashValue }]
+    var hashFunctions: [(Element) -> Int] = [\.hashValue]
 
     init(count: Int) {
         self.count = count

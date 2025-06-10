@@ -3,12 +3,12 @@
 import Foundation
 
 final class CoreLocationManager: NSObject, CLLocationManagerDelegate, Sendable {
-    public static let shared = CoreLocationManager()
+    static let shared = CoreLocationManager()
 
     private let manager = CLLocationManager()
 
     private let _location = PassthroughSubject<CLLocation, Error>()
-    public var location: AnyPublisher<CLLocation, Error> {
+    var location: AnyPublisher<CLLocation, Error> {
         #if !os(tvOS)
         manager.startUpdatingLocation()
         #endif
@@ -17,7 +17,7 @@ final class CoreLocationManager: NSObject, CLLocationManagerDelegate, Sendable {
 
     //    @Publisher var location2: CLLocation
 
-    override public init() {
+    override init() {
         super.init()
         manager.delegate = self
         #if os(iOS) || os(tvOS)
@@ -27,13 +27,13 @@ final class CoreLocationManager: NSObject, CLLocationManagerDelegate, Sendable {
 
     // MARK: -
 
-    public func locationManager(_: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locations.forEach {
             _location.send($0)
         }
     }
 
-    public func locationManager(_: CLLocationManager, didFailWithError _: Error) {
+    func locationManager(_: CLLocationManager, didFailWithError _: Error) {
         // unimplemented()
     }
 }

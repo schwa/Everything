@@ -48,7 +48,6 @@ public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
             return 0
         }
 
-
         CVDisplayLinkSetOutputCallback(displayLink!, _callback, Unmanaged.passUnretained(self).toOpaque())
     }
 
