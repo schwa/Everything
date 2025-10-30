@@ -164,3 +164,68 @@ public func forceTry<Result>(_ message: @autoclosure () -> String = String(), fi
         fatalError(message(), file: file, line: line)
     }
 }
+
+public extension Optional {
+    func orThrow(_ error: @autoclosure () -> some Error) throws -> Wrapped {
+        // swiftlint:disable:next self_binding
+        guard let value = self else {
+            let error = error()
+            if ProcessInfo.processInfo.fatalErrorOnThrow {
+                fatalError("\(error)")
+            }
+            else {
+                throw error
+            }
+        }
+        return value
+    }
+
+    func orFatalError(_ message: @autoclosure () -> String = String()) -> Wrapped {
+        // swiftlint:disable:next self_binding
+        guard let value = self else {
+            fatalError(message())
+        }
+        return value
+    }
+
+    func orFatalError(_ error: @autoclosure () -> Error) -> Wrapped {
+        // swiftlint:disable:next self_binding
+        guard let value = self else {
+            fatalError("\(error())")
+        }
+        return value
+    }
+}
+
+public func _throw(_ error: some Error) throws -> Never {
+    if ProcessInfo.processInfo.fatalErrorOnThrow {
+        fatalError("\(error)")
+    }
+    else {
+        throw error
+    }
+}
+
+public extension ProcessInfo {
+    var loggingEnabled: Bool {
+        environment["LOGGING"]?.isTruthy ?? false
+    }
+
+    var verboseLoggingEnabled: Bool {
+        environment["VERBOSE"]?.isTruthy ?? false
+    }
+
+    var fatalErrorOnThrow: Bool {
+        environment["FATALERROR_ON_THROW"]?.isTruthy ?? false
+    }
+
+    var metalLoggingEnabled: Bool {
+        environment["METAL_LOGGING"]?.isTruthy ?? false
+    }
+}
+
+private extension String {
+    var isTruthy: Bool {
+        ["yes", "true", "y", "1", "on"].contains(self.trimmingCharacters(in: .whitespacesAndNewlines).lowercased())
+    }
+}
