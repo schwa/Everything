@@ -23,7 +23,9 @@ let package = Package(
             name: "Everything",
             dependencies: [
                 .product(name: "Algorithms", package: "swift-algorithms"),
-
+            ],
+            exclude: [
+                "SwiftUI/Styles.swift.gyb",
             ]
         ),
         .target(name: "EverythingUnsafeConformances"),
