@@ -6,7 +6,7 @@ public extension UnsafeBufferPointer {
     }
 
     init(start: UnsafePointer<Element>, byteCount: Int) {
-        precondition(byteCount % UnsafeBufferPointer<Element>.elementSize == 0)
+        precondition(byteCount.isMultiple(of: UnsafeBufferPointer<Element>.elementSize))
         self.init(start: start, count: byteCount / UnsafeBufferPointer<Element>.elementSize)
     }
 

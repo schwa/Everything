@@ -300,13 +300,13 @@ public extension Sequence<UInt8> {
 }
 
 public extension Sequence {
-    func cast <T>(to: T.Type) -> [T?] {
+    func cast<T>(to: T.Type) -> [T?] {
         compactMap { $0 as? T }
     }
 }
 
 public extension Array where Element == UInt8 {
-    mutating func append <Other>(contentsOf bytes: Other, alignment: Int) where Other: Sequence, Other.Element == UInt8 {
+    mutating func append<Other>(contentsOf bytes: Other, alignment: Int) where Other: Sequence, Other.Element == UInt8 {
         let alignedPosition = align(offset: count, alignment: alignment)
         append(contentsOf: Array(repeating: 0, count: alignedPosition - count))
         append(contentsOf: bytes)

@@ -20,7 +20,7 @@ public extension UInt8 {
 }
 
 public extension AsyncSequence {
-    func cast <T>(to: T.Type) -> AsyncCompactMapSequence<Self, T?> {
+    func cast<T>(to: T.Type) -> AsyncCompactMapSequence<Self, T?> {
         compactMap { $0 as? T }
     }
 }

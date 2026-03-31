@@ -42,13 +42,8 @@ public extension StringProtocol {
 
 extension CharacterSet {
     func contains(_ member: Character) -> Bool {
-        for scalar in member.unicodeScalars {
-            // TODO: this is a bit iffy. Reverse this logic?
-            if contains(scalar) {
-                return true
-            }
-        }
-        return false
+        // TODO: this is a bit iffy. Reverse this logic?
+        member.unicodeScalars.contains { contains($0) }
     }
 }
 

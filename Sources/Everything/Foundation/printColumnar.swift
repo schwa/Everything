@@ -6,7 +6,7 @@ public func printColumnar(_ columns: Any..., headerRow: Bool = false, leadingSep
     print(s, terminator: "")
 }
 
-public func printColumnar <Target>(_ columns: [Any], headerRow: Bool = false, leadingSeparator: String = "| ", fieldSeparator: String = " | ", trailingSeparator: String = " |", to target: inout Target) where Target: TextOutputStream {
+public func printColumnar<Target>(_ columns: [Any], headerRow: Bool = false, leadingSeparator: String = "| ", fieldSeparator: String = " | ", trailingSeparator: String = " |", to target: inout Target) where Target: TextOutputStream {
     let columns = columns.map { column in
         var s = ""
         print(column, to: &s)

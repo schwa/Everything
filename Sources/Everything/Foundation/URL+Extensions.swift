@@ -11,7 +11,6 @@ public extension URL {
     }
 
     static func += (left: inout URL, right: String) {
-        // swiftlint:disable:next shorthand_operator
-        left = left + right
+        left = left.appendingPathComponent(right)
     }
 }

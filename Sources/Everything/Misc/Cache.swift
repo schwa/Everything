@@ -67,7 +67,7 @@ public final class Cache <Key: Hashable, Value>: Identifiable, CacheProtocol {
     }
 
     public func contains(key: Key) -> Bool {
-        fatalError()
+        fatalError("Cache.contains(key:) not implemented")
     }
 
     public func get(key: Key) throws -> Value? {

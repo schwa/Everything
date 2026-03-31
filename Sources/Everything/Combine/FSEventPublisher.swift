@@ -117,11 +117,10 @@ public class FSEventPublisher: Publisher {
                 let eventID = eventIds[index]
                 let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as! String
                 let fileID = dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
-                return FSEventPublisher.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
+                return Self.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
             }
             publisher.send(events)
         }
-
 
         stream = FSEventStreamCreate(kCFAllocatorDefault, _callback, &context, paths, lastEventID, latency, FSEventStreamCreateFlags(flags))
 
