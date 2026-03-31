@@ -1,19 +1,5 @@
 import Foundation
 
-// swiftlint:disable:next static_operator
-private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case (let l?, let r?):
-        return l < r
-
-    case (nil, _?):
-        return true
-
-    default:
-        return false
-    }
-}
-
 public struct AStarSearch<Location: Hashable> {
     public typealias Cost = Int
 
@@ -43,7 +29,7 @@ public struct AStarSearch<Location: Hashable> {
 
             for next in neighbors(current) {
                 let new_cost = cost_so_far[current]! + cost(current, next)
-                if cost_so_far[next] == nil || new_cost < cost_so_far[next] {
+                if cost_so_far[next].map({ new_cost < $0 }) ?? true {
                     cost_so_far[next] = new_cost
                     let priority = new_cost * heuristic(goal, next)
                     frontier.put(next, priority: priority)
