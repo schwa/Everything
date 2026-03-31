@@ -19,7 +19,12 @@
         }
 
         func test5() throws {
-            let output = try FileHandle.temp(template: "XXXXXXXX.txt", suffixLength: 4)
+            let tempPath = NSTemporaryDirectory() + "XXXXXXXX.txt"
+            let (output, filePath) = try FileHandle.temp(template: tempPath, suffixLength: 4)
+            defer {
+                // Clean up temp file
+                try? FileManager.default.removeItem(atPath: filePath)
+            }
             let result = try Process.call(launchPath: "/bin/echo", arguments: ["-n", "Hello world"], standardOutput: .fileHandle(output))
             XCTAssertEqual(result.terminationStatus, 0)
             try output.seek(toOffset: 0)
@@ -47,14 +52,16 @@
     }
 
     extension FileHandle {
-        static func temp(template: String, suffixLength: Int) throws -> FileHandle {
+        static func temp(template: String, suffixLength: Int) throws -> (FileHandle, String) {
             var template = template.utf8CString
             return template.withUnsafeMutableBufferPointer { buffer in
-                let result = mkstemps(buffer.baseAddress, Int32(suffixLength))
-                guard result > 0 else {
+                let fd = mkstemps(buffer.baseAddress, Int32(suffixLength))
+                guard fd > 0 else {
                     fatalError("mkstemp failed")
                 }
-                return FileHandle(fileDescriptor: result, closeOnDealloc: true)
+                let handle = FileHandle(fileDescriptor: fd, closeOnDealloc: true)
+                let path = String(cString: buffer.baseAddress!)
+                return (handle, path)
             }
         }
     }
