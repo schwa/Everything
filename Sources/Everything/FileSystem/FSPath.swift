@@ -380,7 +380,7 @@ public extension FSPath {
         }
         let paths = (0 ..< globStorage.gl_pathc).map { index -> FSPath in
             let pathPtr = globStorage.gl_pathv[index]
-            guard let pathString = String(validatingUTF8: pathPtr!) else {
+            guard let pathString = String(validatingCString: pathPtr!) else {
                 fatalError("Could not convert path to utf8 string")
             }
             return FSPath(pathString)
@@ -407,7 +407,7 @@ public extension FSPath {
         var template = templateDirectory.path.cString(using: String.Encoding.utf8)!
         return template.withUnsafeMutableBufferPointer { (buffer: inout UnsafeMutableBufferPointer<Int8>) -> FSPath in
             let pointer = mkdtemp(buffer.baseAddress)
-            let pathString = String(validatingUTF8: pointer!)!
+            let pathString = String(validatingCString: pointer!)!
             return FSPath(pathString)
         }
     }
@@ -486,7 +486,7 @@ public extension FSPath {
                 fatalError("fcntl_FGETPATH failed")
             }
         }
-        let path = String(cString: buffer)
+        let path = String(decoding: buffer.prefix(while: { $0 != 0 }).map { UInt8(bitPattern: $0) }, as: UTF8.self)
         self = FSPath(path)
     }
 }
