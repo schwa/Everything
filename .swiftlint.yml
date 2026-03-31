@@ -91,7 +91,6 @@ only_rules:
 #  - implicitly_unwrapped_optional # 9 violations
   - inclusive_language
 #  - indentation_width # 13 violations
-  - inert_defer
   - invalid_swiftlint_command
   - is_disjoint # 1 violations
   - joined_default_parameter
@@ -141,7 +140,7 @@ only_rules:
 #  - one_declaration_per_file # 56 violations
   - opening_brace
   - operator_usage_whitespace
-  - operator_whitespace
+  - function_name_whitespace
 #  - optional_data_string_conversion # 4 violations
   - optional_enum_case_matching
 #  - orphaned_doc_comment # 15 violations
@@ -174,8 +173,8 @@ only_rules:
   - redundant_discardable_let
   - redundant_nil_coalescing
   - redundant_objc_attribute
-  - redundant_optional_initialization
-  - redundant_self_in_closure
+  - implicit_optional_initialization
+  - redundant_self
   - redundant_set_access_control
   - redundant_string_enum_value
   - redundant_type_annotation
