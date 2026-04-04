@@ -91,7 +91,10 @@ extension URL: @retroactive ExpressibleByExtendedGraphemeClusterLiteral {}
 extension URL: @retroactive ExpressibleByUnicodeScalarLiteral {}
 extension URL: @retroactive ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self.init(string: value)!
+        guard let url = URL(string: value) else {
+            fatalError("Invalid URL string literal: \(value)")
+        }
+        self = url
     }
 }
 

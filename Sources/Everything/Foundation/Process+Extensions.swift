@@ -40,7 +40,10 @@ public extension Process {
                 return pipe
 
             case .string(let string):
-                return try Self.data(string.data(using: .utf8)!).any()
+                guard let data = string.data(using: .utf8) else {
+                    fatalError("Failed to encode string as UTF-8")
+                }
+                return try Self.data(data).any()
             }
         }
     }
@@ -164,7 +167,10 @@ public extension Process {
 public extension Process {
     static func checkOutputString(launchPath: String, arguments: [String], options: Options = .default, standardInput: Input? = nil, standardError: Output? = nil, currentDirectoryURL: URL? = nil) throws -> String {
         let result = try checkOutput(launchPath: launchPath, arguments: arguments, options: options, standardInput: standardInput, standardError: standardError, currentDirectoryURL: currentDirectoryURL)
-        let data = try result.standardOutput!.read()
+        guard let standardOutput = result.standardOutput else {
+            throw ProcessError.cannotReadOutput
+        }
+        let data = try standardOutput.read()
         if data.isEmpty {
             return ""
         }
@@ -187,7 +193,10 @@ public extension Process {
 internal extension Pipe {
     func readString() -> String {
         let data = fileHandleForReading.readDataToEndOfFile()
-        return String(data: data, encoding: .utf8)!
+        guard let string = String(data: data, encoding: .utf8) else {
+            fatalError("Failed to decode pipe data as UTF-8")
+        }
+        return string
     }
 }
 

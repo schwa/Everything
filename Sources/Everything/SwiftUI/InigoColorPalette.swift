@@ -6,10 +6,15 @@ public extension Color {
         guard let cgColor else {
             return nil
         }
-        guard let converted = cgColor.converted(to: CGColorSpace(name: CGColorSpace.linearSRGB)!, intent: .defaultIntent, options: nil) else {
+        guard let linearSRGB = CGColorSpace(name: CGColorSpace.linearSRGB) else {
+            fatalError("Could not create linearSRGB color space")
+        }
+        guard let converted = cgColor.converted(to: linearSRGB, intent: .defaultIntent, options: nil) else {
             fatalError("Could not convert color to colorspace")
         }
-        let components = converted.components!
+        guard let components = converted.components else {
+            fatalError("Converted color has no components")
+        }
         let r = components[0]
         let g = components[1]
         let b = components[2]

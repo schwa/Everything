@@ -12,6 +12,9 @@ public extension CharacterSet {
 
 public extension CharacterSet {
     static func ~= (lhs: CharacterSet, rhs: Character) -> Bool {
-        lhs.contains(rhs.unicodeScalars.first!)
+        guard let first = rhs.unicodeScalars.first else {
+            fatalError("Character has no unicode scalars")
+        }
+        return lhs.contains(first)
     }
 }

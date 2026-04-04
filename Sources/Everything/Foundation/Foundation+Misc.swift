@@ -48,8 +48,11 @@ public extension FileHandle {
         Result {
             var filePath = Array(repeating: Int8(0), count: Int(PATH_MAX))
             try filePath.withUnsafeMutableBytes { buffer in
+                guard let baseAddress = buffer.baseAddress else {
+                    fatalError("Buffer base address unexpectedly nil")
+                }
                 try withPOSIX {
-                    fcntl(fileDescriptor, F_GETPATH, buffer.baseAddress!)
+                    fcntl(fileDescriptor, F_GETPATH, baseAddress)
                 }
             }
             return URL(fileURLWithFileSystemRepresentation: filePath, isDirectory: false, relativeTo: nil)

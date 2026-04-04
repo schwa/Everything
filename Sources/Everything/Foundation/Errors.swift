@@ -137,7 +137,10 @@ public func assertChange<R>(value: @autoclosure () -> some Equatable, transactio
 public func withPOSIX(_ block: () -> Int32) throws {
     let result = block()
     if result < 0 {
-        throw POSIXError(POSIXErrorCode(rawValue: errno)!)
+        guard let code = POSIXErrorCode(rawValue: errno) else {
+            fatalError("Unknown POSIX error code: \(errno)")
+        }
+        throw POSIXError(code)
     }
 }
 

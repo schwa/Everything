@@ -111,6 +111,9 @@ public extension Float {
     func formatted() -> String {
         let f = NumberFormatter()
         f.maximumSignificantDigits = 4
-        return f.string(for: self)!
+        guard let result = f.string(for: self) else {
+            fatalError("NumberFormatter failed to format \(self)")
+        }
+        return result
     }
 }

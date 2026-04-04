@@ -34,7 +34,10 @@ public func bitRange<T: UnsignedInteger>(value: T, range: ClosedRange<Int>, flip
 
 @inlinable
 public func bitRange(buffer: UnsafeBufferPointer<some Any>, start: Int, count: Int) -> UInt64 {
-    let rawPointer = UnsafeRawPointer(buffer.baseAddress)!
+    guard let baseAddress = buffer.baseAddress else {
+        fatalError("Buffer base address unexpectedly nil")
+    }
+    let rawPointer = UnsafeRawPointer(baseAddress)
 
     // TODO: Swift3 - clean this up in the same manner (or better) we did bitSet (below)
     // Fast path; we want whole integers and the range is aligned to integer size.
@@ -102,7 +105,10 @@ public func bitSet<T: UnsignedInteger>(value: T, range: ClosedRange<Int>, flippe
 @inlinable
 public func bitSet(buffer: UnsafeMutableBufferPointer<some Any>, start: Int, count: Int, newValue: UInt64) {
     // TODO: Swift3 - why does return an optional?
-    let pointer = UnsafeMutableRawPointer(buffer.baseAddress)!
+    guard let baseAddress = buffer.baseAddress else {
+        fatalError("Buffer base address unexpectedly nil")
+    }
+    let pointer = UnsafeMutableRawPointer(baseAddress)
 
     func set<T: UnsignedInteger>(pointer: UnsafeMutableRawPointer, type _: T.Type, newValue: UInt64) {
         pointer.assumingMemoryBound(to: T.self)[start / (MemoryLayout<T>.size * 8)] = T(newValue)

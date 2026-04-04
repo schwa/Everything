@@ -3,7 +3,10 @@ import SwiftUI
 public extension Binding {
     func unsafeBinding<V>() -> Binding<V> where Value == V?, Value: Sendable {
         Binding<V> {
-            wrappedValue!
+            guard let value = wrappedValue else {
+                fatalError("Binding wrappedValue unexpectedly nil")
+            }
+            return value
         } set: {
             wrappedValue = $0
         }
@@ -20,7 +23,12 @@ public extension Binding {
     // TODO: Rename
     func withUnsafeBinding<V, R>(_ block: (Binding<V>) throws -> R) rethrows -> R? where Value == V?, Value: Sendable {
         if wrappedValue != nil {
-            return try block(Binding<V> { wrappedValue! } set: { wrappedValue = $0 })
+            return try block(Binding<V> {
+                guard let value = wrappedValue else {
+                    fatalError("Binding wrappedValue unexpectedly nil")
+                }
+                return value
+            } set: { wrappedValue = $0 })
         }
         return nil
     }
@@ -39,10 +47,15 @@ public extension Binding where Value == SwiftUI.Angle {
 public extension Binding where Value == CGColor {
     init(simd: Binding<SIMD3<Float>>, colorSpace: CGColorSpace) {
         self = .init(get: {
-            CGColor(colorSpace: colorSpace, components: [CGFloat(simd.wrappedValue[0]), CGFloat(simd.wrappedValue[1]), CGFloat(simd.wrappedValue[2])])!
+            guard let color = CGColor(colorSpace: colorSpace, components: [CGFloat(simd.wrappedValue[0]), CGFloat(simd.wrappedValue[1]), CGFloat(simd.wrappedValue[2])]) else {
+                fatalError("Failed to create CGColor from SIMD3")
+            }
+            return color
         }, set: { newValue in
-            let newValue = newValue.converted(to: colorSpace, intent: .defaultIntent, options: nil)!
-            let components = newValue.components!
+            guard let converted = newValue.converted(to: colorSpace, intent: .defaultIntent, options: nil),
+                  let components = converted.components else {
+                fatalError("Failed to convert CGColor to target color space")
+            }
             simd.wrappedValue = SIMD3<Float>(Float(components[0]), Float(components[1]), Float(components[2]))
         })
     }

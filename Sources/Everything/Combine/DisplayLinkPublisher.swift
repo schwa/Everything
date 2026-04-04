@@ -26,7 +26,10 @@ public struct DisplayLinkTiming<Time>: Sendable where Time: Sendable {
         defer {
             lastDisplayTime = displayTime
         }
-        return DisplayLinkEvent(currentTime: currentTime, displayTime: displayTime, duration: duration, frameCount: frameCount, firstDisplayTime: firstDisplayTime!, lastDisplayTime: lastDisplayTime)
+        guard let firstDisplayTime else {
+            fatalError("firstDisplayTime unexpectedly nil after being set")
+        }
+        return DisplayLinkEvent(currentTime: currentTime, displayTime: displayTime, duration: duration, frameCount: frameCount, firstDisplayTime: firstDisplayTime, lastDisplayTime: lastDisplayTime)
     }
 }
 
@@ -43,12 +46,18 @@ public final class DisplayLinkPublisherClassic: Publisher, @unchecked Sendable {
         CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
 
         func _callback(displayLink: CVDisplayLink, inNow: UnsafePointer<CVTimeStamp>, inOutputTime: UnsafePointer<CVTimeStamp>, flagsIn: CVOptionFlags, flagsOut: UnsafeMutablePointer<CVOptionFlags>, displayLinkContext: UnsafeMutableRawPointer?) -> CVReturn {
-            let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext!).takeUnretainedValue()
+            guard let displayLinkContext else {
+                fatalError("displayLinkContext unexpectedly nil")
+            }
+            let displayLinkPublisher = Unmanaged<DisplayLinkPublisherClassic>.fromOpaque(displayLinkContext).takeUnretainedValue()
             displayLinkPublisher.tick(currentTime: inNow.pointee, displayTime: inOutputTime.pointee)
             return 0
         }
 
-        CVDisplayLinkSetOutputCallback(displayLink!, _callback, Unmanaged.passUnretained(self).toOpaque())
+        guard let displayLink else {
+            fatalError("Failed to create CVDisplayLink")
+        }
+        CVDisplayLinkSetOutputCallback(displayLink, _callback, Unmanaged.passUnretained(self).toOpaque())
     }
 
     deinit {

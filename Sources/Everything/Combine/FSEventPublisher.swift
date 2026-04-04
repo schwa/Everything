@@ -109,13 +109,17 @@ public class FSEventPublisher: Publisher {
                 return
             }
             let publisher = Unmanaged<FSEventPublisher>.fromOpaque(callbackInfo).takeUnretainedValue()
-            let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as! [NSDictionary]
+            guard let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as? [NSDictionary] else {
+                fatalError("FSEvent eventPaths could not be cast to [NSDictionary]")
+            }
 
             let events = eventDictionaries.enumerated().map { arg -> FSEventPublisher.Event in
                 let (index, dictionary) = arg
                 let flags = eventFlags[index]
                 let eventID = eventIds[index]
-                let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as! String
+                guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String else {
+                    fatalError("FSEvent path could not be cast to String")
+                }
                 let fileID = dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
                 return Self.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
             }

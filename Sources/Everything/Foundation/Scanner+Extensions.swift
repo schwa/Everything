@@ -12,7 +12,10 @@ public extension Scanner {
         guard let match = expression.firstMatch(in: string, options: [], range: range) else {
             return nil
         }
-        currentIndex = Range<String.Index>(match.range, in: string)!.upperBound
+        guard let range = Range<String.Index>(match.range, in: string) else {
+            fatalError("Failed to convert NSRange to Range<String.Index>")
+        }
+        currentIndex = range.upperBound
         return match
     }
 

@@ -42,7 +42,10 @@ public struct BinaryHeap<Element> {
         guard let root = array.first else {
             return nil
         }
-        array[0] = array.last!
+        guard let last = array.last else {
+            fatalError("Heap array unexpectedly empty")
+        }
+        array[0] = last
         array.removeLast()
         heapify(0)
         assert(valid(array))

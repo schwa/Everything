@@ -35,6 +35,9 @@ public extension Publisher {
         })
         done.wait()
         s.cancel()
-        return try result!.get()
+        guard let result else {
+            fatalError("Publisher completed without producing a value or error")
+        }
+        return try result.get()
     }
 }

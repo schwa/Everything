@@ -21,14 +21,19 @@ public struct AStarSearch<Location: Hashable> {
         cost_so_far[start] = 0
 
         while !frontier.isEmpty {
-            let current = frontier.get()!
+            guard let current = frontier.get() else {
+                fatalError("frontier.get() returned nil despite non-empty frontier")
+            }
 
             if current == goal {
                 break
             }
 
             for next in neighbors(current) {
-                let new_cost = cost_so_far[current]! + cost(current, next)
+                guard let currentCost = cost_so_far[current] else {
+                    fatalError("Missing cost for current node")
+                }
+                let new_cost = currentCost + cost(current, next)
                 if cost_so_far[next].map({ new_cost < $0 }) ?? true {
                     cost_so_far[next] = new_cost
                     let priority = new_cost * heuristic(goal, next)

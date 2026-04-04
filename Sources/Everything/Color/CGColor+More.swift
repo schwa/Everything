@@ -19,7 +19,10 @@ public extension CGColor {
     #endif
 
     func withAlphaComponent(_ alpha: CGFloat) -> CGColor {
-        copy(alpha: alpha)!
+        guard let color = copy(alpha: alpha) else {
+            fatalError("Failed to copy CGColor with alpha \(alpha)")
+        }
+        return color
     }
 
     func blended(withFraction fraction: CGFloat, of other: CGColor) -> CGColor {

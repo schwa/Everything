@@ -111,7 +111,10 @@ private enum Label: Comparable {
         if string.isEmpty {
             self = .empty
         } else if string.isNumeric {
-            self = .numeric(Int(string)!)
+            guard let value = Int(string) else {
+                fatalError("Failed to parse numeric string: \(string)")
+            }
+            self = .numeric(value)
         } else {
             self = .string(string)
         }

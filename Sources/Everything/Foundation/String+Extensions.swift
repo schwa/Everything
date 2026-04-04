@@ -61,7 +61,10 @@ public extension String.Encoding {
 
 public extension Character {
     static func random(in set: String) -> Character {
-        set.randomElement()!
+        guard let element = set.randomElement() else {
+            fatalError("Cannot pick random character from empty string")
+        }
+        return element
     }
 }
 

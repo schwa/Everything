@@ -127,10 +127,12 @@ public extension CacheProtocol {
 public extension CacheProtocol {
     subscript(key: Key)  -> Value? {
         get {
+            // swiftlint:disable:next force_try
             try! get(key: key)
         }
         set {
             if let newValue {
+                // swiftlint:disable:next force_try
                 try! set(key: key, value: newValue)
             } else {
                 remove(key: key)

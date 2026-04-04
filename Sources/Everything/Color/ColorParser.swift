@@ -64,8 +64,10 @@ public struct ColorParser {
 
             case 6:
                 let values = [0 ..< 2, 2 ..< 4, 4 ..< 6].map {
-                    let a = string.index(string.startIndex, offsetBy: $0.lowerBound, limitedBy: string.endIndex)!
-                    let b = string.index(string.startIndex, offsetBy: $0.upperBound, limitedBy: string.endIndex)!
+                    guard let a = string.index(string.startIndex, offsetBy: $0.lowerBound, limitedBy: string.endIndex),
+                          let b = string.index(string.startIndex, offsetBy: $0.upperBound, limitedBy: string.endIndex) else {
+                        fatalError("Invalid hex color string index")
+                    }
 
                     return String(string[a ..< b])
                 }

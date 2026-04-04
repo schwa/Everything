@@ -7,11 +7,14 @@ extension FileManager {
             return []
         }
         let buffer = ContiguousArray<UInt8>(unsafeUninitializedCapacity: bufferSize) { buffer, size in
-            buffer.baseAddress!.withMemoryRebound(to: Int8.self, capacity: bufferSize) { pointer in
+            guard let baseAddress = buffer.baseAddress else {
+                fatalError("Buffer base address unexpectedly nil")
+            }
+            baseAddress.withMemoryRebound(to: Int8.self, capacity: bufferSize) { pointer in
                 size = Darwin.listxattr(url.path, pointer, bufferSize, 0)
             }
         }
-        return buffer.split(separator: 0).map { String(bytes: $0, encoding: .utf8)! }
+        return buffer.split(separator: 0).compactMap { String(bytes: $0, encoding: .utf8) }
     }
 
     func xattr(for url: URL, xattr: String) -> Data {

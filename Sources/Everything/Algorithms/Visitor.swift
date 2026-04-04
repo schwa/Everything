@@ -20,7 +20,10 @@ public struct Visitor<Node, Children>: Sequence where Children: Sequence, Childr
                     }
                     let result = current
                     // TODO: .reversed() is inefficient
-                    stack.append(contentsOf: current![keyPath: children].reversed())
+                    guard let node = current else {
+                        fatalError("current unexpectedly nil")
+                    }
+                    stack.append(contentsOf: node[keyPath: children].reversed())
                     current = stack.popLast()
                     return result
                 }
@@ -37,8 +40,11 @@ public struct Visitor<Node, Children>: Sequence where Children: Sequence, Childr
                     }
                     if !s.isEmpty {
                         let current = s.popLast()
-                        out.append(current!)
-                        s.append(contentsOf: current![keyPath: children])
+                        guard let node = current else {
+                            fatalError("current unexpectedly nil")
+                        }
+                        out.append(node)
+                        s.append(contentsOf: node[keyPath: children])
                         return out.popLast()
                     }
                     return nil

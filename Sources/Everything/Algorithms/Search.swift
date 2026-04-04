@@ -10,7 +10,9 @@ public func breadth_first_search<Location: Hashable>(_ start: Location, goal: Lo
     var came_from: [Location: Location] = [:]
 
     while frontier.isEmpty == false {
-        let current = frontier.get()!
+        guard let current = frontier.get() else {
+            fatalError("frontier.get() returned nil despite non-empty frontier")
+        }
         if current == goal {
             break
         }

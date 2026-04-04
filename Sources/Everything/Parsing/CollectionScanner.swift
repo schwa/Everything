@@ -100,7 +100,10 @@ public extension CollectionScanner where Element: Equatable {
             if value.count > remainingToSearch.count {
                 break
             }
-            if let index = remainingToSearch.firstIndex(of: value.first!) {
+            guard let firstValue = value.first else {
+                fatalError("value unexpectedly empty")
+            }
+            if let index = remainingToSearch.firstIndex(of: firstValue) {
                 guard remainingToSearch.distance(from: index, to: remainingToSearch.endIndex) >= value.count else {
                     return nil
                 }

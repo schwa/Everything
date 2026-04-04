@@ -98,7 +98,10 @@ public extension FSPath {
 
     /// Replace the file name portion of a path with name
     func withName(_ name: String) -> FSPath {
-        parent! + name
+        guard let parent else {
+            fatalError("Cannot replace name on a path with no parent")
+        }
+        return parent + name
     }
 
     /// Replace the path extension portion of a path. Note path extensions in iOS seem to refer just to last path extension e.g. "z" of "foo.x.y.z".
@@ -116,7 +119,10 @@ public extension FSPath {
 
     /// Replace the stem portion of a path: e.g. calling withStem("bar") on /tmp/foo.txt returns /tmp/bar.txt
     func withStem(_ stem: String) -> FSPath {
-        (parent! + stem).withPathExtension(pathExtension)
+        guard let parent else {
+            fatalError("Cannot replace stem on a path with no parent")
+        }
+        return (parent + stem).withPathExtension(pathExtension)
     }
 
     func pathByExpandingTilde() -> FSPath {
@@ -315,10 +321,11 @@ public extension FSPath {
         guard exists && isDirectory else {
             return nil
         }
-        let enumerator = FileManager().enumerator(at: url, includingPropertiesForKeys: nil, options: [.skipsSubdirectoryDescendants, .skipsPackageDescendants], errorHandler: nil)!
+        guard let enumerator = FileManager().enumerator(at: url, includingPropertiesForKeys: nil, options: [.skipsSubdirectoryDescendants, .skipsPackageDescendants], errorHandler: nil) else {
+            return nil
+        }
         var children: [FSPath] = []
-        for url in enumerator {
-            let url = url as! URL
+        for case let url as URL in enumerator {
             children.append(FSPath(url))
         }
         return children
@@ -380,7 +387,7 @@ public extension FSPath {
         }
         let paths = (0 ..< globStorage.gl_pathc).map { index -> FSPath in
             let pathPtr = globStorage.gl_pathv[index]
-            guard let pathString = String(validatingCString: pathPtr!) else {
+            guard let pathPtr, let pathString = String(validatingCString: pathPtr) else {
                 fatalError("Could not convert path to utf8 string")
             }
             return FSPath(pathString)
@@ -404,10 +411,14 @@ public extension FSPath {
         }
 
         let templateDirectory = temporaryDirectory + "XXXXXXXX"
-        var template = templateDirectory.path.cString(using: String.Encoding.utf8)!
+        guard var template = templateDirectory.path.cString(using: String.Encoding.utf8) else {
+            fatalError("Failed to convert template path to C string")
+        }
         return template.withUnsafeMutableBufferPointer { (buffer: inout UnsafeMutableBufferPointer<Int8>) -> FSPath in
-            let pointer = mkdtemp(buffer.baseAddress)
-            let pathString = String(validatingCString: pointer!)!
+            guard let pointer = mkdtemp(buffer.baseAddress),
+                  let pathString = String(validatingCString: pointer) else {
+                fatalError("mkdtemp failed")
+            }
             return FSPath(pathString)
         }
     }
@@ -428,8 +439,13 @@ public extension FSPath {
 public extension FSPath {
     static var applicationSpecificSupportDirectory: FSPath {
         let bundle = Bundle.main
-        let bundleIdentifier = bundle.bundleIdentifier!
-        let path = applicationSupportDirectory! + bundleIdentifier
+        guard let bundleIdentifier = bundle.bundleIdentifier else {
+            fatalError("Bundle has no identifier")
+        }
+        guard let appSupportDir = applicationSupportDirectory else {
+            fatalError("Could not determine application support directory")
+        }
+        let path = appSupportDir + bundleIdentifier
         if path.exists == false {
             forceTry {
                 try path.createDirectory(withIntermediateDirectories: true)
@@ -482,7 +498,10 @@ public extension FSPath {
     init(fileDescriptor fd: Int32) throws {
         var buffer = [Int8](repeating: 0, count: Int(PATH_MAX))
         buffer.withUnsafeMutableBufferPointer { buffer in
-            if fcntl(fd, F_GETPATH, buffer.baseAddress!) == -1 {
+            guard let baseAddress = buffer.baseAddress else {
+                fatalError("Buffer base address unexpectedly nil")
+            }
+            if fcntl(fd, F_GETPATH, baseAddress) == -1 {
                 fatalError("fcntl_FGETPATH failed")
             }
         }
