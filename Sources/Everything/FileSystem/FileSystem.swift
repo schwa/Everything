@@ -85,6 +85,7 @@ public extension FSPath {
         listxattr(path, nil, 0, XATTR_NOFOLLOW) != 0
     }
 
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func lsFormat() throws -> String {
         let attributes = try FileManager().attributesOfItem(atPath: path)
 

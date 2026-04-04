@@ -20,6 +20,7 @@ public struct SuperImportWidget: View {
     }
 
     public var body: some View {
+        // swiftlint:disable:next closure_body_length
         Menu("Import") {
             Button("Choose…") {
                 isImporting = true
