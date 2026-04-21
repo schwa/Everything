@@ -3,6 +3,32 @@
 import Combine
 import Foundation
 
+// File-scope C callback. Captures nothing, so it's trivially convertible to a
+// `@convention(c)` function pointer. Keeping this out of `FSEventPublisher.init`
+// avoids a Swift 6 `TransferNonSendable` SIL-pass compiler crash when the pass
+// analyzes a local function nested inside an init that also escapes `self` via
+// `Unmanaged.passUnretained`.
+private func fsEventPublisherCallback(stream: ConstFSEventStreamRef, callbackInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) {
+    guard let callbackInfo else {
+        return
+    }
+    let publisher = Unmanaged<FSEventPublisher>.fromOpaque(callbackInfo).takeUnretainedValue()
+    guard let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as? [NSDictionary] else {
+        fatalError("FSEvent eventPaths could not be cast to [NSDictionary]")
+    }
+    let events = eventDictionaries.enumerated().map { arg -> FSEventPublisher.Event in
+        let (index, dictionary) = arg
+        let flags = eventFlags[index]
+        let eventID = eventIds[index]
+        guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String else {
+            fatalError("FSEvent path could not be cast to String")
+        }
+        let fileID = dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
+        return FSEventPublisher.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
+    }
+    publisher.send(events)
+}
+
 public class FSEventPublisher: Publisher {
     public struct Event {
         public struct Flags: OptionSet, CustomStringConvertible, Sendable {
@@ -99,34 +125,13 @@ public class FSEventPublisher: Publisher {
         self.latency = latency
         self.queue = queue
 
-        var context = FSEventStreamContext()
-        context.info = Unmanaged.passUnretained(self).toOpaque() // TODO: balance retain release
-        let paths = paths as CFArray
+        let cfPaths = paths as CFArray
         let flags = kFSEventStreamCreateFlagUseCFTypes | kFSEventStreamCreateFlagUseExtendedData | options.rawValue
 
-        func _callback(stream: ConstFSEventStreamRef, callbackInfo: UnsafeMutableRawPointer?, numEvents: Int, eventPaths: UnsafeMutableRawPointer, eventFlags: UnsafePointer<FSEventStreamEventFlags>, eventIds: UnsafePointer<FSEventStreamEventId>) {
-            guard let callbackInfo else {
-                return
-            }
-            let publisher = Unmanaged<FSEventPublisher>.fromOpaque(callbackInfo).takeUnretainedValue()
-            guard let eventDictionaries = unsafeBitCast(eventPaths, to: NSArray.self) as? [NSDictionary] else {
-                fatalError("FSEvent eventPaths could not be cast to [NSDictionary]")
-            }
+        var context = FSEventStreamContext()
+        context.info = Unmanaged.passUnretained(self).toOpaque() // TODO: balance retain release
 
-            let events = eventDictionaries.enumerated().map { arg -> FSEventPublisher.Event in
-                let (index, dictionary) = arg
-                let flags = eventFlags[index]
-                let eventID = eventIds[index]
-                guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String else {
-                    fatalError("FSEvent path could not be cast to String")
-                }
-                let fileID = dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
-                return Self.Event(flags: .init(rawValue: Int(flags)), path: path, eventID: eventID, fileID: fileID)
-            }
-            publisher.send(events)
-        }
-
-        stream = FSEventStreamCreate(kCFAllocatorDefault, _callback, &context, paths, lastEventID, latency, FSEventStreamCreateFlags(flags))
+        stream = FSEventStreamCreate(kCFAllocatorDefault, fsEventPublisherCallback, &context, cfPaths, lastEventID, latency, FSEventStreamCreateFlags(flags))
 
         FSEventStreamSetDispatchQueue(stream, queue)
         FSEventStreamStart(stream)
