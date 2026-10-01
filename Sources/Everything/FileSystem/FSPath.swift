@@ -462,15 +462,15 @@ public extension FSPath {
     }
 
     static var libraryDirectory: FSPath? {
-        try? FSPath.specialDirectory(.libraryDirectory)
+        try? Self.specialDirectory(.libraryDirectory)
     }
 
     static var applicationSupportDirectory: FSPath? {
-        try? FSPath.specialDirectory(.applicationSupportDirectory)
+        try? Self.specialDirectory(.applicationSupportDirectory)
     }
 
     static var documentDirectory: FSPath? {
-        try? FSPath.specialDirectory(.documentDirectory)
+        try? Self.specialDirectory(.documentDirectory)
     }
 }
 

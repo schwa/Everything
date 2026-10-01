@@ -90,7 +90,7 @@ extension TrivialID: Codable {
             fatalError("Invalid serial in TrivialID: '\(match.output.serial)'")
         }
         let scope = Scope(name: String(match.output.scopeName), token: scopeToken)
-        TrivialID.staticState.withLock { staticState in
+        Self.staticState.withLock { staticState in
             if staticState.scopesByName[scope.name] == nil {
                 staticState.scopesByName[scope.name] = scope
             }

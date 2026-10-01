@@ -42,14 +42,14 @@ public struct BitSet {
 
 public extension BitSet {
     init(count: Int) {
-        self = BitSet(count: count, words: Array(repeating: 0, count: divup(dividend: count, divisor: BitSet.bitsPerElement)))
+        self = BitSet(count: count, words: Array(repeating: 0, count: divup(dividend: count, divisor: Self.bitsPerElement)))
     }
 
     init<T>(_ value: T) where T: BinaryInteger {
         var value = value
         self = Swift.withUnsafeBytes(of: &value) { sourceBuffer in
             let count = MemoryLayout<T>.size * 8
-            var elements = Array(repeating: UInt.zero, count: divup(dividend: count, divisor: BitSet.bitsPerElement))
+            var elements = Array(repeating: UInt.zero, count: divup(dividend: count, divisor: Self.bitsPerElement))
             elements.withUnsafeMutableBytes { destinationBuffer in
                 _ = sourceBuffer.copyBytes(to: destinationBuffer)
             }

@@ -20,9 +20,9 @@ public extension Color {
         let b = components[2]
         let brightness = r * 0.299 + g * 0.587 + b * 0.114
         if brightness < 0.5 {
-            return Color.white
+            return Self.white
         }
-        return Color.black
+        return Self.black
     }
 }
 
